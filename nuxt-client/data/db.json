@@ -3,8 +3,9 @@
         {
             "id": 1,
             "course_code": "CMSC 100",
-            "title": "WEb Programmingggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
-            "description": ["1s", "2s"],
+            "title": "WEb Programming",
+            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere tempore consequatur earum autem non ad ut sapiente, nobis cupiditate labore placeat nisi? Minus incidunt, quam aperiam illo cumque accusantium adipisci blanditiis consequatur sed rem laboriosam laudantium pariatur temporibus dolor aspernatur eos cupiditate. Maxime modi blanditiis dignissimos voluptatem aliquam sit. Asperiores, quaerat voluptates? Recusandae ex optio, ea ducimus libero voluptate ab temporibus quisquam distinctio minus asperiores molestiae doloribus debitis animi alias nam cumque perspiciatis. Necessitatibus ducimus odit debitis. Iure id reprehenderit voluptatem. Magni iusto perspiciatis eum, molestias quasi rerum ea at illum mollitia, cupiditate nemo atque. Nisi deserunt maiores beatae eum.",
+            "sem_offered": ["1s", "2s"],
             "units": 3,
             "status": "Abolished"
         },
@@ -12,7 +13,8 @@
             "id": 2,
             "course_code": "CMSC 127",
             "title": "Database",
-            "description": ["1s"],
+            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos modi eius, earum fugiat praesentium perferendis sit, iusto odit voluptate tempora in? Accusamus numquam quidem dolore mollitia quibusdam doloremque eos dolorum magni, neque ea maxime a totam aperiam nostrum nulla doloribus officia quisquam repellendus obcaecati modi pariatur. Eligendi, expedita dolorum! Voluptatem!",
+            "sem_offered": ["1s"],
             "units": 3,
             "status": "Active"
         }
