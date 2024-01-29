@@ -1,0 +1,87 @@
+{
+    "courses": [
+        {
+            "id": 1,
+            "course_code": "CMSC 100",
+            "title": "WEb Programmingggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+            "description": ["1s", "2s"],
+            "units": 3,
+            "status": "Abolished"
+        },
+        {   
+            "id": 2,
+            "course_code": "CMSC 127",
+            "title": "Database",
+            "description": ["1s"],
+            "units": 3,
+            "status": "Active"
+        }
+    ],
+    "proposals": [
+        {   
+            "id": 1,
+            "name": "Proposal for the Institution of EE 2",
+            "date": "01/01/1990",
+            "target": ["Curriculum", "Course"],
+            "type": ["Institution", "Revision"],
+            "sub-type": [
+                "Change in Prerequisites",
+                "Change in Semester Offering"
+            ]
+        },
+        {   
+            "id": 2,
+            "name": "Proposal for the Institution of CE 120",
+            "date": "02/02/1990",
+            "target": ["Curriculum"],
+            "type": ["Institution"]
+        }
+    ],
+    "curricula": [
+        {
+            "id": 1,
+            "code": "BSABE_2018_LWRE_INNOVATIONEERING",
+            "name": "BSABE 2018 Land and Water Resources Engineering Innovationeering",
+            "program": "Bachelor of Science in Agricultural and Biosystems Engineering",
+            "status": "Abolished"
+        },
+        {   
+            "id": 2,
+            "code": "BSABE_2018_AGR_CRP_PROD_MGMT_THPR",
+            "name": "BSABE 2018 Agriculture Crop Production Management (Thesis/Practicum)",
+            "program": "Bachelor of Science in Agriculture",
+            "status": "Active"
+        },
+        {   
+            "id": 3,
+            "code": "BSABE_2018_AGR_CRP_PROD_MGMT_MPSP",
+            "name": "BSABE 2018 Agriculture Crop Production Management (Major Problem/Special Problem)",
+            "program": "Bachelor of Science in Agriculture",
+            "status": "Active"
+        }
+    ],
+    "degree_program": [
+        {   
+            "id": 1,
+            "name": "Bachelor of Science in Computer Science",
+            "career": "Undergraduate",
+            "college": "College of Arts and Sciences",
+            "status": "Active"
+        },
+        {
+            "id": 2,
+            "name": "Bachelor of Science in Biology",
+            "career": "Undergraduate",
+            "college": "College of Arts and Sciences",
+            "status": "Abolished"
+        },
+        {
+            "id": 3,
+            "name": "Bachelor of Science in Electronics Engineering",
+            "career": "Undergraduate",
+            "college": "College of Engineering and Agro-industrial Technology",
+            "status": "Active"
+        }
+    ]
+
+}
