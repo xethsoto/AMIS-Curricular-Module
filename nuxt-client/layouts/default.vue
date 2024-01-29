@@ -30,11 +30,20 @@
             </nav>
         </header>
 
-        <div class="relative overflow-x-hidden items-top justify-center min-h-screen h-full bg-gray-100 pt-10"></div>
+        <div class="relative overflow-x-hidden items-top justify-center min-h-screen h-full bg-gray-100 pt-10">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <slot></slot>
+            </div>
+        </div>
+
     </div>
 </template>
 
 <script setup>
+    definePageMeta({
+        colorMode:'dark'
+    })
+
     const name = ref('USER')
 </script>
 
