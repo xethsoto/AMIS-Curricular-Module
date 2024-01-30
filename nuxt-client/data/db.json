@@ -3,7 +3,7 @@
         {
             "id": 1,
             "course_code": "CMSC 100",
-            "title": "WEb Programming",
+            "title": "Web Programming",
             "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere tempore consequatur earum autem non ad ut sapiente, nobis cupiditate labore placeat nisi? Minus incidunt, quam aperiam illo cumque accusantium adipisci blanditiis consequatur sed rem laboriosam laudantium pariatur temporibus dolor aspernatur eos cupiditate. Maxime modi blanditiis dignissimos voluptatem aliquam sit. Asperiores, quaerat voluptates? Recusandae ex optio, ea ducimus libero voluptate ab temporibus quisquam distinctio minus asperiores molestiae doloribus debitis animi alias nam cumque perspiciatis. Necessitatibus ducimus odit debitis. Iure id reprehenderit voluptatem. Magni iusto perspiciatis eum, molestias quasi rerum ea at illum mollitia, cupiditate nemo atque. Nisi deserunt maiores beatae eum.",
             "sem_offered": ["1s", "2s"],
             "units": 3,

@@ -1,22 +1,8 @@
 <template>
     <div>
-        <h1>Courses Management</h1>
-        <div class="container h-12">
-
-        </div>
-        <div v-if="courses.length > 0">
-            <UTable :rows="courses" :columns="columns" class="bg-white rounded-lg p-4">
-                <template #actions-data>
-                    <UButton color="red" label="Click Here"/>
-                </template>
-
-                <template #title-header class="font-bold">
-                </template>
-            </UTable>
-        </div>
-        <div v-else>
-            <p>Loading...</p>
-        </div>
+        <NuxtLayout name="curricular-table" :tableData="courses" :tableColMeta="columns">
+            <template v-slot:title>Courses Management</template>
+        </NuxtLayout>
     </div>
 </template>
 
@@ -38,6 +24,11 @@
         {
             key: 'description',
             label: "Description",
+            sortable: true
+        },
+        {
+            key: 'sem_offered',
+            label: "Sem Offered",
             sortable: true
         },
         {
