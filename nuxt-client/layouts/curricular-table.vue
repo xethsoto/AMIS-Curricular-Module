@@ -3,33 +3,36 @@
         <h1>
             <slot name="title"></slot>    
         </h1>
-        <div class="container h-12">
 
+        <!-- Search and Filter Bars -->
+        <div class="container h-12">
+            
         </div>
-        <div v-if="tableData.length > 0">
-            <UTable
+
+        <!-- Table -->
+        <UTable
             :rows="tableData"
             :columns="tableColMeta"
-            class="bg-white rounded-lg p-4 justify-center"
-            :ui="{
-                td: { base: 'text-wrap text-black' },
-                th: { base: 'text-bolder text-black'}
-            }">
-                <template #actions-data>
-                    <UButton label="View" class="bg-maroon"/>
+            :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
+            :empty-state="{ icon: 'i-heroicons-no-symbol-20-solid', label: 'No courses.' }"
+            class="bg-white rounded-lg p-4 justify-center">
+                <template #status-data="{row}">
+                    {{ row.status.value }}
                 </template>
-            </UTable>
-        </div>
-        <div v-else>
-            <p>Loading...</p>
-        </div>
+
+                <template #actions-data>
+                    <UButton class="bg-maroon hover:bg-red-700" size="md">View</UButton>
+                </template>
+        </UTable>
     </div>
 </template>
 
 <script setup>
     const {tableData, tableColMeta} = defineProps(['tableData', 'tableColMeta'])
+
+    console.log("tableData = ", tableData)
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

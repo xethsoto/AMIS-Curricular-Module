@@ -19,7 +19,6 @@
             key: 'title',
             label: "Title",
             sortable: true,
-            class: 'text-2xl'
         },
         {
             key: 'description',
@@ -43,9 +42,23 @@
         },
         {
             key: 'actions',
-            label: "Action"
+            label: "Action",
         }
     ]
+
+    onMounted(() => {
+        courses.value.forEach((course) => {
+            console.log(course)
+            console.log(course.status)
+            if (course.status === "Active"){
+                console.log("true")
+                course.status = { value: "Active", class: "bg-green-500"}
+            } else {
+                console.log("false")
+                course.status = { value: "Abolished", class: "bg-red-500"}
+            }
+        })
+    })
 </script>
 
 <style scoped>
