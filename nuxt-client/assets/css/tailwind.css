@@ -2,19 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    /* @apply bg-white; */
-}
-
 .bg-maroon {
     background-color: #7B1518;
 }
 
-@layer components {
-    /* .btn {
-        @apply bg-[#12b488] text-white px-3 py-2 rounded-md text-sm text-white;
-    }
-    .card{
-        @apply p-3 rounded-md bg-white shadow-md h-full;
-    } */
+.btn-maroon{
+    @apply bg-maroon hover:bg-red-700 !important;
 }
+
+/* @layer components {
+    .btn-maroon {
+        @apply bg-maroon hover:bg-red-700;
+    }
+} */
