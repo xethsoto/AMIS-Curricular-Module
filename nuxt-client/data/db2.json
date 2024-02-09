@@ -1,0 +1,102 @@
+{
+    "courses": [
+        {
+            "id": 1,
+            "code": "CMSC 100",
+            "title": "Web Programming",
+            "desc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere tempore consequatur earum autem non ad ut sapiente, nobis cupiditate labore placeat nisi? Minus incidunt, quam aperiam illo cumque accusantium adipisci blanditiis consequatur sed rem laboriosam laudantium pariatur temporibus dolor aspernatur eos cupiditate. Maxime modi blanditiis dignissimos voluptatem aliquam sit. Asperiores, quaerat voluptates? Recusandae ex optio, ea ducimus libero voluptate ab temporibus quisquam distinctio minus asperiores molestiae doloribus debitis animi alias nam cumque perspiciatis. Necessitatibus ducimus odit debitis. Iure id reprehenderit voluptatem. Magni iusto perspiciatis eum, molestias quasi rerum ea at illum mollitia, cupiditate nemo atque. Nisi deserunt maiores beatae eum.",
+            "num_of_hours": 5,
+            "credit": 3,
+            "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "status": "Active"
+        },
+        {   
+            "id": 2,
+            "code": "CMSC 127",
+            "title": "File Processing and Database Systems",
+            "desc": "Data models: relational, network and hierarchical models; Database management system, data definition and manipulation language; Data security, integrity, synchronization, protection and recovery; Principal database systems and query languages.",
+            "num_of_hours": 5,
+            "credit": 3,
+            "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "status": "Active"
+        },
+        {   
+            "id": 3,
+            "code": "CMSC 22",
+            "title": "Object-Oriented Programming",
+            "desc": "Objects, design and implementation of object-oriented programs",
+            "num_of_hours": 5,
+            "credit": 2,
+            "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "status": "Active"
+        },
+        {   
+            "id": 4,
+            "code": "CMSC 12",
+            "title": "Foundations of Computer Science",
+            "desc": "Objects, design and implementation of object-oriented programs",
+            "num_of_hours": 5,
+            "credit": 3,
+            "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "status": "Active"
+        },
+        {   
+            "id": 5,
+            "code": "CMSC 23",
+            "title": "Object-Oriented Programming",
+            "desc": "Methods and techniques for developing mobile applications",
+            "num_of_hours": 5,
+            "credit": 2,
+            "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "status": "Active"
+        }
+    ],
+    "sem_offered": [
+        {
+            "course_id": 1,
+            "sem_offered": "1s"
+        },
+        {
+            "course_id": 1,
+            "sem_offered": "2s"
+        },
+        {
+            "course_id": 2,
+            "sem_offered": "1s"
+        },
+        {
+            "course_id": 2,
+            "sem_offered": "2s"
+        },
+        {
+            "course_id": 3,
+            "sem_offered": "1s"
+        },
+        {
+            "course_id": 4,
+            "sem_offered": "1s"
+        },
+        {
+            "course_id": 5,
+            "sem_offered": "2s"
+        }
+    ],
+    "course_prereq": [
+        {
+            "course_id": 1,
+            "prereq_id": 3
+        },
+        {
+            "course_id": 2,
+            "prereq_id": 3
+        },
+        {
+            "course_id": 3,
+            "prereq_id": 4
+        },
+        {
+            "course_id": 5,
+            "prereq_id": 3
+        }
+    ]
+}
