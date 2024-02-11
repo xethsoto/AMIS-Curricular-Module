@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4 mb-96">
-        <h1 class="text-2xl font-bold mb-8">
+        <h1 class="page-title mb-8">
             <slot name="title"></slot>    
         </h1>
 
@@ -28,8 +28,10 @@
                         {{ row.status.value }}
                     </template>
     
-                    <template #actions-data>
-                        <UButton class="btn-maroon" size="md">View</UButton>
+                    <template #actions-data="{row}">
+                        <NuxtLink :to="`/courses-management/${row.id}`">
+                            <UButton class="btn-maroon" size="md">View</UButton>
+                        </NuxtLink>
                     </template>
     
             </UTable>
@@ -42,6 +44,8 @@
 </template>
 
 <script setup>
+    // FIXME: BUILT-IN SORT only sorts rows on the current page
+
     const {tableData, tableColMeta, filterData} = defineProps(['tableData', 'tableColMeta', 'filterData'])
 
     const filteredCourses = ref([...tableData])

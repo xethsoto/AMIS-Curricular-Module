@@ -49,6 +49,16 @@
             "credit": 2,
             "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
             "status": "Active"
+        },
+        {   
+            "id": 6,
+            "code": "CMSC 11",
+            "title": "Introduction to Computer Science",
+            "desc": "Introductory course that introduces fundamental computer science concepts",
+            "num_of_hours": 5,
+            "credit": 2,
+            "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "status": "Abolished"
         }
     ],
     "sem_offered": [
@@ -97,6 +107,10 @@
         {
             "course_id": 5,
             "prereq_id": 3
+        },
+        {
+            "course_id": 3,
+            "prereq_id": 6
         }
     ]
 }

@@ -10,6 +10,10 @@
     @apply bg-maroon hover:bg-red-700 !important;
 }
 
+.page-title{
+    @apply text-2xl font-bold;
+}
+
 /* @layer components {
     .btn-maroon {
         @apply bg-maroon hover:bg-red-700;

@@ -15,11 +15,7 @@
 
 <script setup>
     const {data: courses} = await useFetch("http://localhost:3001/courses")
-
-    // Search and Filter contents
-    // const courseCodeContent = ref('')
-    // const titleContent = ref('')
-    // const dropdownLabel = ref('Active')
+    const {data: semOffered} = await useFetch("http://localhost:3001/sem_offered")
 
     const filterData = reactive({
         courseCodeContent: '',
@@ -29,7 +25,7 @@
     
     const columns = [
         {
-            key: 'course_code',
+            key: 'code',
             label: "Course Code",
             sortable: true,
         },
@@ -39,7 +35,7 @@
             sortable: true,
         },
         {
-            key: 'description',
+            key: 'desc',
             label: "Description",
             sortable: true
         },
@@ -49,7 +45,7 @@
             sortable: true
         },
         {
-            key: 'units',
+            key: 'credit',
             label: "Units",
             sortable: true
         },
@@ -85,13 +81,30 @@
         }]
     ]
 
+    // Adding the semester offering info to the each course object
+    courses.value.forEach((course) => {
+        const tempCont = semOffered.value.filter((entry)=>{
+            return entry.course_id === Number(course.id)
+        })
+
+        console.log("tempCont = ", tempCont)
+        
+        course.sem_offered = ''
+        tempCont.forEach((entry) => {
+            course.sem_offered += `${entry.sem_offered} `
+        })
+    })
+
     onMounted(() => {
         courses.value.forEach((course) => {
+
+            // Used for styling the status data in tables
             if (course.status === "Active"){
                 course.status = { value: "Active", class: "bg-green-500"}
             } else {
                 course.status = { value: "Abolished", class: "bg-red-500"}
             }
+
         })
     })
 
@@ -104,6 +117,8 @@
     const updTitleCont = (content) => {
         filterData.titleContent = content
     }
+
+    console.log("courses = ", courses.value)
 </script>
 
 <style scoped>
