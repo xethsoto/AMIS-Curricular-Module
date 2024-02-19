@@ -58,13 +58,17 @@
                 <div v-if="course">
                     <p>{{ course.outline }}</p>
                 </div>
-
                 <div v-else>
                     <p class="font-bold italic">No Course Outline</p>
                 </div>
 
                 <hr class="h-px border-0 bg-black dark:bg-gray-700">
 
+                <!-- Degree Programs Requiring This Course -->
+
+                <p class="font-bold text-lg text-center">Degree Programs Requiring This Course</p>
+                
+                
             </template>
         </NuxtLayout>
     </div>
