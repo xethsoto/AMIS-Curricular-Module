@@ -71,6 +71,18 @@
             "outline": 
                 "The course aims to help students understand the world of computer science and computer programming",
             "status": "Abolished"
+        },
+        {   
+            "id": 7,
+            "code": "CHEM 18",
+            "title": "University Chemistry",
+            "desc": "Introductory course that introduces fundamental Chemistry concepts",
+            "num_of_hours": 5,
+            "credit": 3,
+            "goal": "For the students to apply knowledge of the basic principles of Chemistry",
+            "outline": 
+                "The course aims to help students understand the world of Chemistry",
+            "status": "Active"
         }
     ],
     "sem_offered": [
@@ -101,6 +113,14 @@
         {
             "course_id": 5,
             "sem_offered": "2s"
+        },
+        {
+            "course_id": 7,
+            "sem_offered": "1s"
+        },
+        {
+            "course_id": 7,
+            "sem_offered": "2s"
         }
     ],
     "course_prereq": [
@@ -123,6 +143,161 @@
         {
             "course_id": 3,
             "prereq_id": 6
+        },
+        {
+            "course_id": 7,
+            "prereq_id": 6
+        },
+        {
+            "course_id": 1,
+            "prereq_id": 7
+        },
+        {
+            "course_id": 2,
+            "prereq_id": 7
+        },
+        {
+            "course_id": 3,
+            "prereq_id": 7
+        }
+    ],
+    "deg_prog" : [
+        {
+            "id": 1,
+            "name": "Bachelor of Science in Computer Science",
+            "career": "Undergraduate",
+            "college": "College of Arts and Sciences",
+            "num_of_units": "130",
+            "description": "Molds students to be an all-rounder computer science students",
+            "status": "Active"
+        },
+        {
+            "id": 2,
+            "name": "Bachelor of Science in Biology",
+            "career": "Undergraduate",
+            "college": "College of Arts and Sciences",
+            "num_of_units": "130",
+            "description": "Molds students to be versatile in various medicinal and research-based fields of biology",
+            "status": "Active"
+        }
+    ],
+    "deg_prog_majors" : [
+        {
+            "id": 2,
+            "major_id": 1
+        },
+        {
+            "id": 2,
+            "major_id": 2
+        },
+        {
+            "id": 2,
+            "major_id": 3
+        }
+    ],
+    "majors": [
+        {
+            "id": 1,
+            "name": "Major in Microbiology",
+            "status": 1
+        },
+        {
+            "id": 2,
+            "name": "Major in Botany",
+            "status": 1
+        },
+        {
+            "id": 3,
+            "name": "Major in Cell Biology",
+            "status": 1
+        }
+    ],
+    "curriculum": [
+        {
+            "id": 1,
+            "name": "BSBIO_2018_Microbiology_SP",
+            "major_id": 1
+        },
+        {
+            "id": 2,
+            "name": "BSBIO_2018_Microbiology_THESIS",
+            "major_id": 1
+        },
+        {
+            "id": 3,
+            "name": "BSBIO_2018_Botany_SP",
+            "major_id": 2
+        },
+        {
+            "id": 4,
+            "name": "BSBIO_2018_Botany_THESIS",
+            "major_id": 2
+        },
+        {
+            "id": 5,
+            "name": "BSBIO_2018_Cell_Biology_SP",
+            "major_id": 3
+        },
+        {
+            "id": 6,
+            "name": "BSBIO_2018_Cell_Biology_THESIS",
+            "major_id": 3
+        }
+    ],
+    "curr_no_majors": [
+        {
+            "id": 1,
+            "name": "BSCS_2018_SP",
+            "deg_prog_id": 1
+        },
+        {
+            "id": 2,
+            "name": "BSCS_2018_THESIS",
+            "deg_prog_id": 1
+        }
+    ],
+    "curr-course": [
+        {
+            "curr_id": 1,
+            "course_id": 7,
+            "year_to_be_taken": 1,
+            "sem_to_be_taken": 1,
+            "course_type": "Major"
+        },
+        {
+            "curr_id": 2,
+            "course_id": 7,
+            "year_to_be_taken": 1,
+            "sem_to_be_taken": 1,
+            "course_type": "Core"
+        },
+        {
+            "curr_id": 3,
+            "course_id": 7,
+            "year_to_be_taken": 1,
+            "sem_to_be_taken": 1,
+            "course_type": "Core"
+        },
+        {
+            "curr_id": 4,
+            "course_id": 7,
+            "year_to_be_taken": 1,
+            "sem_to_be_taken": 1,
+            "course_type": "Specialization"
+        },
+        {
+            "curr_id": 5,
+            "course_id": 7,
+            "year_to_be_taken": 1,
+            "sem_to_be_taken": 1,
+            "course_type": "Core"
+        },
+        {
+            "curr_id": 6,
+            "course_id": 7,
+            "year_to_be_taken": 1,
+            "sem_to_be_taken": 1,
+            "course_type": "Major"
         }
     ]
 }
