@@ -8,6 +8,8 @@
             "num_of_hours": 5,
             "credit": 3,
             "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "outline": 
+                "The course aims to help students understand the basics of Web Programming",
             "status": "Active"
         },
         {   
@@ -18,6 +20,8 @@
             "num_of_hours": 5,
             "credit": 3,
             "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "outline": 
+                "The course aims to help students understand the basics of File Processing and Database Systems",
             "status": "Active"
         },
         {   
@@ -28,6 +32,8 @@
             "num_of_hours": 5,
             "credit": 2,
             "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "outline": 
+                "The course aims to help students understand the basics of Object-Oriented Programming",
             "status": "Active"
         },
         {   
@@ -38,16 +44,20 @@
             "num_of_hours": 5,
             "credit": 3,
             "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "outline": 
+            "The course aims to help students understand the foundations of computer science",
             "status": "Active"
         },
         {   
             "id": 5,
             "code": "CMSC 23",
-            "title": "Object-Oriented Programming",
+            "title": "Mobile Computing",
             "desc": "Methods and techniques for developing mobile applications",
             "num_of_hours": 5,
             "credit": 2,
             "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "outline": 
+            "The course aims to help students understand the basics of Mobile Computing",
             "status": "Active"
         },
         {   
@@ -58,6 +68,8 @@
             "num_of_hours": 5,
             "credit": 2,
             "goal": "For the students to apply knowledge of the basic principles and components of different electronic circuits and devices in constructing circuits",
+            "outline": 
+                "The course aims to help students understand the world of computer science and computer programming",
             "status": "Abolished"
         }
     ],
