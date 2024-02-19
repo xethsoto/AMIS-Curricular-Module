@@ -27,7 +27,7 @@
                 <div class="flex flex-row">
                     <div class="flex flex-col flex-1 gap-2">
                         <p class="font-semibold">Prerequisites:</p>
-                        <div v-if="courses">
+                        <div v-if="prereqs">
                             <div v-for="prereq in prereqs">
                                 <ULink
                                     :to="`/courses-management/${prereq.id}`"
@@ -41,7 +41,7 @@
 
                     <div class="flex flex-col flex-1 gap-2">
                         <p class="font-semibold">Requisites:</p>
-                        <div v-if="courses">
+                        <div v-if="reqs">
                             <div v-for="req in reqs">
                                 <ULink
                                     :to="`/courses-management/${req.id}`"
@@ -52,6 +52,15 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <p class="font-semibold">Course Outline:</p>
+                <div v-if="course">
+                    <p>{{ course.outline }}</p>
+                </div>
+
+                <div v-else>
+                    <p class="font-bold italic">No Course Outline</p>
                 </div>
 
                 <hr class="h-px border-0 bg-black dark:bg-gray-700">
