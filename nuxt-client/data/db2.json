@@ -169,7 +169,8 @@
             "college": "College of Arts and Sciences",
             "num_of_units": "130",
             "description": "Molds students to be an all-rounder computer science students",
-            "status": "Active"
+            "status": "Active",
+            "has_majors": false
         },
         {
             "id": 2,
@@ -178,22 +179,50 @@
             "college": "College of Arts and Sciences",
             "num_of_units": "130",
             "description": "Molds students to be versatile in various medicinal and research-based fields of biology",
-            "status": "Active"
+            "status": "Active",
+            "has_majors": true
+        },
+        {
+            "id": 3,
+            "name": "Bachelor of Science in Agricultural Biotechnology",
+            "career": "Undergraduate",
+            "college": "College of Engineering and Agro-industrial Technology",
+            "num_of_units": "130",
+            "description": "Molds students to be versatile in Agricultural Biotechnology",
+            "status": "Active",
+            "has_majors": true
         }
     ],
     "deg_prog_majors" : [
         {
-            "id": 2,
+            "deg_prog_id": 2,
             "major_id": 1
         },
         {
-            "id": 2,
+            "deg_prog_id": 2,
             "major_id": 2
         },
         {
-            "id": 2,
+            "deg_prog_id": 2,
             "major_id": 3
+        },
+        {
+            "deg_prog_id": 3,
+            "major_id": 4
+        },
+        {
+            "deg_prog_id": 3,
+            "major_id": 5
+        },
+        {
+            "deg_prog_id": 3,
+            "major_id": 6
+        },
+        {
+            "deg_prog_id": 3,
+            "major_id": 7
         }
+
     ],
     "majors": [
         {
@@ -210,53 +239,79 @@
             "id": 3,
             "name": "Major in Cell Biology",
             "status": 1
+        },
+        {
+            "id": 4,
+            "name": "Major in Crop Protection Biotechnology",
+            "status": 1
+        },
+        {
+            "id": 5,
+            "name": "Major in Animal Biotechnology",
+            "status": 1
+        },
+        {
+            "id": 6,
+            "name": "Major in Food Biotechnology",
+            "status": 1
+        },
+        {
+            "id": 7,
+            "name": "Major in Crop/Plant Biotechnology",
+            "status": 1
         }
     ],
     "curriculum": [
         {
             "id": 1,
             "name": "BSBIO_2018_Microbiology_SP",
-            "major_id": 1
+            "major_id": 1,
+            "deg_prog_id": 2
         },
         {
             "id": 2,
             "name": "BSBIO_2018_Microbiology_THESIS",
-            "major_id": 1
+            "major_id": 1,
+            "deg_prog_id": 2
         },
         {
             "id": 3,
             "name": "BSBIO_2018_Botany_SP",
-            "major_id": 2
+            "major_id": 2,
+            "deg_prog_id": 2
         },
         {
             "id": 4,
             "name": "BSBIO_2018_Botany_THESIS",
-            "major_id": 2
+            "major_id": 2,
+            "deg_prog_id": 2
         },
         {
             "id": 5,
             "name": "BSBIO_2018_Cell_Biology_SP",
-            "major_id": 3
+            "major_id": 3,
+            "deg_prog_id": 2
         },
         {
             "id": 6,
             "name": "BSBIO_2018_Cell_Biology_THESIS",
-            "major_id": 3
-        }
-    ],
-    "curr_no_majors": [
+            "major_id": 3,
+            "deg_prog_id": 2
+        },
         {
-            "id": 1,
+            "id": 7,
             "name": "BSCS_2018_SP",
+            "major_id": null,
             "deg_prog_id": 1
         },
         {
-            "id": 2,
+            "id": 8,
             "name": "BSCS_2018_THESIS",
+            "major_id": null,
             "deg_prog_id": 1
         }
     ],
-    "curr-course": [
+    "curr_course": [
         {
             "curr_id": 1,
             "course_id": 7,
@@ -298,6 +353,20 @@
             "year_to_be_taken": 1,
             "sem_to_be_taken": 1,
             "course_type": "Major"
+        },
+        {
+            "curr_id": 7,
+            "course_id": 7,
+            "year_to_be_taken": 1,
+            "sem_to_be_taken": 1,
+            "course_type": "Elective"
+        },
+        {
+            "curr_id": 7,
+            "course_id": 1,
+            "year_to_be_taken": 1,
+            "sem_to_be_taken": 1,
+            "course_type": "Core"
         }
     ]
 }

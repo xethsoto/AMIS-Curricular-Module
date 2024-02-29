@@ -14,6 +14,10 @@
     @apply text-2xl font-bold;
 }
 
+.nav-link{
+    @apply text-blue-900 hover:text-blue-300
+}
+
 /* @layer components {
     .btn-maroon {
         @apply bg-maroon hover:bg-red-700;
