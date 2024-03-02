@@ -368,5 +368,32 @@
             "sem_to_be_taken": 1,
             "course_type": "Core"
         }
+    ],
+    "proposals": [
+        {
+            "id": 1,
+            "name": "PROPOSAL FOR THE INSTITUTION OF BSCS",
+            "created_on": "2024-03-02T12:00:00Z"
+        },
+        {
+            "id": 2,
+            "name": "PROPOSAL FOR THE INSTITUTION OF BSBIO",
+            "created_on": "2024-03-02T12:00:00Z"
+        },
+        {
+            "id": 3,
+            "name": "PROPOSAL FOR THE INSTITUTION OF BSABT",
+            "created_on": "2024-03-02T12:00:00Z"
+        },
+        {
+            "id": 4,
+            "name": "PROPOSAL FOR ADDING NEW COURSES IN BSCS",
+            "created_on": "2024-03-02T12:00:00Z"
+        },
+        {
+            "id": 5,
+            "name": "PROPOSAL FOR ABOLITION OF BSCS",
+            "created_on": "2024-03-02T12:00:00Z"
+        }
     ]
 }
