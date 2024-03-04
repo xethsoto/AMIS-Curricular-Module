@@ -10,11 +10,14 @@
 
         <label for="prerequisites">Prerequisites</label>
         <PrimeChips v-model="formContent.prereqs" class="w-full"/>
+        <!-- TODO: Prerequisites Table -->
 
         <label for="sem-offerings">Semester Offering</label>
-        <div id="sem-offerings" v-for="offering of semOfferings" :key="offering">
-            <PrimeCheckbox inputId="offering" v-model="formContent.sem_offered" name="sem-offering" :value="offering"/>
-            <label :for="offering">{{ offering }}</label>
+        <div class="flex flex-row gap-4">
+            <div id="sem-offerings" v-for="offering of semOfferings" :key="offering">
+                <PrimeCheckbox inputId="offering" v-model="formContent.sem_offered" name="sem-offering" :value="offering" class="checkbox"/>
+                <label :for="offering" class="text-sm">{{ offering }}</label>
+            </div>
         </div>
     </form>
 </template>
@@ -44,6 +47,12 @@
 
 <style scoped>
     .chips {
-        border: 2px solid #ccc; /* Example border style */
+        border: 2px solid #ccc;
     }
+
+    .checkbox {
+        border: 2px solid #ccc;
+        border-radius: 5px;
+    }
+
 </style>
