@@ -13,11 +13,34 @@
                     <div class="flex flex-col gap-4">
                         <!-- Determines the type of form that should be rendered -->
                         <div class="flex flex-start gap-4 w-full">
-                            <Dropdown class="flex-1" :items="targetSelection" label="Target" @dropdownVal="propTarget[num-1] = $event"/>
-                            <Dropdown class="flex-1" :items="typeSelection" label="Type" @dropdownVal="propType[num-1] = $event"/>
+                            <Dropdown class="flex-1"
+                                :items="targetSelection"
+                                label="Target"
+                                @dropdownVal="propTarget[num-1] = $event"
+                            />
+                            <Dropdown v-if="propTarget[num-1]==='Course'"
+                                class="flex-1"
+                                :items="courseTypeSelect"
+                                label="Type"
+                                @dropdownVal="propType[num-1] = $event"
+                            />
+                            <Dropdown v-else
+                                class="flex-1"
+                                :items="degProgTypeSelect"
+                                label="Type"
+                                @dropdownVal="propType[num-1] = $event"
+                            />
                             <div class="flex-1" v-if="propType[num-1]==='Revision' && propTarget[num-1]!=='Curriculum'">
-                                <Dropdown v-if="propTarget[num-1]==='Degree Program'" :items="degProgRevTypes" label="Sub-type" @dropdownVal="propSubType[num-1] = $event"/>
-                                <Dropdown v-else :items="courseRevTypes" label="Sub-type" @dropdownVal="propSubType[num-1] = $event"/>
+                                <Dropdown v-if="propTarget[num-1]==='Degree Program'"
+                                    :items="degProgRevTypes"
+                                    label="Sub-type"
+                                    @dropdownVal="propSubType[num-1] = $event"
+                                />
+                                <Dropdown v-else
+                                    :items="courseRevTypes"
+                                    label="Sub-type"
+                                    @dropdownVal="propSubType[num-1] = $event"
+                                />
                             </div>
                         </div>
     
@@ -74,7 +97,18 @@
     })
 
     const targetSelection = ["Course", "Curriculum", "Degree Program"]
-    const typeSelection = ["Institution", "Revision", "Abolition"]
+    const degProgTypeSelect = [
+        "Institution",
+        "Revision",
+        "Abolition"
+    ]
+    const courseTypeSelect = [
+        "Institution",
+        "Revision",
+        "Abolition",
+        "Crosslisting",
+        "Adoption"
+    ]
     const degProgRevTypes = [
         "Addition of Major/Area of Specialization",
         "Deletion of Major/Area of Specialization",
