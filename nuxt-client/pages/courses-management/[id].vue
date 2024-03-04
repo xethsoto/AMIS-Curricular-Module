@@ -21,7 +21,7 @@
                         <DetailSpan title="Status: " :content="course.status"/>
                     </template>
                 </CurrViewerGenDetails>
-                <hr class="h-px border-0 bg-black dark:bg-gray-700">
+                <hr class="hr-temp">
                 
                 <!-- Prerequisites and Requisites -->
                 <div class="flex flex-row">
@@ -62,13 +62,13 @@
                     <p class="font-bold italic">No Course Outline</p>
                 </div>
 
-                <hr class="h-px border-0 bg-black dark:bg-gray-700">
+                <hr class="hr-temp">
 
                 <!-- Degree Programs Requiring This Course -->
 
                 <p class="font-bold text-lg text-center">Degree Programs Requiring This Course</p>
-                <Accordion v-if="filteredDegProgs" :multiple="true">
-                    <AccordionTab v-for="degProg in filteredDegProgs" :header="degProg.name">
+                <PrimeAccordion v-if="filteredDegProgs" :multiple="true">
+                    <PrimeAccordionTab v-for="degProg in filteredDegProgs" :header="degProg.name">
                         <div v-if="degProg.has_majors" class="grid grid-cols-2 gap-4">
                             <div v-for="degMajorObj in degProgMajors" class="text-center">
 
@@ -108,19 +108,19 @@
                                 </div>
                             </div>
                         </div>
-                    </AccordionTab>
-                </Accordion>
+                    </PrimeAccordionTab>
+                </PrimeAccordion>
 
                 <div v-else>
                     <p class="text-semibold">No Degree Programs require this course</p>
                 </div>
 
-                <hr class="h-px border-0 bg-black dark:bg-gray-700">
+                <hr class="hr-temp">
                 
                 <!-- History -->
                 <p class="font-bold text-lg text-center">Course History</p>
                 <div class="timeline-container">
-                    <Timeline :value="events" layout="horizontal" class="w-full md:w-20rem overflow-x-auto" @wheel="handleScroll">
+                    <PrimeTimeline :value="events" layout="horizontal" class="w-full md:w-20rem overflow-x-auto" @wheel="handleScroll">
                         <template #marker="slotProps">
                             <div class="border-2 border-solid border-black">
                                 <div v-for="testing in slotProps">
@@ -133,7 +133,7 @@
                                 
                             </div>
                         </template>
-                    </Timeline>
+                    </PrimeTimeline>
                 </div>
                 
             </template>

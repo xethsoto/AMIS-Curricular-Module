@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div>
-                <Dropdown title="Number of Rows" :items="numRows" :label="dropdownLabel"/>
+                <Dropdown title="Number of Rows" :items="numRows" :value="dropdownLabel"/>
             </div>
         </div>
         

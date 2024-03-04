@@ -6,7 +6,7 @@
             <template v-slot:search-bars>
                 <SearchBar label="Course Code" @textbox="updCodeCont"/>
                 <SearchBar label="Title" @textbox="updTitleCont"/>
-                <Dropdown title="Status" :items="dropdownItems" :label="filterData.dropdownLabel"/>
+                <Dropdown label="Status" :items="dropdownItems" :value="filterData.dropdownLabel"/>
             </template>
             
         </NuxtLayout>

@@ -5,5 +5,10 @@ export default defineNuxtConfig({
   colorMode: {
     preference: 'light'
   },
+  primevue: {
+    components: {
+      prefix: 'Prime',
+    }
+  },
   css: ['primevue/resources/themes/aura-light-green/theme.css']
 })
