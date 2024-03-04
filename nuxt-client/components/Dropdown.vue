@@ -1,7 +1,15 @@
 <template>
     <div class="flex flex-col w-full">
-        <label for="dropdown" class="text-gray-500 text-sm">{{ label }}</label>
-        <PrimeDropdown id="dropdown" v-model="dropdownVal" variant="filled" :options="items" class="dropdown"/>
+        <label for="dropdown" class="text-gray-500">
+            <span class="text-sm">{{ label }}</span>
+        </label>
+        <PrimeDropdown 
+            id="dropdown" 
+            v-model="dropdownVal" 
+            variant="filled" 
+            :options="items" 
+            class="dropdown text-base"
+        />
     </div>
 </template>
 
