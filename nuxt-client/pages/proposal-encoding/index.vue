@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="flex flex-col gap-4">
         <h1 class="font-bold text-lg">Proposal Encoding</h1>
         <div v-if="numOfProp" class="flex flex-col gap-4">
             
@@ -46,7 +46,17 @@
     
                         <hr class="hr-temp">
                         
-                        <FormsCourseInstitution v-if="propTarget[num-1]==='Course' && propType[num-1]==='Institution'" @inputValue ="formContent = $event"/>
+                        <FormsCourseInstitution 
+                            v-if="propTarget[num-1]==='Course' && propType[num-1]==='Institution'"
+                            @inputValue="formContent=$event"
+                            class="flex flex-col gap-4"
+                        />
+
+                        <FormsCourseAbolition
+                            v-else-if="propTarget[num-1]==='Course' && propType[num-1]==='Abolition'"
+                            @inputValue="formContent=$event"
+                            class="flex flex-col gap-4"
+                        />
                     </div>
 
                 </PrimeAccordionTab>
@@ -58,7 +68,7 @@
             <p class="font-medium">Nothing encoded yet. Add Proposal to start encoding.</p>
         </div>
 
-        <PrimeButton class="btn-maroon" label="Add Proposal" @click="addProposal"/>
+        <PrimeButton class="btn-maroon w-fit" label="Add Proposal" @click="addProposal"/>
     </div>
 </template>
 
