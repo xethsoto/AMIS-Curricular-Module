@@ -11,11 +11,10 @@
     <!-- Search Field -->
         <template #header>
             <div class="flex flex-col lg:w-1/4 md:w-1/2">
-                <label for="text-input">
+                <label>
                     <span class="text-sm">{{ searchLabel }}</span>
                 </label>
                 <PrimeInputText 
-                    id="text-input" 
                     variant="filled" 
                     type="text" 
                     v-model="globalFilterValue"
