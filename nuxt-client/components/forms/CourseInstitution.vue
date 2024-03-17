@@ -52,6 +52,9 @@
             <label :for="offering" class="text-sm">{{ offering }}</label>
         </div>
     </div>
+
+    <!-- Rationale -->
+    <FormInput type="text-area" label="Rationale" @input="formContent.rationale = $event"/>
 </template>
 
 <script setup>
@@ -72,7 +75,8 @@
         courseGoal: "",
         courseOutline: "",
         prereqs: [],
-        sem_offered: []
+        sem_offered: [],
+        rationale: ""
     })
     const meta = [
         {
