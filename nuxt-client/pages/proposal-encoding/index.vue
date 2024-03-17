@@ -1,6 +1,7 @@
 <template>
     <div class="flex flex-col gap-4">
         <h1 class="font-bold text-lg">Proposal Encoding</h1>
+        <FormInput type="text-field" label="Proposal Title" @input="proposalTitle = $event"/>
         <div v-if="numOfProp" class="flex flex-col gap-4">
             
             <!-- Render multiple tabs depending on the number of proposals -->
@@ -73,6 +74,7 @@
 </template>
 
 <script setup>
+    const proposalTitle = ref("")
     const numOfProp = ref(0)
 
     const addProposal = () => {
