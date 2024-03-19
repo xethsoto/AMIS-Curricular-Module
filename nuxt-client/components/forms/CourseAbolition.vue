@@ -8,7 +8,7 @@
                 id="text-input" 
                 variant="filled" 
                 type="text" 
-                v-model="selectedCourse" 
+                v-model="formContent.selectedCourse" 
                 class="text-input p-2 text-base border-2"
             />
             <PrimeButton 
@@ -24,19 +24,25 @@
             <PrimeColumn v-for="entry in meta" sortable :key="entry.field" :field="entry.field" :header="entry.header"></PrimeColumn>
             <PrimeColumn key="action" field="action" header="Action">
                 <template #body="slotProps">
-                    <PrimeButton class="btn-maroon" label="Select" @click="selectItem(slotProps)"/>
+                    <p v-if="formContent.selectedCourse === slotProps.data.code" class="italic font-normal">Selected</p>
+                    <PrimeButton v-else class="btn-maroon" label="Select" @click="selectItem(slotProps)"/>
                 </template>
             </PrimeColumn>
         </template>
     </Table>
-    <FormInput type="text-area" label="Rationale" @inputVal="rationale=$event"/>
+    <FormInput type="text-area" label="Rationale" @input="formContent.rationale = $event"/>
 </template>
 
 <script setup>
     import 'primeicons/primeicons.css'
 
-    const selectedCourse = ref("")
-    const rationale = ref("")
+    const emit = defineEmits(['inputValue'])
+
+    const formContent = reactive({
+        selectedCourse: "CMSC 22",
+        rationale: "This is the rationale for abolishing this course"
+    })
+
     const viewTable = ref(true)
     const searchLabel = "Filter by Course Code"
 
@@ -69,10 +75,13 @@
     }
 
     const selectItem = (item) => {
-        selectedCourse.value = item.data.code
+        formContent.selectedCourse = item.data.code
         showTable()
     }
 
+    watchEffect(() => {
+        emit('inputValue', formContent)
+    })
 </script>
 
 <style scoped>

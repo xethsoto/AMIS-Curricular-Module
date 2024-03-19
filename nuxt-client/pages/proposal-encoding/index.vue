@@ -49,13 +49,13 @@
                         
                         <FormsCourseInstitution 
                             v-if="propTarget[num-1]==='Course' && propType[num-1]==='Institution'"
-                            @inputValue="formContent=$event"
+                            @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
 
                         <FormsCourseAbolition
                             v-else-if="propTarget[num-1]==='Course' && propType[num-1]==='Abolition'"
-                            @inputValue="formContent=$event"
+                            @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
                     </div>
@@ -69,37 +69,67 @@
             <p class="font-medium">Nothing encoded yet. Add Proposal to start encoding.</p>
         </div>
 
-        <PrimeButton class="btn-maroon w-fit" label="Add Proposal" @click="addProposal"/>
+        <div class="flex flex-row gap-4 justify-between">
+            <PrimeButton class="btn-maroon w-fit" label="Add Proposal" @click="addProposal"/>
+            <PrimeButton class="bg-green-500 text-white p-2 w-fit" label="Submit" @click="submitProposal"/>
+        </div>
     </div>
 </template>
 
 <script setup>
-    const proposalTitle = ref("")
+    const proposalTitle = ref("Proposal Test Title")
     const numOfProp = ref(0)
-
-    const addProposal = () => {
-        numOfProp.value++
-    }
-
+    
+    const formContent = reactive([])
+    
     const propTarget = ref([])
     const propType = ref([])
     const propSubType = ref([])
 
-    const formContent = reactive({
-        courseNum: "",
-        courseTitle: "",
-        courseDesc: "",
-        courseCredit: null,
-        numOfHours: null,
-        courseGoal: "",
-        courseOutline: "",
-        prereqs: [],
-        sem_offered: []
-    })
+    
+    const addProposal = () => {
+        numOfProp.value++
+        formContent.push({})
+    }
 
-    watchEffect(() => {
-        console.log("formContent = ", formContent)
-    })
+    const submitProposal = async () => {
+        const propAction = {
+            "propTarget": propTarget,
+            "propType": propType,
+            "propSubType": propSubType
+        }
+        const data = {
+            "title": proposalTitle.value,
+            "action": propAction,
+            "content": formContent
+        } 
+        
+        console.log("data = ", data)
+        try {
+            const response = await useFetch('http://localhost:8000/api/test-proposal',{
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+
+            console.log("response = ", response)
+            
+            if (response.status.value === "success") {
+                console.log("File upload successfully")
+                const responseData = response.data.value
+
+                console.log("Title Received: ", responseData.title)
+                console.log("Action Received: ", responseData.action)
+                console.log("Content Received: ", responseData.content)
+            } else {
+                const errorData = response.error.value
+                console.log("Error in uploading file: ", errorData.message)
+            }
+
+        } catch (error) {
+            console.error('Critical error in uploading file: ', error)
+        }
+    }
 
     // for every new proposal, add a new empty string to accommodate
     watchEffect(() => {

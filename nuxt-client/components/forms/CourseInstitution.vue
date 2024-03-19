@@ -38,7 +38,8 @@
             </PrimeColumn>
             <PrimeColumn key="action" field="action" header="Action">
                 <template #body="slotProps">
-                    <PrimeButton class="btn-maroon" label="Select" @click="selectItem(slotProps)"/>
+                    <PrimeButton v-if="!formContent.prereqs.includes(slotProps.data.code)" class="btn-maroon" label="Select" @click="selectItem(slotProps)"/>
+                    <p v-else class="italic font-normal">Added</p>
                 </template>
             </PrimeColumn>
         </template>
@@ -67,16 +68,16 @@
     const searchLabel = "Course Prerequisites"
     const semOfferings = ["1st Semester", "2nd Semester", "Midyear"]
     const formContent = reactive({
-        courseNum: "",
-        courseTitle: "",
-        courseDesc: "",
-        courseCredit: null,
-        numOfHours: null,
-        courseGoal: "",
-        courseOutline: "",
-        prereqs: [],
-        sem_offered: [],
-        rationale: ""
+        courseNum: "CMSC 199",
+        courseTitle: "Undergraduate Seminar",
+        courseDesc: "Undergraduate Seminar for Computer Science",
+        courseCredit: 1,
+        numOfHours: 1,
+        courseGoal: "To have computer science students be acquainted to Seminars",
+        courseOutline: "This is the outline",
+        prereqs: ["CMSC 100", "CMSC 127"],
+        sem_offered: ["1st Semester", "2nd Semester"],
+        rationale: "Lorem Ipusm Dolor"
     })
     const meta = [
         {
