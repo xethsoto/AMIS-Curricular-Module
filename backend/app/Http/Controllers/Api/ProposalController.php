@@ -14,10 +14,14 @@ class ProposalController extends Controller
 {
     public function save(Request $request)
     {
+        $requestData = $request->all();
+
         $title = $request->title;
         $action = $request->action;
         $content = $request->content;
-        
+
+        error_log('$requestData = '. print_r($requestData, true));
+
         // TODO: add a validator
 
         // Initial validation
@@ -30,24 +34,52 @@ class ProposalController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
+                'title' => $title,
                 'message' => $validator->messages()
             ], 422);
         } else {
 
             // Check if fields in the action variable are not empty
-            $actionValidator = Validator::make($action, [
-                'propTarget' => 'required|alpha',
-                'propType' => 'required|alpha',
-                'propSubType' => Rule::requiredIf($action->propType == 'Revision')
-            ]);
+            // $actionValidator = Validator::make($action, [
+                //     'propTarget' => 'required|alpha',
+                //     'propType' => 'required|alpha',
+                //     'propSubType' => Rule::requiredIf($action[0][1] == 'Revision')
+                // ]);
+                
+            // $rules = [];
+            // foreach ($action as $actionForm) {
+            //     error_log('$actionForm = '. print_r($actionForm, true));
+            //     $temp = [];
+            //     $temp[$actionForm->propTarget] = 'required|alpha';
+            //     $temp[$actionForm->propType] = 'required|alpha';
+            //     $temp[$actionForm->propSubType] = Rule::requiredIf($actionForm->propType == 'Revision');
+
+            //     array_push($rules, $temp);
+            // }
+
+            error_log('$action = '.print_r($action, true));
+
+            $rules = [
+                'action.*' => 'array:propTarget,propType,propSubType',
+                'action.*.propTarget' => 'required|alpha',
+                'action.*.propType' => 'required|alpha',
+                'action.*.propSubType' => 'required_if:action.*.propType,Revision'
+            ];
+
+            $actionValidator = Validator::make($action, $rules);
+
+            error_log("Successfully validated the actions");
 
             if ($actionValidator->fails()) {
                 return response()->json([
                     'status' => 422,
+                    'message2' => "Action Validator failed",
                     'message' => $actionValidator->messages()
                 ], 422);
             } else {
                 
+                error_log("Action form is valid!");
+                error_log("Validating content form");
                 
                 //Check if fields in the formContent variable are empty
                 $rules = [];
@@ -61,32 +93,41 @@ class ProposalController extends Controller
                 if ($formsValidator->fails()) {
                     return response()->json([
                         'status' => 422,
-                        'message' => $actionValidator->messages()
+                        'message2' => 'Forms Validator Failed',
+                        'message' => $formsValidator->messages()
                     ], 422);
                 } else {
-                    $proposalTitle = Proposal::create([
-                        'name' => $title
-                    ]);
+                    // $proposalTitle = Proposal::create([
+                    //     'name' => $title
+                    // ]);
 
-                    /* Maybe the saving of different forms can be compartmentalized */
+                    // /* Maybe the saving of different forms can be compartmentalized */
         
-                    // prop data
-                    for ($i = 0; $i < count($action); $i++){
-                        if ($action[$i]->propTarget == 'Course'){
-                            if ($action[$i]->propType == 'Institution'){
-                                $courseInstitution = CourseInstitution::create([
-                                    'code' => $content[$i]->content,
-                                    'title' => $content[$i]->title,
-                                    'desc' => $content[$i]->desc,
-                                    'credit' => $content[$i]->credit,
-                                    'num_of_hours' => $content[$i]->num_of_hours,
-                                    'goal' => $content[$i]->goal,
-                                    'outline' => $content[$i]->outline,
-                                    'prop_id' => $content[$i]->prop_id,
-                                ]);
-                            }
-                        }
-                    }
+                    // // prop data
+                    // for ($i = 0; $i < count($action); $i++){
+                    //     if ($action[$i]->propTarget == 'Course'){
+                    //         if ($action[$i]->propType == 'Institution'){
+                    //             $courseInstitution = CourseInstitution::create([
+                    //                 'code' => $content[$i]->content,
+                    //                 'title' => $content[$i]->title,
+                    //                 'desc' => $content[$i]->desc,
+                    //                 'credit' => $content[$i]->credit,
+                    //                 'num_of_hours' => $content[$i]->num_of_hours,
+                    //                 'goal' => $content[$i]->goal,
+                    //                 'outline' => $content[$i]->outline,
+                    //                 'prop_id' => $content[$i]->prop_id,
+                    //             ]);
+                    //         }
+                    //     }
+                    // }
+
+                    return response()->json([
+                        'status' => 200,
+                        'title' => $title,
+                        'action' => $action,
+                        'content' => $content,
+                        'message' => "Successfully created proposal"
+                    ], 200);
                 }
             }
         }
