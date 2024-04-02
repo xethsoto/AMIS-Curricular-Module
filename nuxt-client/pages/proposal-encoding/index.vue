@@ -17,30 +17,32 @@
                             <Dropdown class="flex-1"
                                 :items="targetSelection"
                                 label="Target"
-                                @dropdownVal="propTarget[num-1] = $event"
+                                @dropdownVal="propAction[num-1].propTarget = $event"
                             />
-                            <Dropdown v-if="propTarget[num-1]==='Course'"
+
+                            <Dropdown v-if="propAction[num-1].propTarget==='Course'"
                                 class="flex-1"
                                 :items="courseTypeSelect"
                                 label="Type"
-                                @dropdownVal="propType[num-1] = $event"
+                                @dropdownVal="propAction[num-1].propType = $event"
                             />
                             <Dropdown v-else
                                 class="flex-1"
                                 :items="degProgTypeSelect"
                                 label="Type"
-                                @dropdownVal="propType[num-1] = $event"
+                                @dropdownVal="propAction[num-1].propType = $event"
                             />
-                            <div class="flex-1" v-if="propType[num-1]==='Revision' && propTarget[num-1]!=='Curriculum'">
-                                <Dropdown v-if="propTarget[num-1]==='Degree Program'"
+
+                            <div class="flex-1" v-if="propAction[num-1].propType==='Revision' && propAction[num-1].propTarget!=='Curriculum'">
+                                <Dropdown v-if="propAction[num-1].propTarget==='Degree Program'"
                                     :items="degProgRevTypes"
                                     label="Sub-type"
-                                    @dropdownVal="propSubType[num-1] = $event"
+                                    @dropdownVal="propAction[num-1].propSubType = $event"
                                 />
                                 <Dropdown v-else
                                     :items="courseRevTypes"
                                     label="Sub-type"
-                                    @dropdownVal="propSubType[num-1] = $event"
+                                    @dropdownVal="propAction[num-1].propSubType = $event"
                                 />
                             </div>
                         </div>
@@ -48,13 +50,13 @@
                         <hr class="hr-temp">
                         
                         <FormsCourseInstitution 
-                            v-if="propTarget[num-1]==='Course' && propType[num-1]==='Institution'"
+                            v-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Institution'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
 
                         <FormsCourseAbolition
-                            v-else-if="propTarget[num-1]==='Course' && propType[num-1]==='Abolition'"
+                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Abolition'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
@@ -80,35 +82,32 @@
     const proposalTitle = ref("Proposal Test Title")
     const numOfProp = ref(0)
     
+    const propAction = reactive([])
     const formContent = reactive([])
-    
-    const propTarget = ref([])
-    const propType = ref([])
-    const propSubType = ref([])
 
-    
     const addProposal = () => {
         numOfProp.value++
+        propAction.push(reactive(
+            {
+                propTarget: "",
+                propType: "",
+                propSubType: ""
+            }
+        ))
         formContent.push({})
     }
 
     const submitProposal = async () => {
-        const propAction = {
-            "propTarget": propTarget,
-            "propType": propType,
-            "propSubType": propSubType
-        }
         const data = {
             "title": proposalTitle.value,
             "action": propAction,
             "content": formContent
-        } 
+        }
         
         console.log("data = ", data)
         try {
-            const response = await useFetch('http://localhost:8000/api/test-proposal',{
+            const response = await useFetch('http://localhost:8000/api/save-proposal',{
                 method: 'POST',
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             })
 
@@ -132,12 +131,13 @@
     }
 
     // for every new proposal, add a new empty string to accommodate
-    watchEffect(() => {
-        propTarget.value.push("Course")
-        propType.value.push("Institution")
-        propSubType.value.push("")
-    })
+    // watchEffect(() => {
+    //     propTarget.value.push("Course")
+    //     propType.value.push("Institution")
+    //     propSubType.value.push("")
+    // })
 
+    // Dropdown choices
     const targetSelection = ["Course", "Curriculum", "Degree Program"]
     const degProgTypeSelect = [
         "Institution",

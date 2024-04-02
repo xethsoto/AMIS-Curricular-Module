@@ -40,33 +40,15 @@ class ProposalController extends Controller
         } else {
 
             // Check if fields in the action variable are not empty
-            // $actionValidator = Validator::make($action, [
-                //     'propTarget' => 'required|alpha',
-                //     'propType' => 'required|alpha',
-                //     'propSubType' => Rule::requiredIf($action[0][1] == 'Revision')
-                // ]);
-                
-            // $rules = [];
-            // foreach ($action as $actionForm) {
-            //     error_log('$actionForm = '. print_r($actionForm, true));
-            //     $temp = [];
-            //     $temp[$actionForm->propTarget] = 'required|alpha';
-            //     $temp[$actionForm->propType] = 'required|alpha';
-            //     $temp[$actionForm->propSubType] = Rule::requiredIf($actionForm->propType == 'Revision');
-
-            //     array_push($rules, $temp);
-            // }
-
             error_log('$action = '.print_r($action, true));
+            error_log('$action = '.print_r($action[0], true));
 
-            $rules = [
-                'action.*' => 'array:propTarget,propType,propSubType',
-                'action.*.propTarget' => 'required|alpha',
-                'action.*.propType' => 'required|alpha',
-                'action.*.propSubType' => 'required_if:action.*.propType,Revision'
-            ];
-
-            $actionValidator = Validator::make($action, $rules);
+            $actionValidator = Validator::make($action, [
+                '*' => 'array:propTarget,propType,propSubType',
+                '*.propTarget' => 'required|alpha',
+                '*.propType' => 'required|alpha',
+                '*.propSubType' => 'required_if:*.propType,Revision'
+            ]);
 
             error_log("Successfully validated the actions");
 
@@ -82,13 +64,9 @@ class ProposalController extends Controller
                 error_log("Validating content form");
                 
                 //Check if fields in the formContent variable are empty
-                $rules = [];
-                foreach ($content as $form => $formValue){
-                    foreach ($formValue as $field) {
-                        $rules[$form.$field] = 'required';
-                    }
-                }
-                $formsValidator = Validator::make($content, $rules);
+                $formsValidator = Validator::make($content, [
+                    '*.*' => 'required'
+                ]);
 
                 if ($formsValidator->fails()) {
                     return response()->json([
@@ -135,7 +113,6 @@ class ProposalController extends Controller
         /* TODO:
         *   1) Match the request calls depending on what the front-end sends
         *   2) Complete the saving of the data to the appropriate table
-        *
         */
     }
 
