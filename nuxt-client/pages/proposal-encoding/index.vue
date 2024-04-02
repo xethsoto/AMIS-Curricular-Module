@@ -1,5 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
+        <PrimeToast />
         <h1 class="font-bold text-lg">Proposal Encoding</h1>
         <FormInput type="text-field" label="Proposal Title" @input="proposalTitle = $event"/>
         <div v-if="numOfProp" class="flex flex-col gap-4">
@@ -79,6 +80,9 @@
 </template>
 
 <script setup>
+    import { useToast } from 'primevue/usetoast'
+    const toast = useToast()    //notification
+
     const proposalTitle = ref("Proposal Test Title")
     const numOfProp = ref(0)
     
@@ -104,38 +108,41 @@
             "content": formContent
         }
         
-        console.log("data = ", data)
         try {
             const response = await useFetch('http://localhost:8000/api/save-proposal',{
                 method: 'POST',
                 body: JSON.stringify(data)
             })
 
-            console.log("response = ", response)
             
-            if (response.status.value === "success") {
-                console.log("File upload successfully")
-                const responseData = response.data.value
+            console.log("response = ", response)
+            const responseData = response.data.value
+            console.log("responseData = ", responseData)
+            
+            if (responseData.success) {
+                console.log("Data uploaded successfully")
 
-                console.log("Title Received: ", responseData.title)
-                console.log("Action Received: ", responseData.action)
-                console.log("Content Received: ", responseData.content)
+                toast.add({
+                    severity: 'success',
+                    summary: responseData.message,
+                    life: 3000
+                })
+
             } else {
-                const errorData = response.error.value
-                console.log("Error in uploading file: ", errorData.message)
+                console.log("Error in uploading data: ", responseData.message)
+
+                toast.add({
+                    severity: 'error',
+                    summary: "Error in uploading data",
+                    detail: responseData.message,
+                    life: 3000
+                })
             }
 
         } catch (error) {
             console.error('Critical error in uploading file: ', error)
         }
     }
-
-    // for every new proposal, add a new empty string to accommodate
-    // watchEffect(() => {
-    //     propTarget.value.push("Course")
-    //     propType.value.push("Institution")
-    //     propSubType.value.push("")
-    // })
 
     // Dropdown choices
     const targetSelection = ["Course", "Curriculum", "Degree Program"]
