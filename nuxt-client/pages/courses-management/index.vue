@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="curricular-table" :tableData="courses" :tableColMeta="columns" :filterData="filterData">
+        <NuxtLayout name="curricular-table" :data="courses" :meta="meta" :filterData="filterData">
             <template v-slot:title>Courses Management</template>
 
             <template v-slot:search-bars>
@@ -23,40 +23,30 @@
         dropdownLabel: 'Active'
     })
     
-    const columns = [
+    const meta = [
         {
-            key: 'code',
-            label: "Course Code",
-            sortable: true,
+            field: 'code',
+            header: "Course Code",
         },
         {
-            key: 'title',
-            label: "Title",
-            sortable: true,
+            field: 'title',
+            header: "Title",
         },
         {
-            key: 'desc',
-            label: "Description",
-            sortable: true
+            field: 'desc',
+            header: "Description",
         },
         {
-            key: 'sem_offered',
-            label: "Sem Offered",
-            sortable: true
+            field: 'sem_offered',
+            header: "Sem Offered",
         },
         {
-            key: 'credit',
-            label: "Units",
-            sortable: true
+            field: 'credit',
+            header: "Units",
         },
         {
-            key: 'status',
-            label: "Status",
-            sortable: true
-        },
-        {
-            key: 'actions',
-            label: "Action",
+            field: 'status',
+            header: "Status",
         }
     ]
 
@@ -96,16 +86,16 @@
     })
 
     onMounted(() => {
-        courses.value.forEach((course) => {
+        // courses.value.forEach((course) => {
 
-            // Used for styling the status data in tables
-            if (course.status === "Active"){
-                course.status = { value: "Active", class: "bg-green-500"}
-            } else {
-                course.status = { value: "Abolished", class: "bg-red-500"}
-            }
+        //     // Used for styling the status data in tables
+        //     if (course.status === "Active"){
+        //         course.status = "Active"
+        //     } else {
+        //         course.status = "Abolished"
+        //     }
 
-        })
+        // })
     })
 
     // Content = textbox content

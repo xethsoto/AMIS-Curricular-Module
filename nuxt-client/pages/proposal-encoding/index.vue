@@ -127,6 +127,7 @@
                     summary: responseData.message,
                     life: 3000
                 })
+                this.$router.push({ path: '/proposal-encoding' });
 
             } else {
                 console.log("Error in uploading data: ", responseData.message)

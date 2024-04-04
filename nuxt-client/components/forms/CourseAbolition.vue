@@ -21,7 +21,14 @@
     </div>
     <Table v-if="viewTable" :data="courses" :searchLabel="searchLabel" :rowsOption="false" class="border-2">
         <template v-slot:columns>
-            <PrimeColumn v-for="entry in meta" sortable :key="entry.field" :field="entry.field" :header="entry.header"></PrimeColumn>
+            <PrimeColumn 
+                v-for="entry in meta"
+                sortable 
+                :key="entry.field" 
+                :field="entry.field" 
+                :header="entry.header"
+            >
+            </PrimeColumn>
             <PrimeColumn key="action" field="action" header="Action">
                 <template #body="slotProps">
                     <p v-if="formContent.selectedCourse === slotProps.data.code" class="italic font-normal">Selected</p>

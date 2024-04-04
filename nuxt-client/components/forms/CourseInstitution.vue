@@ -49,7 +49,7 @@
     <label>Semester Offering</label>
     <div class="flex flex-row gap-4">
         <div v-for="offering of semOfferings" :key="offering">
-            <PrimeCheckbox inputId="offering" v-model="formContent.sem_offered" name="sem-offering" :value="offering" class="checkbox"/>
+            <PrimeCheckbox inputId="offering" v-model="formContent.sem_offered" name="sem-offering" :value="offering[0]" class="checkbox"/>
             <label :for="offering" class="text-sm">{{ offering }}</label>
         </div>
     </div>
