@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('num_of_hours');
             $table->text('goal');
             $table->text('outline');
+            $table->string('status');
+            $table->timestamps();
         });
     }
 

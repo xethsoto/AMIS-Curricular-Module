@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('num_of_hours');
             $table->text('goal');
             $table->text('outline');
-            $table->foreignId('prop_id')->constrained('proposals');
+            $table->foreignId('prop_id')->constrained('proposals')->cascadeOnDelete();
         });
     }
 

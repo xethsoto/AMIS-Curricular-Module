@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('proposals_has_types', function (Blueprint $table) {
-            $table->foreignId('prop_id')->constrained('proposals');
-            $table->string('prop_action')->unique();
+        Schema::create('proposal_classification', function (Blueprint $table) {
+            $table->foreignId('prop_id')->constrained('proposals')->cascadeOnDelete();
+            $table->string('target');
+            $table->string('type');
+            $table->string('sub_type')->nullable();
             $table->text('rationale');
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('proposals_has_types');
+        Schema::dropIfExists('proposal_classification');
     }
 };

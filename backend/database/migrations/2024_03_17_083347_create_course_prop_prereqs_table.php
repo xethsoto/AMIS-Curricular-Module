@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('course_prop_prereqs', function (Blueprint $table) {
-            $table->foreignId('course_prop_id')->constrained('course_institutions');
-            $table->foreignId('prereq_id')->constrained('courses');
+            $table->foreignId('prop_id')->constrained('course_institutions');
+            $table->string('prereq_code');
         });
     }
 

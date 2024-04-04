@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('course_prereqs', function (Blueprint $table) {
             $table->foreignId('course_id')->constrained('courses');
-            $table->foreignId('prereq_id')->constrained('courses');
+            $table->string('prereq_code');
         });
     }
 
