@@ -81,6 +81,7 @@
 
 <script setup>
     import { useToast } from 'primevue/usetoast'
+
     const toast = useToast()    //notification
 
     const proposalTitle = ref("Proposal Test Title")
@@ -113,7 +114,6 @@
                 method: 'POST',
                 body: JSON.stringify(data)
             })
-
             
             console.log("response = ", response)
             const responseData = response.data.value
@@ -127,7 +127,7 @@
                     summary: responseData.message,
                     life: 3000
                 })
-                this.$router.push({ path: '/proposal-encoding' });
+                await navigateTo({ path: '/proposal-encoding' });
 
             } else {
                 console.log("Error in uploading data: ", responseData.message)

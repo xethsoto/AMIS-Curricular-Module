@@ -5,41 +5,21 @@
         </h1>
 
         <!-- Search and Filter Bars -->
-        <div class="flex flex-row justify-between">
+        <!-- <div class="flex flex-row justify-between">
             <div class="flex flex-row gap-4 items-end">
                 <slot name="search-bars"></slot>
                 <div>
-                    <!-- <PrimeButton label="Apply Filter" class="btn-maroon" @click="applyFilter"/> -->
+                    <PrimeButton label="Apply Filter" class="btn-maroon" @click="applyFilter"/>
                 </div>
             </div>
             <div>
-                <!-- <PrimeDropdown title="Number of Rows" :items="numRows" :value="dropdownLabel"/> -->
-                <!-- <Dropdown v-model="selectedCity" :options="cities" optionLabel="name" placeholder="Select a City" class="w-full md:w-14rem" /> -->
+                <PrimeDropdown title="Number of Rows" :items="numRows" :value="dropdownLabel"/>
+                <Dropdown v-model="selectedCity" :options="cities" optionLabel="name" placeholder="Select a City" class="w-full md:w-14rem" />
             </div>
-        </div>
+        </div> -->
         
         <!-- Table -->
-        <div class="bg-white rounded-lg p-4 justify-center">
-            <!-- <UTable
-                :rows="rows"
-                :columns="meta"
-                :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
-                :empty-state="{ icon: 'i-heroicons-no-symbol-20-solid', label: 'No courses.' }">
-                    <template #status-data="{row}">
-                        {{ row.status.value }}
-                    </template>
-    
-                    <template #actions-data="{row}">
-                        <NuxtLink :to="`/courses-management/${row.id}`">
-                            <UButton class="btn-maroon" size="md">View</UButton>
-                        </NuxtLink>
-                    </template>
-    
-            </UTable>
-
-            <div class="flex justify-center px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
-                <UPagination v-model="page" :page-count="pageCount" :total="filteredCourses.length"/>
-            </div> -->
+        <!-- <div class="bg-white rounded-lg p-4 justify-center"> -->
             <Table
                 :data="data"
                 searchLabel="Filter By Course"
@@ -66,7 +46,6 @@
                     </PrimeColumn>
                 </template>
             </Table>
-        </div>
     </div>
 </template>
 
@@ -77,7 +56,7 @@
 
 
     console.log("data = ", data)
-    // const filteredCourses = ref([...data])
+    // const filteredCourses = ref(data)
     // const emits = defineEmits()
     
     // // table pagination

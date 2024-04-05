@@ -1,11 +1,12 @@
 <template>
     <PrimeDataTable
-        :globalFilter="globalFilterValue"
-        :value="filteredData"
+        :globalFilter="data"
+        :value="data"
         paginator
         :rows="5"
         :rowsPerPageOptions="rowsOption ? rowsPerPageOptions : null"
         :globalFilterFields="['code']"
+        :pt="{ header: 'table-header', table: 'actual-table' }"
     >   
 
     <!-- Search Field -->
@@ -21,7 +22,6 @@
                     class="text-input p-2 text-base"
                 />
             </div>
-            <hr class="hr-temp mt-4">
         </template>
         <slot name="columns"></slot>
 
@@ -40,20 +40,30 @@
     const rowsPerPageOptions = [5, 10, 20, 50]
 
     // filter functionality
-    const globalFilterValue = ref('')
-    const filteredData = computed(() => {
-        const filterText = globalFilterValue.value.toLowerCase()
+    // const globalFilterValue = ref('')
+    // const filteredData = computed(() => {
+    //     const filterText = globalFilterValue.value.toLowerCase()
 
-        return data.filter(item => {
-            return Object.values(item).some(value => {
-                return String(value).toLowerCase().includes(filterText)
-            })
-        })
-    })
+    //     return data.filter(item => {
+    //         return Object.values(item).some(value => {
+    //             return String(value).toLowerCase().includes(filterText)
+    //         })
+    //     })
+    // })
 </script>
 
-<style scoped>
+<style>
     .text-input {
         border: 2px solid #ccc;
+    }
+    
+    .table-header{
+        background: transparent;
+    }
+
+    .actual-table{
+        background: black !important;
+        padding: 100px;
+        border: 100px;
     }
 </style>
