@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('course_prop_prereqs', function (Blueprint $table) {
-            $table->foreignId('prop_id')->constrained('course_institutions');
+            $table->foreignId('prop_id')->constrained('course_institutions')->cascadeOnDelete();
             $table->string('prereq_code');
         });
     }
