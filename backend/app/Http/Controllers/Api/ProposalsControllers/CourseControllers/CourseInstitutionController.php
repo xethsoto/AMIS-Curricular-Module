@@ -44,7 +44,6 @@ class CourseInstitutionController extends Controller
             // adding the prerequisites of the course proposal
             // and the course itself
             foreach ($content['prereqs'] as $courseCode) {
-                error_log('After prereqs in Course Institution Controller = ');
                 //Course Proposal
                 $coursePropPrereq = CoursePropPrereqs::create([
                     'prop_id' => $proposal['id'],
