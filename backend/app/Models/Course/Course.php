@@ -21,4 +21,14 @@ class Course extends Model
         'outline',
         'status'
     ];
+
+    public function prereqs()
+    {
+        return $this->hasMany(CoursePrereqs::class);
+    }
+
+    public function semOffered()
+    {
+        return $this->hasMany(CourseSemOffered::class);
+    }
 }
