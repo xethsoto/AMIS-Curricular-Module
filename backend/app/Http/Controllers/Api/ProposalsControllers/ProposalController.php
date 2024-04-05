@@ -20,8 +20,6 @@ class ProposalController extends Controller
         $action = $request->action;
         $content = $request->content;
 
-        error_log('$requestData = '. print_r($requestData, true));
-
         // TODO: add a validator
 
         // Initial validation
@@ -40,17 +38,12 @@ class ProposalController extends Controller
         } else {
 
             // Check if fields in the action variable are not empty
-            error_log('$action = '.print_r($action, true));
-            error_log('$action = '.print_r($action[0], true));
-
             $actionValidator = Validator::make($action, [
                 '*' => 'array:propTarget,propType,propSubType',
                 '*.propTarget' => 'required|alpha',
                 '*.propType' => 'required|alpha',
                 '*.propSubType' => 'required_if:*.propType,Revision'
             ]);
-
-            error_log("Successfully validated the actions");
 
             if ($actionValidator->fails()) {
                 return response()->json([
@@ -59,9 +52,6 @@ class ProposalController extends Controller
                     'message' => $actionValidator->messages()
                 ], 422);
             } else {
-                
-                error_log("Action form is valid!");
-                error_log("Validating content form");
                 
                 //Check if fields in the formContent variable are empty
                 $formsValidator = Validator::make($content, [
@@ -87,13 +77,6 @@ class ProposalController extends Controller
                         /* Maybe the saving of different forms can be compartmentalized */
                         // prop data
                         for ($i = 0; $i < count($action); $i++){
-                            error_log("\$action[$i] = ".print_r($action[$i],true));
-                            error_log("\$proposal['id'] = ".$proposal['id']);
-                            error_log("\$action[$i]['propTarget'] = ".$action[$i]['propTarget']);
-                            error_log("\$action[$i]['propType'] = ".$action[$i]['propType']);
-                            error_log("\$action[$i]['propSubType'] = ".$action[$i]['propSubType']);
-                            error_log("\$content[$i]['rationale'] = ".$content[$i]['rationale']);
-
                             $proposalClassification = ProposalClassification::create([
                                 'prop_id' => $proposal['id'],
                                 'target' => $action[$i]['propTarget'],
@@ -112,16 +95,12 @@ class ProposalController extends Controller
                             $propTarget = $action[$i]['propTarget'];
                             $propType = $action[$i]['propType'];
 
-                            error_log('$propTarget = '.$propTarget);
-                            error_log('$propType = '.$propType);
                             switch($propTarget){
                                 case 'Course':
                                     switch($propType){
                                         case 'Institution':
-                                            error_log("In Before Course Institution Controller");
                                             $controller = new CourseInstitutionController();
                                             $controller->save($proposal, $content[$i]);
-                                            error_log("After Course Institution Controller");
                                             break;
                                     }
                                     break;
