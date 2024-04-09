@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Courses
 Route::get('get-courses', [CourseController::class, 'getCourses']);
+Route::get('course/{id}', [CourseController::class, 'getCourse']);
 
 //Proposals
 Route::post('save-proposal', [ProposalController::class, 'save']);
