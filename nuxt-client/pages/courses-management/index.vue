@@ -14,9 +14,6 @@
 </template>
 
 <script setup>
-    // const {data: courses} = await useFetch("http://localhost:3001/courses")
-    // const { data: semOffered } = await useFetch("http://localhost:3001/sem_offered")
-
     // Get Request (using useFetch doesn't work)
     const promise = useFetch('http://localhost:8000/api/get-courses', { immediate: false })
     await promise.execute({_initial: true})
