@@ -12,6 +12,15 @@ class CourseController extends Controller
     public function getCourses()
     {
         $courses = Course::with('prereqs', 'semOffered')->get();
-        return response()->json($courses);
+
+        //only returns prereq_code and sem_offered in prereqs and sem_offered
+        return response()->json($courses->map(function ($course) {
+            $courseArray = $course->toArray();
+            $courseArray['prereqs'] = $course->getPrereqCode();
+            $courseArray['sem_offered'] = $course->getSemOffered();
+
+            error_log('$courseArray = '.print_r($courseArray,true));
+            return $courseArray;
+        }));
     }
 }

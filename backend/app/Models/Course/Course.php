@@ -31,4 +31,16 @@ class Course extends Model
     {
         return $this->hasMany(CourseSemOffered::class);
     }
+
+    public function getPrereqCode()
+    {  
+        $prereqs = $this->prereqs; 
+        return $prereqs->pluck('prereq_code');
+    }
+
+    public function getSemOffered()
+    {
+        $semOffered = $this->semOffered;
+        return $semOffered->pluck('sem_offered');
+    }
 }
