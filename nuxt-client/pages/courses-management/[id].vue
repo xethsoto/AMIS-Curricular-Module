@@ -24,7 +24,7 @@
                 <hr class="hr-temp">
                 
                 <!-- Prerequisites and Requisites -->
-                <div class="flex flex-row">
+                <!-- <div class="flex flex-row">
                     <div class="flex flex-col flex-1 gap-2">
                         <p class="font-semibold">Prerequisites:</p>
                         <div v-if="prereqs">
@@ -52,9 +52,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <p class="font-semibold">Course Outline:</p>
+                <!-- <p class="font-semibold">Course Outline:</p>
                 <div v-if="course">
                     <p>{{ course.outline }}</p>
                 </div>
@@ -62,27 +62,27 @@
                     <p class="font-bold italic">No Course Outline</p>
                 </div>
 
-                <hr class="hr-temp">
+                <hr class="hr-temp"> -->
 
                 <!-- Degree Programs Requiring This Course -->
 
-                <p class="font-bold text-lg text-center">Degree Programs Requiring This Course</p>
+                <!-- <p class="font-bold text-lg text-center">Degree Programs Requiring This Course</p>
                 <PrimeAccordion v-if="filteredDegProgs" :multiple="true">
                     <PrimeAccordionTab v-for="degProg in filteredDegProgs" :header="degProg.name">
                         <div v-if="degProg.has_majors" class="grid grid-cols-2 gap-4">
-                            <div v-for="degMajorObj in degProgMajors" class="text-center">
+                            <div v-for="degMajorObj in degProgMajors" class="text-center"> -->
 
                                 <!-- Filters appropriate deg_prog - major relationship -->
-                                <div v-if="degMajorObj.deg_prog_id == degProg.id">
+                                <!-- <div v-if="degMajorObj.deg_prog_id == degProg.id">
 
                                     <div v-for="major in filteredMajors">
                                         <div v-if="major.id == degMajorObj.major_id">
                                             <p class="font-semibold">{{ major.name }}</p>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <!-- Fills in the curriculum that requires current course -->
-                                    <div v-for="curriculum in filteredCurricula">
+                                    <!-- <div v-for="curriculum in filteredCurricula">
                                         <div v-if="curriculum.major_id == degMajorObj.major_id" class="flex flex-row justify-around">
                                             <ULink class="nav-link">{{ curriculum.name }}</ULink>
                                             <div v-for="obj in currCourse">
@@ -91,9 +91,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
-                                </div>
+                                <!-- </div>
                             </div>
                         </div>
                         <div v-else>
@@ -113,13 +113,13 @@
 
                 <div v-else>
                     <p class="text-semibold">No Degree Programs require this course</p>
-                </div>
+                </div> -->
 
                 <hr class="hr-temp">
                 
                 <!-- History -->
                 <p class="font-bold text-lg text-center">Course History</p>
-                <div class="timeline-container">
+                <!-- <div class="timeline-container">
                     <PrimeTimeline :value="events" layout="horizontal" class="w-full md:w-20rem overflow-x-auto" @wheel="handleScroll">
                         <template #marker="slotProps">
                             <div class="border-2 border-solid border-black">
@@ -134,7 +134,7 @@
                             </div>
                         </template>
                     </PrimeTimeline>
-                </div>
+                </div> -->
                 
             </template>
         </NuxtLayout>
@@ -167,89 +167,98 @@
 
 //    const events = [
 //     "Institution", "Revision", "Revision", "Revision", "Revision", "Revision", "Abolition"
-//     ]  
+//     ]
 
     // fetching course
-    const courseURI = 'http://localhost:3001/courses/' + id
-    const { data: course } = await useFetch(courseURI, {key: id})
-    if (!course.value){
-        throw createError({ statusCode: 404, statusMessage: "Course not found", fatal: true })
-    }
+    console.log("id = ", id)
+    const promise = useFetch('http://localhost:8000/api/course/' + id, { immediate: false })
+    await promise.execute({_initial: true})
 
-    //fetching courses
-    const coursesURI = 'http://localhost:3001/courses'
-    const { data: courses } = await useFetch(coursesURI)
+    const course = promise.data.value
 
-    // course - semester offerings
-    const semOfferedURI = 'http://localhost:3001/sem_offered?course_id=' + id 
-    const { data: semOfferedData } = await useFetch(semOfferedURI)
-    const semOffered = ref("")
-    semOfferedData.value.forEach((entry) => {
-        semOffered.value += `${entry.sem_offered} `
-    })
+    console.log("course = ", course)
 
-    // course prerequisites and requisites
-    const prereqURI = 'http://localhost:3001/course_prereq?course_id=' + id
-    const { data: prereqData } = await useFetch(prereqURI)
-    const prereqs = courses.value.filter((course) => {
-            return prereqData.value.some((prereq) => {
-                return Number(course.id) === prereq.prereq_id
-            })
-        })
+    // // fetching course
+    // // const courseURI = 'http://localhost:3001/courses/' + id
+    // // const { data: course } = await useFetch(courseURI, {key: id})
+    // // if (!course.value){
+    // //     throw createError({ statusCode: 404, statusMessage: "Course not found", fatal: true })
+    // // }
+
+    // //fetching courses
+    // const coursesURI = 'http://localhost:3001/courses'
+    // const { data: courses } = await useFetch(coursesURI)
+
+    // // course - semester offerings
+    // const semOfferedURI = 'http://localhost:3001/sem_offered?course_id=' + id 
+    // const { data: semOfferedData } = await useFetch(semOfferedURI)
+    // const semOffered = ref("")
+    // semOfferedData.value.forEach((entry) => {
+    //     semOffered.value += `${entry.sem_offered} `
+    // })
+
+    // // course prerequisites and requisites
+    // const prereqURI = 'http://localhost:3001/course_prereq?course_id=' + id
+    // const { data: prereqData } = await useFetch(prereqURI)
+    // const prereqs = courses.value.filter((course) => {
+    //         return prereqData.value.some((prereq) => {
+    //             return Number(course.id) === prereq.prereq_id
+    //         })
+    //     })
     
-    const reqURI = 'http://localhost:3001/course_prereq?prereq_id=' + id
-    const { data: reqData } = await useFetch(reqURI)
-    const reqs = courses.value.filter((course) => {
-            return reqData.value.some((req) => {
-                return Number(course.id) === req.course_id
-        })
-    })
+    // const reqURI = 'http://localhost:3001/course_prereq?prereq_id=' + id
+    // const { data: reqData } = await useFetch(reqURI)
+    // const reqs = courses.value.filter((course) => {
+    //         return reqData.value.some((req) => {
+    //             return Number(course.id) === req.course_id
+    //     })
+    // })
 
-    const { data: curricula } = await useFetch('http://localhost:3001/curriculum')
-    const { data: degProgs } = await useFetch('http://localhost:3001/deg_prog')
-    const { data: majors } = await useFetch('http://localhost:3001/majors')
-    const { data: degProgMajors } = await useFetch('http://localhost:3001/deg_prog_majors')
+    // const { data: curricula } = await useFetch('http://localhost:3001/curriculum')
+    // const { data: degProgs } = await useFetch('http://localhost:3001/deg_prog')
+    // const { data: majors } = await useFetch('http://localhost:3001/majors')
+    // const { data: degProgMajors } = await useFetch('http://localhost:3001/deg_prog_majors')
     
-    const currCourseURI = 'http://localhost:3001/curr_course?course_id=' + id
-    const { data: currCourse } = await useFetch(currCourseURI)
+    // const currCourseURI = 'http://localhost:3001/curr_course?course_id=' + id
+    // const { data: currCourse } = await useFetch(currCourseURI)
 
-    // curricula that require said courses
-    const curriculaIds = [...new Set(currCourse.value.map(obj => obj.curr_id))] // eliminates duplicate values
-    const filteredCurricula = curricula.value.filter((curriculum) => {
-        return curriculaIds.includes(Number(curriculum.id))
-    })
+    // // curricula that require said courses
+    // const curriculaIds = [...new Set(currCourse.value.map(obj => obj.curr_id))] // eliminates duplicate values
+    // const filteredCurricula = curricula.value.filter((curriculum) => {
+    //     return curriculaIds.includes(Number(curriculum.id))
+    // })
 
-    // degree programs of the curriculum that requires the course
-    const degProgIds = [...new Set(filteredCurricula.map(obj => obj.deg_prog_id))]
-    const filteredDegProgs = degProgs.value.filter((degProg) => {
-        return degProgIds.includes(Number(degProg.id))
-    })
+    // // degree programs of the curriculum that requires the course
+    // const degProgIds = [...new Set(filteredCurricula.map(obj => obj.deg_prog_id))]
+    // const filteredDegProgs = degProgs.value.filter((degProg) => {
+    //     return degProgIds.includes(Number(degProg.id))
+    // })
 
-    // majors that require specific course
-    const majorsIds = [...new Set(filteredCurricula.map(obj => obj.major_id))]
-    const filteredMajors = majors.value.filter((major) => {
-        return majorsIds.includes(Number(major.id))
-    })
+    // // majors that require specific course
+    // const majorsIds = [...new Set(filteredCurricula.map(obj => obj.major_id))]
+    // const filteredMajors = majors.value.filter((major) => {
+    //     return majorsIds.includes(Number(major.id))
+    // })
     
-    // Timeline
-    const scrollableElement = ref(null);
+    // // Timeline
+    // const scrollableElement = ref(null);
 
-    const handleScroll = ((event) => {
-        // Calculate the horizontal scroll amount based on the deltaX property
-        const delta = event.deltaX || event.deltaY;
-        // Adjust the scrollLeft property of the scrollable element
-        event.currentTarget.scrollLeft += delta;
+    // const handleScroll = ((event) => {
+    //     // Calculate the horizontal scroll amount based on the deltaX property
+    //     const delta = event.deltaX || event.deltaY;
+    //     // Adjust the scrollLeft property of the scrollable element
+    //     event.currentTarget.scrollLeft += delta;
 
-        if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
-            event.preventDefault();
-            // Prevent the window from scrolling
-            window.scrollTo({
-            left: window.scrollX,
-            top: window.scrollY,
-            behavior: 'instant'
-            });
-        }
-    })
+    //     if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+    //         event.preventDefault();
+    //         // Prevent the window from scrolling
+    //         window.scrollTo({
+    //         left: window.scrollX,
+    //         top: window.scrollY,
+    //         behavior: 'instant'
+    //         });
+    //     }
+    // })
 
 </script>
 

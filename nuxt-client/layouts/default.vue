@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div class="relative overflow-x-hidden items-top justify-center min-h-screen h-full bg-gray-100 pt-10">
+    <div id="main-part" class="relative overflow-x-hidden items-top justify-center min-h-screen h-full pt-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Contents -->
             <slot></slot>
@@ -54,10 +54,6 @@
 </template>
 
 <script setup>
-    definePageMeta({
-        colorMode:'dark'
-    })
-
     const openedDrawer = ref(false)
     const name = ref('USER')
 
@@ -76,5 +72,8 @@
 
 </script>
 
-<style scoped>
+<style>
+    #main-part{
+        background-color: whitesmoke;
+    }
 </style>

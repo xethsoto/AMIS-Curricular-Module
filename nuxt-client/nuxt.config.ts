@@ -4,14 +4,11 @@ export default defineNuxtConfig({
   plugins: [
     '~/plugins/primevue-toast.js'
   ],
-  modules: ['@nuxt/ui', 'nuxt-primevue'],
-  colorMode: {
-    preference: 'light'
-  },
+  modules: ['nuxt-primevue', "@nuxtjs/tailwindcss"],
   primevue: {
     components: {
       prefix: 'Prime',
     }
   },
-  css: ['primevue/resources/themes/aura-light-green/theme.css']
+  css: ['primevue/resources/themes/aura-light-green/theme.css'],
 })

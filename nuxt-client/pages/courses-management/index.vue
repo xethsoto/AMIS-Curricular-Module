@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="curricular-table" :data="courses" :meta="meta">
+        <NuxtLayout name="curricular-table" :data="courses" :meta="meta" :uri="uri">
             <template v-slot:title>Courses Management</template>
 
             <!-- <template v-slot:search-bars>
@@ -14,6 +14,8 @@
 </template>
 
 <script setup>
+    const uri = "/courses-management/"
+
     // Get Request (using useFetch doesn't work)
     const promise = useFetch('http://localhost:8000/api/get-courses', { immediate: false })
     await promise.execute({_initial: true})

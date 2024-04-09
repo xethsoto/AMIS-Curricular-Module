@@ -52,7 +52,7 @@
 <script setup>
     // FIXME: BUILT-IN SORT only sorts rows on the current page
 
-    const {data, meta, filterData} = defineProps(['data', 'meta', 'filterData'])
+    const {data, meta, uri, filterData} = defineProps(['data', 'meta', 'uri', 'filterData'])
 
 
     console.log("data = ", data)
@@ -98,6 +98,11 @@
     //         course.title.toLowerCase().includes(filterData.titleContent.toLowerCase())
     //     })
     // }
+
+    const selectItem = async (item) => {
+        console.log("item = ", item.data)
+        await navigateTo({ path: uri + item.data.id })
+    }
     
 </script>
 
