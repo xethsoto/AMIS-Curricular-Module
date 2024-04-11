@@ -85,13 +85,6 @@ class ProposalController extends Controller
                                 'rationale' => $content[$i]['rationale']
                             ]);
 
-                            // if ($action[$i]['propTarget'] == 'Course'){
-                            //     if ($action[$i]['propType'] == 'Institution'){
-                            //         $courseInstitution = new CourseInstitutionController();
-                            //         $courseInstitution->save($i, $proposal, $content);
-                            //     }
-                            // }
-
                             $propTarget = $action[$i]['propTarget'];
                             $propType = $action[$i]['propType'];
 
@@ -124,11 +117,6 @@ class ProposalController extends Controller
                 }
             }
         }
-
-        /* TODO:
-        *   1) Match the request calls depending on what the front-end sends
-        *   2) Complete the saving of the data to the appropriate table
-        */
     }
 
     /* For testing data request and response of client and server */
