@@ -20,8 +20,6 @@ class ProposalController extends Controller
         $action = $request->action;
         $content = $request->content;
 
-        // TODO: add a validator
-
         // Initial validation
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:191',
@@ -32,7 +30,6 @@ class ProposalController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
-                'title' => $title,
                 'message' => $validator->messages()
             ], 422);
         } else {
@@ -48,20 +45,27 @@ class ProposalController extends Controller
             if ($actionValidator->fails()) {
                 return response()->json([
                     'status' => 422,
-                    'message2' => "Action Validator failed",
                     'message' => $actionValidator->messages()
                 ], 422);
             } else {
-                
                 //Check if fields in the formContent variable are empty
-                $formsValidator = Validator::make($content, [
-                    '*.*' => 'required'
-                ]);
+                $rules = [];
+
+                $i  = 0;
+                foreach ($content as $form){
+                    foreach ($form as $field => $value){
+                        if($field == 'prereqs' && $action[$i]['propTarget'] == 'Course' && $action[$i]['propType'] == 'Institution'){
+                            continue; //skips prereq in Course Institutions
+                        }
+                        $rules["$i.$field"] = 'required';
+                    }
+                    $i++;
+                }
+                $formsValidator = Validator::make($content, $rules);
 
                 if ($formsValidator->fails()) {
                     return response()->json([
                         'status' => 422,
-                        'message2' => 'Forms Validator Failed',
                         'message' => $formsValidator->messages()
                     ], 422);
                 } else {
@@ -110,7 +114,6 @@ class ProposalController extends Controller
                     }
 
                     return response()->json([
-                        'success' => true,
                         'status' => 200,
                         'message' => "Successfully created proposal"
                     ], 200);
