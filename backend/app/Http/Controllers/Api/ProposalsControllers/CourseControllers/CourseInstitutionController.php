@@ -40,13 +40,13 @@ class CourseInstitutionController extends Controller
                 'outline' => $content['outline'],
                 'status' => 'Active'
             ]);
-                
+            
             // adding the prerequisites of the course proposal
             // and the course itself
             foreach ($content['prereqs'] as $courseCode) {
                 //Course Proposal
                 $coursePropPrereq = CoursePropPrereqs::create([
-                    'prop_id' => $proposal['id'],
+                    'prop_id' => $courseInstitution->id,
                     'prereq_code' => $courseCode
                 ]);
                 
@@ -61,7 +61,7 @@ class CourseInstitutionController extends Controller
             foreach ($content['sem_offered'] as $semOffered) {
                 //Course Proposal
                 $coursePropSemOffered = CoursePropSemOffered::create([
-                    'prop_id' => $proposal['id'],
+                    'prop_id' => $courseInstitution->id,
                     'sem_offered' => $semOffered
                 ]);
     
