@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="curricular-viewer" prevLink="\courses-management" :course="course">
+        <NuxtLayout name="curricular-viewer" prevLink="\courses-management" :pending="pending">
             <template v-slot:viewer-title>Course Viewer</template>
             <template v-slot:title>{{ `${course.code} (${course.title})` }}</template>
             <template v-slot:contents>
@@ -170,13 +170,40 @@
 //     ]
 
     // fetching course
-    console.log("id = ", id)
-    const promise = useFetch('http://localhost:8000/api/course/' + id, { immediate: false })
-    await promise.execute({_initial: true})
+    // console.log("id = ", id)
+    // const promise = useFetch('http://localhost:8000/api/course/' + id, { immediate: false })
+    // await promise.execute({_initial: true})
 
-    const course = promise.data.value
+    // const course = promise.data.value
 
-    console.log("course = ", course)
+    // const { pending, data: course } = useFetch('http://localhost:8000/api/course/' + id, {
+    //     lazy: false,
+    //     server: false
+    // })
+
+    const { pending, data: courseInfo } = useAsyncData(
+        'courseInfo',
+        async () => {
+            const [course, requisites] = await Promise.all([
+                $fetch('http://localhost:8000/api/course/' + id),
+                $fetch('http://localhost:8000/api/requisites/' + id)
+            ])
+
+            return {
+                course,
+                requisites
+            }
+        },
+        {
+            lazy: false,
+            server: false
+        }
+    )
+
+    const {course, requisites} = courseInfo
+    console.log("courseInfo = ", courseInfo)
+    console.log("course in id = ", course)
+
 
     // // fetching course
     // // const courseURI = 'http://localhost:3001/courses/' + id

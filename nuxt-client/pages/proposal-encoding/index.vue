@@ -103,41 +103,40 @@
     }
 
     const submitProposal = async () => {
-        const data = {
+        const proposalData = {
             "title": proposalTitle.value,
             "action": propAction,
             "content": formContent
         }
         
         try {
-            const response = await useFetch('http://localhost:8000/api/save-proposal',{
+            const { data, error } = await useFetch('http://localhost:8000/api/save-proposal',{
                 method: 'POST',
-                body: JSON.stringify(data)
+                body: JSON.stringify(proposalData)
             })
             
-            console.log("response = ", response)
-            const responseData = response.data.value
-            console.log("responseData = ", responseData)
+            // console.log("response = ", response)
+            // const responseData = response.error
+            // console.log("responseData = ", responseData)
             
-            if (responseData.success) {
-                console.log("Data uploaded successfully")
-
-                toast.add({
-                    severity: 'success',
-                    summary: responseData.message,
-                    life: 3000
-                })
-                await navigateTo({ path: '/proposal-encoding' });
-
-            } else {
-                console.log("Error in uploading data: ", responseData.message)
+            if (error.value) {
+                console.log("Error in uploading data: ", error.value.data?.message)
 
                 toast.add({
                     severity: 'error',
                     summary: "Error in uploading data",
-                    detail: responseData.message,
+                    detail: error.value.data.message,
                     life: 3000
                 })
+            } else {
+                console.log("Data uploaded successfully")
+
+                toast.add({
+                    severity: 'success',
+                    summary: data.message,
+                    life: 3000
+                })
+                await navigateTo({ path: '/proposal-encoding' });
             }
 
         } catch (error) {

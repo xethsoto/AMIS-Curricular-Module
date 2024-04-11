@@ -17,11 +17,16 @@
     const uri = "/courses-management/"
 
     // Get Request (using useFetch doesn't work)
-    const promise = useFetch('http://localhost:8000/api/get-courses', { immediate: false })
-    await promise.execute({_initial: true})
+    // const promise = useFetch('http://localhost:8000/api/get-courses', { immediate: false })
+    // await promise.execute({_initial: true})
 
-    const courses = promise.data.value
-    
+    // const courses = promise.data.value
+
+    const { data: courses } = await useFetch('http://localhost:8000/api/get-courses', {
+        lazy: false,
+        server: false
+    })
+    console.log("courses = ", courses)
     const meta = [
         {
             field: 'code',

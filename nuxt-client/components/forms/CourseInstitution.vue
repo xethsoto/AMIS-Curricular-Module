@@ -62,7 +62,7 @@
     const emit = defineEmits(['inputValue'])
     
     //API calls
-    const {data: courses} = await useFetch("http://localhost:3001/courses")
+    const {data: courses} = await useFetch("http://localhost:8000/api/get-courses")
 
     const viewTable = ref(true)
     const searchLabel = "Course Prerequisites"

@@ -3,7 +3,7 @@
         <!-- Title -->
         <div class="flex flex-row gap-4">
             <NuxtLink to="/courses-management">
-                <UButton label="Close" size="md" class="btn-maroon"></UButton>
+                <PrimeButton label="Close" size="lg" class="btn-maroon"/>
             </NuxtLink>
             <h1 class="page-title">
                 <slot name="viewer-title"></slot>
@@ -11,7 +11,11 @@
         </div>
 
         <!-- Body -->
-        <div class="flex flex-col bg-white p-7 gap-4">
+        <div v-if="pending">
+            <p class="text-center font-bold">Loading data. Please wait...</p>
+        </div>
+        
+        <div v-else class="flex flex-col bg-white p-7 gap-4">
             <!-- Title -->
             <h2 class="font-bold text-xl">
                 <slot name="title"></slot>
@@ -27,7 +31,7 @@
 </template>
 
 <script setup>
-    const {prevLink} = defineProps(['prevLink'])
+    const {prevLink, pending} = defineProps(['prevLink', 'pending'])
 </script>
 
 <style scoped>

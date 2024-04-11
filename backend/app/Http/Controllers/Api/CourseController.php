@@ -32,9 +32,10 @@ class CourseController extends Controller
         }));
     }
 
-    public function getRequisites(Request $request)
+    public function getRequisites($id)
     {
-        // 
+        $courseCode = Course::select('code')->whereColumn('id', $id);
+        return CoursePrereqs::where('prereq_code', '==', $courseCode)->get();
     }
 
     public function getCourse($id)

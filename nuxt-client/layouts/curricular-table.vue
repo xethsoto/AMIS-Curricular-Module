@@ -24,7 +24,9 @@
                 :data="data"
                 searchLabel="Filter By Course"
                 :rowsOption="true"
+                :loading="loading"
             >
+                <template #loading> Loading Data. Please Wait...</template>
                 <template v-slot:columns>
                     <PrimeColumn
                         v-for="entry in meta"
@@ -50,8 +52,6 @@
 </template>
 
 <script setup>
-    // FIXME: BUILT-IN SORT only sorts rows on the current page
-
     const {data, meta, uri, filterData} = defineProps(['data', 'meta', 'uri', 'filterData'])
 
 
