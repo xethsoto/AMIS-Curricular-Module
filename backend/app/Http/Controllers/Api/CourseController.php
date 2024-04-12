@@ -29,21 +29,47 @@ class CourseController extends Controller
         //only returns prereq_code and sem_offered in prereqs and sem_offered
         return response()->json($courses->map(function ($course) {
             return $this->extractInfo($course);
+            // $coursePrereqs = $course->getPrereqCode();
+            // return $coursePrereqs->map(function ($code){
+            //     return Course::select('id', 'title', 'code')
+            //         ->where('code', $code)
+            //         ->get();
+            // });
         }));
     }
 
     public function getRequisites($id)
     {
-        $courseCode = Course::select('code')->whereColumn('id', $id);
-        return CoursePrereqs::where('prereq_code', '==', $courseCode)->get();
+        $courseCode = Course::select('code')->where('id', $id)->first();
+        $courseReqs = CoursePrereqs::where('prereq_code', $courseCode['code'])->get();
+        $queryResult = Course::select('id','code','title')->whereIn('id', $courseReqs->pluck('course_id'))->get();
+        return $queryResult;
+        // return CoursePrereqs::where('prereq_code', '==', $courseCode)->get();
     }
 
     public function getCourse($id)
     {
-        $course = Course::find($id);
-
+        $course = Course::with('prereqs', 'semOffered')
+            ->where('id', $id)
+            ->first();
+            
         if ($course) {
-            return response()->json($course);
+            // convert prereq course code to its id, title, and code
+            $courseArray = $course->toArray();
+            $temp = $course['prereqs']->pluck('prereq_code');
+            $courseArray['prereqs'] = [];
+            foreach($temp as $code){
+                array_push(
+                    $courseArray['prereqs'], 
+                    Course::select('id', 'title', 'code')
+                        ->where('code', $code)
+                        ->first()
+                );
+            }
+    
+            $courseArray['sem_offered'] = $course->getSemOffered();
+            
+            return response()->json($courseArray);
         } else {
             return response()->json([
                 'success' => false,
@@ -51,5 +77,10 @@ class CourseController extends Controller
                 'message' => 'Course not found' 
             ], 404);
         }
+    }
+
+    public function codeToCourse($code)
+    {
+        return Course::where('code', $code);
     }
 }
