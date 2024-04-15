@@ -50,14 +50,20 @@
     
                         <hr class="hr-temp">
                         
-                        <FormsCourseInstitution 
+                        <FormCourseInstitution 
                             v-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Institution'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
 
-                        <FormsCourseAbolition
+                        <FormCourseAbolition
                             v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Abolition'"
+                            @inputValue="formContent[num-1]=$event"
+                            class="flex flex-col gap-4"
+                        />
+
+                        <FormDegProgInstitution
+                            v-else-if="propAction[num-1].propTarget==='Degree Program' && propAction[num-1].propType==='Institution'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
