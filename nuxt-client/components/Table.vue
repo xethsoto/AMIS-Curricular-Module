@@ -40,7 +40,7 @@
     const rowsPerPageOptions = [5, 10, 20, 50]
 
     // filter functionality
-    // const globalFilterValue = ref('')
+    const globalFilterValue = ref('')
     // const filteredData = computed(() => {
     //     const filterText = globalFilterValue.value.toLowerCase()
 

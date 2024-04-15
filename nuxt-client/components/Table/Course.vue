@@ -64,9 +64,7 @@
 
     const showTable = () => {
         viewTable.value = !viewTable.value
-    }
-    // defineExpose({'showTable': showTable})
-    
+    }    
 </script>
 
 <style scoped>
