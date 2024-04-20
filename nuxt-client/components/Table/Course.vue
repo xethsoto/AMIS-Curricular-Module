@@ -24,14 +24,13 @@
             >
             </PrimeColumn>
 
-            <!-- <PrimeColumn v-if="!customAction" key="action" field="action" header="Action">
+            <PrimeColumn v-if="!customAction" key="action" field="action" header="Action">
                 <template #body="slotProps">
                     <p v-if="condition(slotProps)" class="italic font-normal">Selected</p>
                     <PrimeButton v-else class="btn-maroon" label="Select" @click="selectItem(slotProps, showTable)"/>
                 </template>
-            </PrimeColumn> -->
-
-            <slot name="custom-action"></slot>
+            </PrimeColumn>
+            <slot v-else name="custom-action"></slot>
 
         </template>
     </Table>
