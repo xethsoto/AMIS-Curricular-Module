@@ -1,9 +1,5 @@
 <template>
     <PrimeInputGroup>
-        <!-- <PrimeChips 
-            v-model="formContent.prereqs" 
-            class="w-full p-2 text-base"
-        /> -->
         <slot name="input-field"></slot>
         <PrimeButton
             icon="pi pi-calendar" 
@@ -27,18 +23,22 @@
                 :header="entry.header"
             >
             </PrimeColumn>
-            <PrimeColumn key="action" field="action" header="Action">
+
+            <!-- <PrimeColumn v-if="!customAction" key="action" field="action" header="Action">
                 <template #body="slotProps">
                     <p v-if="condition(slotProps)" class="italic font-normal">Selected</p>
                     <PrimeButton v-else class="btn-maroon" label="Select" @click="selectItem(slotProps, showTable)"/>
                 </template>
-            </PrimeColumn>
+            </PrimeColumn> -->
+
+            <slot name="custom-action"></slot>
+
         </template>
     </Table>
 </template>
 
 <script setup>
-    const {searchLabel, selectItem, condition} = defineProps(['searchLabel', 'selectItem', 'condition'])
+    const {searchLabel, selectItem, condition, customAction} = defineProps(['searchLabel', 'selectItem', 'condition', 'customAction'])
     const {data: courses} = await useFetch("http://localhost:8000/api/get-courses")
     
     const viewTable = ref(true)
