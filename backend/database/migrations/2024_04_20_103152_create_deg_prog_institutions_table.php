@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('career');
             $table->string('college');
             $table->integer('num_of_units');
-            $table->text('description');
+            $table->text('desc');
             $table->foreignId('prop_id')->constrained('proposals')->cascadeOnDelete();
         });
     }

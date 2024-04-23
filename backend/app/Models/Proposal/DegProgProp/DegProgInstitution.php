@@ -17,8 +17,7 @@ class DegProgInstitution extends Model
         'career',
         'college',
         'num_of_units',
-        'goal',
-        'outline',
+        'desc',
         'prop_id'
     ];
 }
