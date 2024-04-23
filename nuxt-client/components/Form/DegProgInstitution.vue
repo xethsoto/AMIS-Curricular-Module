@@ -6,91 +6,112 @@
     <FormInput type="text-area" label="Description" @input="formContent.desc = $event"/>
 
     <!-- Majors -->
-    <label class="text-left text-base font-bold">New Majors</label>
+    <label class="text-left text-base font-bold">New Majors and Curriculum</label>
     <div v-if="formContent.majors.length">
-        <PrimeAccordion 
-            v-for="(major,index) in formContent.majors"
-            :key="index"
-        >
-            <PrimeAccordionTab :header="`Major #${index}`">
+        <PrimeAccordion>
+            <PrimeAccordionTab 
+                v-for="(major,index) in formContent.majors"
+                :key="index"
+                :header="`Major #${index+1}`"
+            >
                 <div class="flex flex-col gap-4">
-
-                    <!-- Remove Major Button -->
-                    <PrimeButton 
-                        label="Remove Major"
-                        style="color: white" 
-                        class="bg-maroon p-2 w-fit"
-                        @click="removeInputField(index)">
-                    </PrimeButton>
-                    
                     <!-- Major -->
                     <div class="flex flex-col">
                         <label>
                             <span class="text-sm">Major Name</span>
                         </label>
-                        <PrimeInputText
-                        variant="filled" 
-                        type="text" 
-                        v-model="formContent.majors[index]"
-                        class="text-input p-2 text-base"
-                        />
+                        <div class="flex flex-row gap-4">
+                            <PrimeInputText
+                                variant="filled" 
+                                type="text" 
+                                v-model="formContent.majors[index]"
+                                class="text-input p-2 text-base flex-1"
+                            />
+                            <PrimeButton 
+                                label="Remove Major"
+                                style="color: white" 
+                                class="bg-maroon p-2 w-fit"
+                                @click="removeMajor(index)">
+                            </PrimeButton>
+                        </div>
+                        <!-- Remove Major Button -->
                     </div>
                     <PrimeButton
                         label="Add Curriculum"
                         style="color: white"
                         class="bg-maroon p-2 w-fit"
-                        @click="addCurriculum"
+                        @click="addCurriculum(formContent.majors[index])"
                     />
 
                     <!-- Curricula of Major -->
-                    <PrimeAccordion
-                        v-for="(curriculum, currIndex) in formContent.curricula"
-                        :key="currIndex"
-                    >
-                        <PrimeAccordionTab :header="`Curriculum #${currIndex+1}`">
+                    <PrimeAccordion>
+                        <PrimeAccordionTab 
+                            v-for="(curriculum, currIndex) in formContent.curricula"
+                            :key="currIndex"
+                            :header="`Curriculum #${currIndex+1}`"
+                        >
                             <div class="flex flex-col gap-4">
                                 <div class="flex flex-col">
                                     <label>
                                         <span class="text-sm">Curriculum Name</span>
                                     </label>
-                                    <PrimeInputText
-                                        variant="filled" 
-                                        type="text" 
-                                        v-model="curriculum.name"
-                                        class="text-input p-2 text-base"
-                                    />
+                                    <div class="flex flex-row gap-4">
+                                        <PrimeInputText
+                                            variant="filled" 
+                                            type="text" 
+                                            v-model="formContent.curricula[currIndex].name"
+                                            class="text-input p-2 text-base flex-1"
+                                        />
+                                        <PrimeButton 
+                                            label="Remove Curriculum"
+                                            style="color: white" 
+                                            class="bg-maroon p-2 w-fit"
+                                            @click="removeCurriculum(currIndex)">
+                                        </PrimeButton>
+                                    </div>
                                 </div>
 
                                 <!-- Year of a Curriculum -->
-                                <PrimeAccordion 
-                                    v-for="(year, yearIndex) in curriculum.year"
-                                    :key="yearIndex"
-                                >
-                                    <PrimeAccordionTab :header="`Year ${yearIndex+1}`">
-                                        <!-- Semesters of a Year -->
-                                        <PrimeAccordion
-                                            v-for="(value, key) in year"
-                                            :key="key"
-                                        >   
-                                            <PrimeAccordionTab v-if="key!='curriculumIndex'" :header="key">
-                                                <TableCourse
+                                <PrimeAccordion v-if="formContent.curricula[currIndex].year!=[]">
+                                    <PrimeAccordionTab
+                                        v-for="(year, yearIndex) in formContent.curricula[currIndex].year"
+                                        :key="yearIndex"
+                                        :header="`Year ${yearIndex+1}`"
+                                    >
+                                        <PrimeButton 
+                                            label="Remove Year"
+                                            style="color: white" 
+                                            class="bg-maroon p-2 w-fit"
+                                            @click="removeYear(yearIndex, year.currIndex)">
+                                        </PrimeButton>
+
+                                        <PrimeAccordion>
+                                            <!-- <PrimeAccordionTab
+                                                v-for="(value, key) in formContent.curricula[currIndex].year[yearIndex]"
+                                                :header="key"
+                                            >
+
+                                                <template v-slot:input-field>
+                                                    <PrimeChips 
+                                                        v-model="semesterCourses"
+                                                        class="w-full p-2 text-base"
+                                                    />
+                                                </template>
+                                                <TableCoursePicker
                                                     :searchLabel="searchLabel"
                                                     :customAction="true"
+                                                    :courses="courses"
+                                                    :semesterCourses="formContent.curricula[currIndex].year[yearIndex].key"
                                                 >
-                                                    <template v-slot:input-field>
-                                                        <!-- <PrimeChips 
-                                                            v-model="formContent.curricula[currIndex].year[yearIndex].semName"
-                                                            class="w-full p-2 text-base"
-                                                        /> -->
-                                                        {{value}}
-                                                    </template>
-
                                                     <template #custom-action>
-                                                        <PrimeColumn key="action" field="action" header="Action">
-
+                                                        <PrimeColumn 
+                                                            key="action"
+                                                            field="action"
+                                                            header="Action"
+                                                        >
                                                             <template #body="slotProps">
                                                                 <p
-                                                                    v-if="condition(slotProps.data.code, value)"
+                                                                    v-if="formContent.curricula[currIndex].year[yearIndex].key.includes(slotProps.data.code)"
                                                                     class="italic font-normal"
                                                                 >
                                                                     Selected
@@ -99,8 +120,120 @@
                                                                     v-else
                                                                     class="btn-maroon"
                                                                     label="Select"
-                                                                    @click="selectItem(slotProps.data.code, value)"
+                                                                    @click="selectItem(slotProps.data.code, formContent.curricula[currIndex].year[yearIndex].key)"
                                                                 />
+                                                            </template>
+                                                        </PrimeColumn>
+                                                    </template>
+
+                                                </TableCoursePicker>
+                                            </PrimeAccordionTab> -->
+
+                                            <!-- Semester 1 -->
+                                            <PrimeAccordionTab header="Semester 1">
+                                                <TableCoursePicker
+                                                    :searchLabel="searchLabel"
+                                                    :customAction="true"
+                                                    :courses="courses"
+                                                >
+                                                    <template v-slot:input-field>
+                                                        <PrimeChips 
+                                                            v-model="formContent.curricula[currIndex].year[yearIndex].sem1"
+                                                            class="w-full p-2 text-base"
+                                                        />
+                                                    </template>
+
+                                                    <template #custom-action>
+                                                        <PrimeColumn key="action" field="action" header="Action">
+
+                                                            <template #body="slotProps">
+                                                                <p
+                                                                    v-if="condition(slotProps.data.code, formContent.curricula[currIndex].year[yearIndex].sem1)"
+                                                                    class="italic font-normal"
+                                                                >
+                                                                    Selected
+                                                                </p>
+                                                                <PrimeButton
+                                                                    v-else
+                                                                    class="btn-maroon"
+                                                                    label="Select"
+                                                                    @click="selectItem(slotProps.data.code, formContent.curricula[currIndex].year[yearIndex].sem1)"
+                                                                />
+
+                                                            </template>
+                                                        </PrimeColumn>
+                                                    </template>
+                                                </TableCoursePicker>
+                                            </PrimeAccordionTab>
+
+                                            <!-- Semester 2 -->
+                                            <PrimeAccordionTab header="Semester 2">
+                                                <TableCourse
+                                                    :searchLabel="searchLabel"
+                                                    :customAction="true"
+                                                    :courses="courses"
+                                                >
+                                                    <template v-slot:input-field>
+                                                        <PrimeChips 
+                                                            v-model="formContent.curricula[currIndex].year[yearIndex].sem2"
+                                                            class="w-full p-2 text-base"
+                                                        />
+                                                    </template>
+
+                                                    <template #custom-action>
+                                                        <PrimeColumn key="action" field="action" header="Action">
+
+                                                            <template #body="slotProps">
+                                                                <p
+                                                                    v-if="condition(slotProps.data.code, formContent.curricula[currIndex].year[yearIndex].sem2)"
+                                                                    class="italic font-normal"
+                                                                >
+                                                                    Selected
+                                                                </p>
+                                                                <PrimeButton
+                                                                    v-else
+                                                                    class="btn-maroon"
+                                                                    label="Select"
+                                                                    @click="selectItem(slotProps.data.code, formContent.curricula[currIndex].year[yearIndex].sem2)"
+                                                                />
+
+                                                            </template>
+                                                        </PrimeColumn>
+                                                    </template>
+                                                </TableCourse>
+                                            </PrimeAccordionTab>
+
+                                            <!-- Mid Semester -->
+                                            <PrimeAccordionTab header="Mid Semester">
+                                                <TableCourse
+                                                    :searchLabel="searchLabel"
+                                                    :customAction="true"
+                                                    :courses="courses"
+                                                >
+                                                    <template v-slot:input-field>
+                                                        <PrimeChips 
+                                                            v-model="formContent.curricula[currIndex].year[yearIndex].midSem"
+                                                            class="w-full p-2 text-base"
+                                                        />
+                                                    </template>
+
+                                                    <template #custom-action>
+                                                        <PrimeColumn key="action" field="action" header="Action">
+
+                                                            <template #body="slotProps">
+                                                                <p
+                                                                    v-if="condition(slotProps.data.code, formContent.curricula[currIndex].year[yearIndex].midSem)"
+                                                                    class="italic font-normal"
+                                                                >
+                                                                    Selected
+                                                                </p>
+                                                                <PrimeButton
+                                                                    v-else
+                                                                    class="btn-maroon"
+                                                                    label="Select"
+                                                                    @click="selectItem(slotProps.data.code, formContent.curricula[currIndex].year[yearIndex].midSem)"
+                                                                />
+
                                                             </template>
                                                         </PrimeColumn>
                                                     </template>
@@ -116,7 +249,7 @@
                                     label="Add Year"
                                     style="color: white"
                                     class="bg-maroon p-2 w-fit"
-                                    @click="addYear(curriculum)"
+                                    @click="addYear(currIndex)"
                                 />
                             
                             </div>
@@ -138,7 +271,9 @@
 
 <script setup>
     const emit = defineEmits(['inputValue'])
-    
+
+    const { data: courses } = await useFetch('http://localhost:8000/api/get-courses')
+
     const formContent = reactive({
         name: "",
         career: "",
@@ -146,7 +281,17 @@
         numOfUnits: 1,
         desc: "",
         majors: [],
-        curricula: []
+        curricula: [
+            /*
+                {
+                    name:
+                    majors: []
+                }
+            */
+        ],
+        acadYears: [
+
+        ]
     })
 
     const addMajor = () => {
@@ -155,16 +300,16 @@
 
     const searchLabel = "Course to Add"
 
-    const addCurriculum = () => {
+    const addCurriculum = (major) => {
         formContent.curricula.push({
             index: formContent.curricula.length,
             name: "",
-            //major: major
-            //degProg: degProg
+            major: major,
             year: [
                 /*
                     index 0 (year 1) = {
-                        curriculumIndex: 0
+                        currIndex: 0
+                        yearIndex:
                         Semester 1: []
                         Semester 2: []
                         Midsemester*: []
@@ -177,27 +322,33 @@
                 */
             ]
         })
-
-        console.log("formContent.curricula = ", formContent.curricula)
     }
 
-    const removeInputField = (index) => {
+    const addYear = (currIndex) => {
+        formContent.curricula[currIndex].year.push({
+            sem1: [],
+            sem2: [],
+            midSem: []
+        })
+    }
+
+    const removeMajor = (index) => {
         formContent.majors.splice(index, 1)
     }
 
-    const addYear = (curricula) => {
-        curricula.year.push({
-            "curriculumIndex": curricula.index,
-            "Semester 1": [],
-            "Semester 2": [],
-            "Midsemester" : []
-        })
+    const removeCurriculum = (index) => {
+        formContent.curricula.splice(index, 1)
+    }
+
+    const removeYear = (index, currIndex) => {
+        formContent.curricula[currIndex].year.splice(index, 1)
     }
 
     const selectItem = (slotProps, courses) => {
         if (!courses.includes(slotProps)){
             courses.push(slotProps)
         }
+        console.log(courses)
     }
 
     // button render condition in adding courses to a sem
@@ -207,6 +358,9 @@
 
     watchEffect(() => {
         emit('inputValue', formContent)
+
+        console.log("formContent = ", formContent)
+        console.log("formContent.majors = ", formContent.majors)
     })
 </script>
 

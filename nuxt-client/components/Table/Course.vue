@@ -38,7 +38,10 @@
 
 <script setup>
     const {searchLabel, selectItem, condition, customAction} = defineProps(['searchLabel', 'selectItem', 'condition', 'customAction'])
+
+    // if (!courses){
     const {data: courses} = await useFetch("http://localhost:8000/api/get-courses")
+    // }
     
     const viewTable = ref(true)
     
