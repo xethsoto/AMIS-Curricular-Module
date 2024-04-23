@@ -32,11 +32,9 @@
     /*
     * data = the contents of the table
     * searchLabel = the label of the searchBar of the table
-    * rowsOption = if different item number per page is allowed
-    * 
+    * rowsOption = if different item number per page is allowed 
     */
     const {data, searchLabel, rowsOption} = defineProps(['data', 'searchLabel', 'rowsOption'])
-
     const rowsPerPageOptions = [5, 10, 20, 50]
 
     // filter functionality
