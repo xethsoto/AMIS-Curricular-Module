@@ -114,40 +114,42 @@
             "action": propAction,
             "content": formContent
         }
+
+        console.log("Submitting Form = ", proposalData);
         
-        try {
-            const { data, error } = await useFetch('http://localhost:8000/api/save-proposal',{
-                method: 'POST',
-                body: JSON.stringify(proposalData)
-            })
+        // try {
+        //     const { data, error } = await useFetch('http://localhost:8000/api/save-proposal',{
+        //         method: 'POST',
+        //         body: JSON.stringify(proposalData)
+        //     })
             
-            // console.log("response = ", response)
-            // const responseData = response.error
-            // console.log("responseData = ", responseData)
+        //     // console.log("response = ", response)
+        //     // const responseData = response.error
+        //     // console.log("responseData = ", responseData)
             
-            if (error.value) {
-                console.log("Error in uploading data: ", error.value.data?.message)
+        //     if (error.value) {
+        //         console.log("Error in uploading data: ", error.value.data?.message)
 
-                toast.add({
-                    severity: 'error',
-                    summary: "Error in uploading data",
-                    detail: error.value.data.message,
-                    life: 3000
-                })
-            } else {
-                console.log("Data uploaded successfully")
+        //         toast.add({
+        //             severity: 'error',
+        //             summary: "Error in uploading data",
+        //             detail: error.value.data.message,
+        //             life: 3000
+        //         })
+        //     } else {
+        //         console.log("Data uploaded successfully")
 
-                toast.add({
-                    severity: 'success',
-                    summary: data.message,
-                    life: 3000
-                })
-                await navigateTo({ path: '/proposal-encoding' });
-            }
+        //         toast.add({
+        //             severity: 'success',
+        //             summary: data.message,
+        //             life: 3000
+        //         })
+        //         await navigateTo({ path: '/proposal-encoding' });
+        //     }
 
-        } catch (error) {
-            console.error('Critical error in uploading file: ', error)
-        }
+        // } catch (error) {
+        //     console.error('Critical error in uploading file: ', error)
+        // }
     }
 
     // Dropdown choices
