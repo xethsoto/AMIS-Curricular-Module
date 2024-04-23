@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\ProposalsControllers;
 
 use App\Http\Controllers\Api\ProposalsControllers\CourseControllers\CourseInstitutionController;
+use App\Http\Controllers\Api\ProposalsControllers\DegProgControllers\DegProgInstitutionController;
 use App\Models\Proposal\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Proposal\DegProgProp\DegProgInstitution;
 use App\Models\Proposal\ProposalClassification;
 use Illuminate\Support\Facades\Validator;
 
@@ -92,11 +94,20 @@ class ProposalController extends Controller
                             $propTarget = $action[$i]['propTarget'];
                             $propType = $action[$i]['propType'];
 
+                            // Forms Controller
                             switch($propTarget){
                                 case 'Course':
                                     switch($propType){
                                         case 'Institution':
                                             $controller = new CourseInstitutionController();
+                                            $controller->save($proposal, $content[$i]);
+                                            break;
+                                    }
+                                    break;
+                                case 'Degree Program':
+                                    switch($propType){
+                                        case 'Institution':
+                                            $controller = new DegProgInstitutionController();
                                             $controller->save($proposal, $content[$i]);
                                             break;
                                     }
