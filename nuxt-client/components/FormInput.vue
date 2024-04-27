@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col w-full">
-        <label for="text-input">
+        <label>
             <span class="text-sm">{{ label }}</span>
         </label>
         <PrimeInputText v-if="type==='text-field'" 
