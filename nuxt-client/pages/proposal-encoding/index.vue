@@ -50,17 +50,39 @@
     
                         <hr class="hr-temp">
                         
+                        <!-- Course Institution Form -->
                         <FormCourseInstitution 
                             v-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Institution'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
 
+                        <!-- Course Abolition Form -->
                         <FormCourseAbolition
                             v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Abolition'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
+                        
+                        <!-- Course Revision Forms -->
+                        <FormCourseRevisionTitleNum
+                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[0]"
+                            @inputValue="formContent[num-1]=$event"
+                            class="flex flex-col gap-4"
+                        />
+
+                        <FormCourseRevisionDescription
+                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[1]"
+                            @inputValue="formContent[num-1]=$event"
+                            class="flex flex-col gap-4"
+                        />
+
+                        <FormCourseRevisionPrerequisites
+                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[2]"
+                            @inputValue="formContent[num-1]=$event"
+                            class="flex flex-col gap-4"
+                        />
+                        <!--------------------------->
 
                         <FormDegProgInstitution
                             v-else-if="propAction[num-1].propTarget==='Degree Program' && propAction[num-1].propType==='Institution'"
