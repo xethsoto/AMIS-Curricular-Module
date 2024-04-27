@@ -10,5 +10,7 @@ export default defineNuxtConfig({
       prefix: 'Prime',
     }
   },
-  css: ['primevue/resources/themes/aura-light-green/theme.css'],
+  css: [
+    'primevue/resources/themes/aura-light-green/theme.css'
+  ],
 })
