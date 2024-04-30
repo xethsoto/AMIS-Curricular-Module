@@ -8,6 +8,7 @@ use App\Models\Proposal\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Proposal\CourseProp\CourseInstitution;
 use App\Models\Proposal\DegProgProp\DegProgInstitution;
 use App\Models\Proposal\ProposalClassification;
 use Illuminate\Support\Facades\Validator;
@@ -133,25 +134,10 @@ class ProposalController extends Controller
         }
     }
 
-    /* For testing data request and response of client and server */
-    public function test (Request $request)
+    // Get all proposals
+    public function getProposals ()
     {
-        $title = $request->title;
-        $action = $request->action;
-        $content = $request->content;
-
-        if ($title && $action && $content){
-            return response()->json([
-                'status' => 200,
-                'title' => $title,
-                'action' => $action,
-                'content' => $content
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => 500,
-                'message' => 'Server Error Occured',
-            ], 500);
-        }
+        $proposals = Proposal::with('courseInstitution', 'course_prereqs', 'course_sem_offered')->get();
+        return response()->json($proposals);
     }
 }

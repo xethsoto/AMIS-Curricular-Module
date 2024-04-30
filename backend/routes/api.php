@@ -28,4 +28,4 @@ Route::get('requisites/{id}', [CourseController::class, 'getRequisites']);
 
 //Proposals
 Route::post('save-proposal', [ProposalController::class, 'save']);
-Route::post('test-proposal', [ProposalController::class, 'test']);
+Route::get('get-proposals', [ProposalController::class, 'getProposals']);
