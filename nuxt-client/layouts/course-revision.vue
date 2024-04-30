@@ -4,7 +4,7 @@
         <slot name="subtype"></slot>    <!-- Subtype of course revision -->
     </p>
         
-    <CourseToEdit @input="selectedCourse=$event"/>
+    <SingleCourseSelect inputFieldLabel="Course to Edit" @input="selectedCourse=$event"/>
 
     <!-- Main Fields for Revisions -->
     <slot name="main-fields"></slot>
