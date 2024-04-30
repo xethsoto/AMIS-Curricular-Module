@@ -47,12 +47,7 @@
 
     <!-- Sem Offerings -->
     <label>Semester Offering</label>
-    <div class="flex flex-row gap-4">
-        <div v-for="offering of semOfferings" :key="offering">
-            <PrimeCheckbox inputId="offering" v-model="formContent.sem_offered" name="sem-offering" :value="offering[0]" class="checkbox"/>
-            <label :for="offering" class="text-sm">{{ offering }}</label>
-        </div>
-    </div>
+    <SemOffering @input="formContent.sem_offered=$event"/>
 
     <!-- Rationale -->
     <FormInput type="text-area" label="Rationale" @input="formContent.rationale = $event"/>
@@ -66,7 +61,6 @@
 
     const viewTable = ref(true)
     const searchLabel = "Course Prerequisites"
-    const semOfferings = ["1st Semester", "2nd Semester", "Midyear"]
     const formContent = reactive({
         num: "",
         title: "",
@@ -120,10 +114,5 @@
 <style scoped>
     .chips {
         border: 2px solid #ccc;
-    }
-
-    .checkbox {
-        border: 2px solid #ccc;
-        border-radius: 5px;
     }
 </style>
