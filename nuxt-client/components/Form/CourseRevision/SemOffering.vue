@@ -1,18 +1,16 @@
 <template>
-    <p class="font-bold text-center text-lg text-black">Course Revision</p>
-    <p class="font-bold text-center text-base text-black">Change in course description</p>
-
-    <CourseToEdit @input="formContent.selectedCourse=$event"/>
-
-    <label>New Semester Offering</label>
-    <SemOffering @input="formContent.newSemOffering = $event"/>  
-
-    <!-- Rationale -->
-    <FormInput
-        type="text-area"
-        label="Rationale"
-        @input="formContent.rationale = $event"
-    />
+    <NuxtLayout name="course-revision" 
+        @selectedCourse="formContent.selectedCourse=$event"
+        @rationale="formContent.rationale=$event"
+    >
+        <template #subtype>
+            Change in course description
+        </template>
+        <template #main-fields>
+            <label>New Semester Offering</label>
+            <SemOffering @input="formContent.newSemOffering = $event"/>
+        </template>
+    </NuxtLayout>
 </template>
 
 <script setup>

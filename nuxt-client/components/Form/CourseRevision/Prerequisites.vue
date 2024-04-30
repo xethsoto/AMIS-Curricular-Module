@@ -1,25 +1,28 @@
 <template>
-    <p class="font-bold text-center text-lg text-black">Course Revision</p>
-    <p class="font-bold text-center text-base text-black">Change in prerequisites</p>
-
-    <CourseToEdit @input="formContent.selectedCourse=$event"/>
-
-    <label class="text-sm font-bold">New Prerequisites</label>
-    <!-- New prerequisites list and table -->
-    <TableCourse
-        :searchLabel="searchLabel"
-        :selectItem="addPrereqs"
-        :condition="addPrereqsCondition"
+    <NuxtLayout name="course-revision" 
+        @selectedCourse="formContent.selectedCourse=$event"
+        @rationale="formContent.rationale=$event"
     >
-        <template v-slot:input-field>
-            <PrimeChips 
-                v-model="formContent.newPrereqs" 
-                class="w-full p-2 text-base"
-            />
+        <template #subtype>
+            Change in course description
         </template>
-    </TableCourse>
-    
-    <FormInput type="text-area" label="Rationale" @input="formContent.rationale = $event"/>
+        <template #main-fields>
+            <!-- New prerequisites list and table -->
+            <label class="text-sm font-bold">New Prerequisites</label>
+            <TableCourse
+                :searchLabel="searchLabel"
+                :selectItem="addPrereqs"
+                :condition="addPrereqsCondition"
+            >
+                <template v-slot:input-field>
+                    <PrimeChips 
+                        v-model="formContent.newPrereqs" 
+                        class="w-full p-2 text-base"
+                    />
+                </template>
+            </TableCourse>
+        </template>
+    </NuxtLayout>
 </template>
 
 <script setup>
@@ -32,16 +35,6 @@
     })
 
     const searchLabel = "Filter by Course Code"
-
-    const selectItem = (item, showTable) => {
-        showTable()
-        return formContent.selectedCourse = item.data.code
-    }
-
-    // condition for selecting an already selected course in 'Course to Edit' table
-    const condition = (slotProps) => {
-        return formContent.selectedCourse === slotProps.data.code
-    }
 
     const addPrereqs = (item) => {
         return formContent.newPrereqs.push(item.data.code)
