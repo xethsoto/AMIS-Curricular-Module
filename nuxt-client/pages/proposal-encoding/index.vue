@@ -82,6 +82,12 @@
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
+
+                        <FormCourseRevisionSemOffering
+                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[3]"
+                            @inputValue="formContent[num-1]=$event"
+                            class="flex flex-col gap-4" 
+                        />
                         <!--------------------------->
 
                         <FormDegProgInstitution
