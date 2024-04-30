@@ -88,7 +88,28 @@
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4" 
                         />
+
+                        <FormCourseRevisionNumOfHours
+                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[4]"
+                            @inputValue="formContent[num-1]=$event"
+                            class="flex flex-col gap-4"
+                        />
+
+                        <!-- Course Revision for addition/deletion of laboratory/recitation/computation -->
+
+                        <FormCourseRevisionContent
+                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[5]"
+                            @inputValue="formContent[num-1]=$event"
+                            class="flex flex-col gap-4"
+                        />
                         <!--------------------------->
+
+                        <!-- Course Crosslisting -->
+                        <FormCourseCrosslisting
+                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Crosslisting'"
+                            @inputValue="formContent[num-1]=$event"
+                            class="flex flex-col gap-4"
+                        />
 
                         <FormDegProgInstitution
                             v-else-if="propAction[num-1].propTarget==='Degree Program' && propAction[num-1].propType==='Institution'"
