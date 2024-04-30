@@ -1,27 +1,8 @@
 <template>
     <p class="font-bold text-center text-lg text-black">Course Revision</p>
     <p class="font-bold text-center text-base text-black">Change in course description</p>
-    <div class="flex flex-col">
-        <label class="text-sm font-bold">Course to Edit</label>
-
-        <!-- Courses Table -->
-        <TableCourse
-            :searchLabel="searchLabel"
-            :selectItem="selectItem"
-            :condition="condition"
-        >
-            <template v-slot:input-field>
-                <PrimeInputText
-                    disabled 
-                    id="text-input" 
-                    variant="filled" 
-                    type="text" 
-                    v-model="formContent.selectedCourse" 
-                    class="text-input p-2 text-base border-2"
-                />
-            </template>
-        </TableCourse>
-    </div>
+    
+    <CourseToEdit @input="formContent.selectedCourse=$event"/>
 
     <!-- Course Description -->
     <FormInput 
