@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('deg_prog_prop_majors', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('new_deg_prog')->constrained('deg_prog_institutions')->cascadeOnDelete();
             $table->string('name')->unique();
         });

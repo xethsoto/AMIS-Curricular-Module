@@ -13,7 +13,7 @@ class CoursePropSemOffered extends Model
     protected $table = 'course_prop_sem_offered';
 
     protected $fillable = [
-        'prop_id',
+        'new_course_id',
         'sem_offered',
     ];
 }

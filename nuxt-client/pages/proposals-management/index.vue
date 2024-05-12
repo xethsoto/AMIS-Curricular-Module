@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="curricular-table" :data="courses" :meta="meta" :uri="uri">
+        <NuxtLayout name="curricular-table" :data="proposals" :meta="meta" :uri="uri" :noStatus="true">
             <template v-slot:title>Proposals Management</template>
 
             <!-- <template v-slot:search-bars>
@@ -15,31 +15,52 @@
 
 <script setup>
     const uri = "/proposals-management/"
-    const { data: proposals } = await useFetch('http://localhost:8000/api/get-proposals', {
+    const { data: proposals } = await useFetch('http://localhost:8000/api/get-proposals-basic-info', {
         lazy: false,
-        server: false
+        server: false,
     })
-    console.log("proposals = ", proposals.value)
+    
+    /* converting classification array to string
+    *  for table displaying
+    */
+
+    watchEffect(() => {
+        console.log("proposals = ", proposals)
+        console.log("proposals.value = ", proposals.value)
+
+        if (proposals.value){
+            proposals.value.forEach(proposal => {
+                proposal.target = proposal.target.join(', ')
+                proposal.type = proposal.type.join(', ')
+                // excluding null sub types to join
+                proposal.sub_type = proposal.sub_type.filter((subType) => subType !== null).join(', ')
+            })
+        }
+    })
+    
     const meta = [
         {
-            field: 'code',
-            header: "Course Code",
+            field: 'name',
+            header: "Name",
         },
         {
-            field: 'title',
-            header: "Title",
+            field: 'date_created',
+            header: "Date",
         },
         {
-            field: 'desc',
-            header: "Description",
+            field: 'target',
+            header: "Target",
         },
         {
-            field: 'sem_offered',
-            header: "Sem Offered",
+            field: 'type',
+            header: "Type",
         },
         {
-            field: 'credit',
-            header: "Units",
+            field: 'sub_type',
+            header: "Sub-Type",
+            render: (data) => {
+                return data.sub_type ? data.sub_type : "N/A"
+            }
         }
     ]
 </script>

@@ -37,9 +37,17 @@
 </template>
 
 <script setup>
-    const {searchLabel, selectItem, condition, customAction} = defineProps(['searchLabel', 'selectItem', 'condition', 'customAction'])
+    const {searchLabel, selectItem, condition, customAction, excludeCourse} = defineProps(['searchLabel', 'selectItem', 'condition', 'customAction', 'excludeCourse'])
 
-    const {data: courses} = await useFetch("http://localhost:8000/api/get-courses")
+    const {data: fetchedCourses} = await useFetch("http://localhost:8000/api/get-courses")
+    const courses = ref([...fetchedCourses.value])
+
+    // FIXME: Changing the selected course a second time
+    // will not update the table
+    watchEffect(() => {
+        console.log("excludeCourse = ", excludeCourse)
+        courses.value = fetchedCourses.value.filter(course => course.code !== excludeCourse)
+    })
     
     const viewTable = ref(true)
     

@@ -2,11 +2,12 @@
     <div class="flex flex-col gap-5">
         <!-- Title -->
         <div class="flex flex-row gap-4">
-            <NuxtLink to="/courses-management">
+            <NuxtLink :to=prevLink>
                 <PrimeButton label="Close" size="lg" class="btn-maroon"/>
             </NuxtLink>
             <h1 class="page-title">
                 <slot name="viewer-title"></slot>
+                
             </h1>
         </div>
 

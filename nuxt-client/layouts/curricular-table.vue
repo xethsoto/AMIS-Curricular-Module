@@ -36,7 +36,7 @@
                         :header="entry.header"
                     >
                     </PrimeColumn>
-                    <PrimeColumn sortable key="status" field="status" header="Status">
+                    <PrimeColumn v-if="!noStatus" sortable key="status" field="status" header="Status">
                         <template #body="slotProps">
                             <PrimeTag :severity="slotProps.data.status === 'Active' ? 'success' : 'danger'" :value="slotProps.data.status"/>
                         </template>
@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-    const {data, meta, uri, filterData} = defineProps(['data', 'meta', 'uri', 'filterData'])
+    const {data, meta, uri, filterData, noStatus} = defineProps(['data', 'meta', 'uri', 'filterData', 'noStatus'])
 
 
     console.log("data = ", data)

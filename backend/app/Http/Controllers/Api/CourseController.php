@@ -81,6 +81,16 @@ class CourseController extends Controller
 
     public function codeToCourse($code)
     {
-        return Course::where('code', $code);
+        $code = str_replace("%", " ", $code);
+        $course = Course::where('code', $code)->first();
+        if ($course) {
+            return $this->getCourse($course['id']);
+        } else {
+            return response()->json([
+                'success' => false,
+                'status' => 404,
+                'message' => 'Course not found'
+            ], 404);
+        }
     }
 }

@@ -19,4 +19,8 @@ class ProposalClassification extends Model
         'sub_type',
         'rationale'
     ];
+
+    public function proposal(){
+        return $this->belongsTo(Proposal::class, 'prop_id');
+    }
 }

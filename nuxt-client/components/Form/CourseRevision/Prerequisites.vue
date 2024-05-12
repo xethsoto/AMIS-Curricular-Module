@@ -4,23 +4,31 @@
         @rationale="formContent.rationale=$event"
     >
         <template #subtype>
-            Change in course description
+            Change in course prerequisites
         </template>
         <template #main-fields>
             <!-- New prerequisites list and table -->
-            <label class="text-sm font-bold">New Prerequisites</label>
-            <TableCourse
-                :searchLabel="searchLabel"
-                :selectItem="addPrereqs"
-                :condition="addPrereqsCondition"
-            >
-                <template v-slot:input-field>
-                    <PrimeChips 
-                        v-model="formContent.newPrereqs" 
-                        class="w-full p-2 text-base"
-                    />
-                </template>
-            </TableCourse>
+            <div v-if="formContent.selectedCourse">
+                <label class="text-base font-bold">New Prerequisites</label>
+                <p class="text-sm italic text-red-500">
+                    <span class="font-bold">NOTE: </span>
+                    <span>Include ALL required prerequisites. All prerequisites listed here will replace all the currently existing prerequisites.</span>
+                </p>
+                <TableCourse
+                    :searchLabel="searchLabel"
+                    :selectItem="addPrereqs"
+                    :condition="addPrereqsCondition"
+                    :excludeCourse = "formContent.selectedCourse"
+                >
+                    <template v-slot:input-field>
+                        {{ formContent.newPrereqs }}
+                        <PrimeChips 
+                            v-model="formContent.newPrereqs" 
+                            class="w-full p-2 text-base"
+                        />
+                    </template>
+                </TableCourse>
+            </div>
         </template>
     </NuxtLayout>
 </template>
@@ -33,6 +41,14 @@
         newPrereqs: [],
         rationale: ""
     })
+    
+    // FIXME: Getting current prerequisites of the selected course
+    // watch(() => formContent.selectedCourse, async (courseCode) => {
+    //     console.log("here")
+    //     const {data: courseResult} = await useFetch(`/api/code-to-course/${courseCode}`)
+    //     formContent.newPrereqs = courseResult.prereqs
+    //     console.log("formContent.newPrereqs = ", formContent.newPrereqs);
+    // })
 
     const searchLabel = "Filter by Course Code"
 
@@ -47,6 +63,7 @@
 
     watchEffect(() => {
         emit('inputValue', formContent)
+        console.log("selectedCourse in Prerequisites.vue = ", formContent.selectedCourse)
     })
 </script>
 

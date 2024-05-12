@@ -37,6 +37,9 @@
                     <NuxtLink to="/courses-management">
                         <PrimeButton class="font-semibold p-1" label="Courses Management"/>
                     </NuxtLink>
+                    <NuxtLink to="/proposals-management">
+                        <PrimeButton class="font-semibold p-1" label="Proposals Management"/>
+                    </NuxtLink>
                     <NuxtLink to="/proposal-encoding">
                         <PrimeButton class="font-semibold p-1" label="Proposal Encoding"/>
                     </NuxtLink>

@@ -96,14 +96,16 @@
                         />
 
                         <!-- Course Revision for addition/deletion of laboratory/recitation/computation -->
-
+                            <!-- TODO: Missing course revision sub types -->
+                            <!-- Addition of laboratory/recitation/computation -->
+                            <!-- Deletion of laboratory/recitation/computation -->
+                        <!--------------------------->
                         <FormCourseRevisionContent
-                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[5]"
+                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[7]"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
-                        <!--------------------------->
-
+                        
                         <!-- Course Crosslisting -->
                         <FormCourseCrosslisting
                             v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Crosslisting'"
@@ -136,6 +138,9 @@
 
 <script setup>
     import { useToast } from 'primevue/usetoast'
+    import { useRouter } from 'vue-router'
+
+    const router = useRouter()
 
     const toast = useToast()    //notification
 
@@ -165,40 +170,42 @@
         }
 
         console.log("Submitting Form = ", proposalData);
-        
-        // try {
-        //     const { data, error } = await useFetch('http://localhost:8000/api/save-proposal',{
-        //         method: 'POST',
-        //         body: JSON.stringify(proposalData)
-        //     })
+
+        try {
+            const { data, error } = await useFetch('http://localhost:8000/api/save-proposal',{
+                method: 'POST',
+                body: JSON.stringify(proposalData)
+            })
             
-        //     // console.log("response = ", response)
-        //     // const responseData = response.error
-        //     // console.log("responseData = ", responseData)
+            // console.log("response = ", response)
+            // const responseData = response.error
+            // console.log("responseData = ", responseData)
             
-        //     if (error.value) {
-        //         console.log("Error in uploading data: ", error.value.data?.message)
+            if (error.value) {
+                console.log("Error in uploading data: ", error.value.data?.message)
 
-        //         toast.add({
-        //             severity: 'error',
-        //             summary: "Error in uploading data",
-        //             detail: error.value.data.message,
-        //             life: 3000
-        //         })
-        //     } else {
-        //         console.log("Data uploaded successfully")
+                error.value.data.message.forEach(msg => {
+                    toast.add({
+                        severity: 'error',
+                        summary: "Error in uploading data",
+                        detail: msg,
+                        life: 3000
+                    })
+                })
+            } else {
+                console.log("Data uploaded successfully")
 
-        //         toast.add({
-        //             severity: 'success',
-        //             summary: data.message,
-        //             life: 3000
-        //         })
-        //         await navigateTo({ path: '/proposal-encoding' });
-        //     }
+                toast.add({
+                    severity: 'success',
+                    summary: data.message,
+                    life: 3000
+                })
+                router.push('/proposals-management');
+            }
 
-        // } catch (error) {
-        //     console.error('Critical error in uploading file: ', error)
-        // }
+        } catch (error) {
+            console.error('Critical error in uploading file: ', error)
+        }
     }
 
     // Dropdown choices
