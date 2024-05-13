@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('course_revisions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
+            $table->string('type');
             $table->foreignId('prop_id')->constrained('proposals')->cascadeOnDelete();
         });
     }

@@ -73,6 +73,7 @@ class CourseRevisionController extends Controller
             // Course Revision Proposal Creation
             $courseRevision = CourseRevision::create([
                 'course_id' => $course['id'],
+                'type' => 'TitleNum', // 'TitleNum' is the type for 'Change in Course Code and Title'
                 'prop_id' => $proposal['id']
             ]);
 
@@ -137,6 +138,7 @@ class CourseRevisionController extends Controller
             // Course Revision Proposal Creation
             $courseRevision = CourseRevision::create([
                 'course_id' => $course['id'],
+                'type' => 'Desc', // 'Desc' is the type for 'Change in Course Description'
                 'prop_id' => $proposal['id']
             ]);
 
@@ -186,6 +188,7 @@ class CourseRevisionController extends Controller
             */
             $courseRevision = CourseRevision::create([
                 'course_id' => $course['id'],
+                'type' => 'Prereqs', // 'Prereqs' is the type for 'Change in Course Prerequisites'
                 'prop_id' => $proposal['id']
             ]);
 
@@ -264,6 +267,7 @@ class CourseRevisionController extends Controller
             */
             $courseRevision = CourseRevision::create([
                 'course_id' => $course['id'],
+                'type' => 'SemOffered', // 'SemOffered' is the type for 'Change in Semester Offered
                 'prop_id' => $proposal['id']
             ]);
         
@@ -345,6 +349,7 @@ class CourseRevisionController extends Controller
             // Creating the course revision proposal
             $courseRevision = CourseRevision::create([
                 'course_id' => $course['id'],
+                'type' => 'NumOfHours', // 'NumOfHours' is the type for 'Change in Number of Hours'
                 'prop_id' => $proposal['id']
             ]);
 
@@ -398,6 +403,7 @@ class CourseRevisionController extends Controller
             // Creating the course revision proposal
             $courseRevision = CourseRevision::create([
                 'course_id' => $course['id'],
+                'type' => 'Content', // 'Content' is the type for 'Change in Course Content'
                 'prop_id' => $proposal['id']
             ]);
 

@@ -14,6 +14,7 @@ class CourseRevision extends Model
 
     protected $fillable = [
         'course_id',
+        'type',
         'prop_id'
     ];
 }
