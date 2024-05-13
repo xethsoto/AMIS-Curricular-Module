@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Models\Proposal\CourseProp;
+namespace App\Models\Proposal\CourseProp\CourseRevision;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CourseRevPrereqs extends Model
+class CourseRevision extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'course_revision_prereqs';
+    protected $table = 'course_revisions';
 
     protected $fillable = [
-        'course_rev_id',
-        'prereq_code',
+        'course_id',
+        'prop_id'
     ];
 }

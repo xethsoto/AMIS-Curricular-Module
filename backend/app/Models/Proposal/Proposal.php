@@ -4,6 +4,7 @@ namespace App\Models\Proposal;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Proposal\CourseProp\CourseInstitution;
+use App\Models\Proposal\CourseProp\CourseRevision\CourseRevision;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Proposal extends Model
@@ -33,9 +34,14 @@ class Proposal extends Model
             ->each(function ($courseInstitution) {
                 $courseInstitution->prereqs = $courseInstitution->getPrereqs();
                 $courseInstitution->sem_offered = $courseInstitution->getSemOffered();
-            });
+            })->toArray();
+        
+        $courseRevisions = CourseRevision::where('prop_id', $this->id)
+            ->get()->toArray();
+
+        $result = [$courseInstitutions, $courseRevisions];
     
-        return $courseInstitutions;
+        return array_reduce($result, 'array_merge', []);
     }
 
 }

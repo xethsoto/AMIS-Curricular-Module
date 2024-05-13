@@ -120,15 +120,13 @@ class ProposalController extends Controller
                                             //different functions for different subtypes
                                             switch($propSubType){
                                                 case 'Change in course number and/or course title':
-                                                    $newCourse = $controller->changeCodeTitle($proposal, $content[$i]);
-                                                    if ($newCourse['code'] != $content[$i]['selectedCourse']){
+                                                    $newCourseCode = $controller->changeCodeTitle($proposal, $content[$i]);
+                                                    if ($newCourseCode != $content[$i]['selectedCourse']){
                                                         foreach($content as $key => $value){
                                                             // we change the selectedCourse on each content to match the new course code
-                                                            $content[$key]['selectedCourse'] = $newCourse['code'];
-                                                            error_log("contentItem['selectedCourse'] = ".$content[$key]['selectedCourse']);
+                                                            $content[$key]['selectedCourse'] = $newCourseCode;
                                                         }
                                                     }
-                                                    $content[$i]['selectedCourse'] = $newCourse['code'];  //we change the content code to still refer to the same course after its code is updated
                                                     break;
                                                 case 'Change in course description':
                                                     $controller->changeDesc($proposal, $content[$i]);
@@ -190,7 +188,11 @@ class ProposalController extends Controller
     // Get all proposals
     public function getProposals ()
     {
-        $proposals = Proposal::with('proposalClassification', 'courseInstitutions')->get();
+        $proposals = Proposal::with(
+            'proposalClassification',
+            'courseInstitutions',
+            'courseRevisions'
+        )->get();
         return response()->json($proposals);
     }
 
@@ -233,11 +235,8 @@ class ProposalController extends Controller
         $proposal = Proposal::with(
             'proposalClassification'
         )->where('id', $id)->first();
-        error_log("proposal". $proposal);    
         $proposal->date_created = $proposal->created_at->format('d-m-Y');
-        $proposal->subproposals = $proposal->getSubproposals();
-        error_log("proposal->created_at: " . $proposal->created_at);
-        error_log("proposal". $proposal);    
+        $proposal->subproposals = $proposal->getSubproposals();  
         return response()->json($proposal);
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <NuxtLayout name="curricular-viewer" prevLink="\courses-management" :pending="pending">
+        <NuxtLayout name="curricular-viewer" prevLink="/courses-management" :pending="pending">
             <template v-slot:viewer-title>Course Viewer</template>
             <template v-slot:title>{{ `${courseInfo.course.code} (${courseInfo.course.title})` }}</template>
             <template v-slot:contents>

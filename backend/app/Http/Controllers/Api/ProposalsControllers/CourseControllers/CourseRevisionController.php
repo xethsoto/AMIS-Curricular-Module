@@ -11,9 +11,15 @@ use App\Models\Course\CourseSemOffered;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\CourseController;
 use Illuminate\Validation\ValidationException;
-use App\Models\Proposal\CourseProp\CourseRevision;
-use App\Models\Proposal\CourseProp\CourseRevPrereqs;
-use App\Models\Proposal\CourseProp\CourseRevSemOffered;
+use App\Models\Proposal\CourseProp\CourseRevision\Desc;
+use App\Models\Proposal\CourseProp\CourseRevision\Content;
+use App\Models\Proposal\CourseProp\CourseRevision\Prereqs;
+use App\Models\Proposal\CourseProp\CourseRevision\TitleNum;
+use App\Models\Proposal\CourseProp\CourseRevision\NumOfHours;
+use App\Models\Proposal\CourseProp\CourseRevision\SemOffered;
+use App\Models\Proposal\CourseProp\CourseRevision\PrevPrereqs;
+use App\Models\Proposal\CourseProp\CourseRevision\CourseRevision;
+use App\Models\Proposal\CourseProp\CourseRevision\PrevSemOffered;
 
 class CourseRevisionController extends Controller
 {    
@@ -59,29 +65,39 @@ class CourseRevisionController extends Controller
             }
 
             /*
-            * Creating Course Revision proposal 
+            * Creating Course Revision proposal
+            * Creating Course Revision TitleNum entry 
             * and updating the course entry
             */
-            $create = array_filter([
+
+            // Course Revision Proposal Creation
+            $courseRevision = CourseRevision::create([
                 'course_id' => $course['id'],
-                'code' => $content['newCourseCode'],
-                'title' => $content['newCourseTitle'],
                 'prop_id' => $proposal['id']
-            ], function ($value) {
+            ]);
+
+            // Course Revision TitleNum Creation
+            $create = array_filter([
+                'rev_id' => $courseRevision['id'],
+                'prev_code' => $course['code'],
+                'new_code' => $content['newCourseCode'],
+                'prev_title' => $course['title'],
+                'new_title' => $content['newCourseTitle']
+            ], function($value){
                 return !is_null($value);
             });
-
+            TitleNum::create($create);
+            
+            // Updating the actual course
             $updates = array_filter([
                 'code' => $content['newCourseCode'],
                 'title' => $content['newCourseTitle']
             ], function ($value) {
                 return !is_null($value);
             });
-
-            $courseRevision = CourseRevision::create($create);
             $course->update($updates);
 
-            return $course;
+            return $course['code'];  // we return the course code to edit the selected course of other subproposals
 
         } catch (\Exception $e) {
             error_log($e->getMessage());
@@ -117,12 +133,21 @@ class CourseRevisionController extends Controller
             * Creating Course Revision proposal 
             * and updating the course entry
             */
+
+            // Course Revision Proposal Creation
             $courseRevision = CourseRevision::create([
                 'course_id' => $course['id'],
-                'desc' => $content['newDescription'],
                 'prop_id' => $proposal['id']
             ]);
 
+            // Course Revision Desc Creation
+            Desc::create([
+                'rev_id' => $courseRevision['id'],
+                'prev_desc' => $course['desc'],
+                'new_desc' => $content['newDescription']
+            ]);
+
+            // Updating the actual course
             $course->update([
                 'desc' => $content['newDescription'],
             ]);
@@ -156,7 +181,7 @@ class CourseRevisionController extends Controller
             }
 
             /*
-            * Creating new course revision proposal 
+            * Creating new course revision proposal
             * and Course Revision Prereqs
             */
             $courseRevision = CourseRevision::create([
@@ -164,9 +189,22 @@ class CourseRevisionController extends Controller
                 'prop_id' => $proposal['id']
             ]);
 
-            foreach($content['newPrereqs'] as $prereq){
-                $courseRevPrereqs = CourseRevPrereqs::create([
-                    'course_rev_id' => $courseRevision['id'],
+            // Getting the current prerequisites and the new prerequisites
+            $currPrereqs = CoursePrereqs::where('course_id', $course->id)->pluck('prereq_code')->toArray();
+            $newPrereqs = $content['newPrereqs'];
+
+            // Creating new prereqs entry
+            foreach($newPrereqs as $prereq){
+                Prereqs::create([
+                    'rev_id' => $courseRevision['id'],
+                    'prereq_code' => $prereq
+                ]);
+            }
+
+            // Creating previous prereqs entry
+            foreach($currPrereqs as $prereq){
+                PrevPrereqs::create([
+                    'rev_id' => $courseRevision['id'],
                     'prereq_code' => $prereq
                 ]);
             }
@@ -174,9 +212,6 @@ class CourseRevisionController extends Controller
             /*
             * Updating actual course entry
             */
-            $currPrereqs = CoursePrereqs::where('course_id', $course->id)->pluck('prereq_code')->toArray();
-            $newPrereqs = $content['newPrereqs'];
-
             $prereqsToAdd = array_diff($newPrereqs, $currPrereqs);
             $prereqsToDelete = array_diff($currPrereqs, $newPrereqs);
 
@@ -231,20 +266,30 @@ class CourseRevisionController extends Controller
                 'course_id' => $course['id'],
                 'prop_id' => $proposal['id']
             ]);
+        
+            // Getting the previous sem offered and the new sem offered
+            $currSemOffered = CourseSemOffered::where('course_id', $course->id)->pluck('sem_offered')->toArray();
+            $newSemOffered = $content['newSemOffering'];
 
-            foreach($content['newSemOffering'] as $sem_offered){
-                $courseRevSemOffered = CourseRevSemOffered::create([
-                    'course_rev_id' => $courseRevision['id'],
-                    'new_sem_offered' => $sem_offered
+            // Adding 
+            foreach($currSemOffered as $sem_offered){
+                PrevSemOffered::create([
+                    'rev_id' => $courseRevision['id'],
+                    'sem_offered' => $sem_offered
+                ]);
+            }
+
+            // Adding the new sem offered for the specific course
+            foreach($newSemOffered as $sem_offered){
+                SemOffered::create([
+                    'rev_id' => $courseRevision['id'],
+                    'sem_offered' => $sem_offered
                 ]);
             }
 
             /*
             * Updating actual course entry
             */
-            $currSemOffered = CourseSemOffered::where('course_id', $course->id)->pluck('sem_offered')->toArray();
-            $newSemOffered = $content['newSemOffering'];
-
             $semOfferedToAdd = array_diff($newSemOffered, $currSemOffered);
             $semOfferedToDel = array_diff($currSemOffered, $newSemOffered);
 
@@ -296,12 +341,21 @@ class CourseRevisionController extends Controller
             * Creating new course revision proposal 
             * and updating the actual course entry
             */
+
+            // Creating the course revision proposal
             $courseRevision = CourseRevision::create([
                 'course_id' => $course['id'],
-                'num_of_hours' => $content['newNumOfHours'],
                 'prop_id' => $proposal['id']
             ]);
 
+            // Creating the new number of hours entry
+            NumOfHours::create([
+                'rev_id' => $courseRevision['id'],
+                'prev_num_of_hours' => $course['num_of_hours'],
+                'new_num_of_hours' => $content['newNumOfHours']
+            ]);
+
+            // Updating the actual course
             $course->update([
                 'num_of_hours' => $content['newNumOfHours']
             ]);
@@ -340,11 +394,19 @@ class CourseRevisionController extends Controller
             * Creating new course revision proposal 
             * and updating the actual course entry
             */
+
+            // Creating the course revision proposal
             $courseRevision = CourseRevision::create([
                 'course_id' => $course['id'],
-                'goal' => $content['newGoal'],
-                'outline' => $content['newOutline'],
                 'prop_id' => $proposal['id']
+            ]);
+
+            Content::create([
+                'rev_id' => $courseRevision['id'],
+                'prev_goal' => $course['goal'],
+                'new_goal' => $content['newGoal'],
+                'prev_outline' => $course['outline'],
+                'new_outline' => $content['newOutline'] 
             ]);
 
             $course->update([

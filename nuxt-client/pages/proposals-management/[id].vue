@@ -18,11 +18,20 @@
             <h1>{{ proposal.name }}</h1>
             <h2>{{ proposal.date_created }}</h2>
             <!-- {{ proposal.subproposals }} -->
-            <div v-for="(subproposal,index) in proposal.subproposals" class="flex flex-col bg-white p-7 gap-4">
+            <div v-for="(propClassify,index) in proposal.proposal_classification" class="flex flex-col bg-white p-7 gap-4">
                 <CurrViewerCourseInstitution 
-                    v-if="proposal.proposal_classification[index].target == 'Course' && proposal.proposal_classification[index].type == 'Institution'"
-                    :proposal_classification="proposal.proposal_classification[index]"
-                    :subproposal="subproposal"
+                    v-if="propClassify.target == 'Course'
+                    && propClassify.type == 'Institution'"
+                    :proposal_classification="propClassify"
+                    :subproposal="proposal.subproposals[index]"
+                />
+
+                <CurrViewerCourseRevTitleNum
+                    v-else-if="propClassify.target == 'Course'
+                    && propClassify.type == 'Revision'
+                    && propClassify.sub_type == 'Change in course number and/or course title'"
+                    :proposal_classification="propClassify"
+                    :subproposal="proposal.subproposals[index]"
                 />
             </div>
         </div>
@@ -36,7 +45,7 @@ import { watchEffect } from 'vue';
 
     const { id } = useRoute().params
 
-    // fetching course and course requisites
+    // fetching proposal data
     const {data: proposal, pending} = await useFetch(`http://localhost:8000/api/proposal/${id}`, {
         lazy: false,
         server: false

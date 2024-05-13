@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deg_prog_institutions', function (Blueprint $table) {
+        Schema::create('course_revisions', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('career');
-            $table->string('college');
-            $table->integer('num_of_units');
-            $table->text('desc');
+            $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
             $table->foreignId('prop_id')->constrained('proposals')->cascadeOnDelete();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('deg_prog_institution');
+        Schema::dropIfExists('course_revisions');
     }
 };
