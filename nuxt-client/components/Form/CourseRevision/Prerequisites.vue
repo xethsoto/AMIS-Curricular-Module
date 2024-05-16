@@ -18,7 +18,7 @@
                     :searchLabel="searchLabel"
                     :selectItem="addPrereqs"
                     :condition="addPrereqsCondition"
-                    :excludeCourse = "formContent.selectedCourse"
+                    :excludeCourse = "formContent.selectedCourse.id"
                 >
                     <template v-slot:input-field>
                         {{ formContent.newPrereqs }}
@@ -37,7 +37,7 @@
     const emit = defineEmits(['inputValue'])
 
     const formContent = reactive({
-        selectedCourse: "",
+        selectedCourse: null,
         newPrereqs: [],
         rationale: ""
     })
@@ -61,10 +61,9 @@
         return formContent.newPrereqs.includes(slotProps.data.code)
     }
 
-    watchEffect(() => {
-        emit('inputValue', formContent)
-        console.log("selectedCourse in Prerequisites.vue = ", formContent.selectedCourse)
-    })
+    watch(formContent, (newVal) => {
+        emit('inputValue', newVal)
+    }, {deep: true});
 </script>
 
 <style scoped>

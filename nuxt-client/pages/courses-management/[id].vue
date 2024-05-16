@@ -24,7 +24,7 @@
                 <hr class="hr-temp">
                 
                 <!-- Prerequisites and Requisites -->
-                <div class="flex flex-row">
+                <div class="flex flex-row gap-10">
                     <div class="flex flex-col flex-1 gap-2">
                         <p class="font-semibold">Prerequisites:</p>
                         <div v-if="courseInfo.course.prereqs.length">

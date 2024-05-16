@@ -16,7 +16,7 @@
                     id="text-input" 
                     variant="filled" 
                     type="text" 
-                    v-model="selectedCourse" 
+                    v-model="selectedCourse.code" 
                     class="text-input p-2 text-base border-2"
                 />
             </template>
@@ -27,12 +27,16 @@
 <script setup>
     const {inputFieldLabel} = defineProps(['inputFieldLabel'])
     const emit = defineEmits(['input'])
-    const selectedCourse = ref("")
+    const selectedCourse = reactive({
+        id: "",
+        code: "",
+    })
     const searchLabel = "Filter by Course Code"
 
     const selectItem = (item, showTable) => {
         showTable()
-        return selectedCourse.value = item.data.code
+        selectedCourse.id = item.data.id
+        selectedCourse.code = item.data.code
     }
 
     // condition for item selecting in course table
@@ -40,11 +44,11 @@
         return selectedCourse.value === slotProps.data.code
     }
 
-    watchEffect(() => {
-        emit('input', selectedCourse.value)
-    })
+    watch(selectedCourse, (newVal) => {
+        emit('input', newVal)
+    }, {deep: true});
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

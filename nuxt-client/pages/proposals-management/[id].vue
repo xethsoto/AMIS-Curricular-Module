@@ -17,22 +17,39 @@
         <div v-else>
             <h1>{{ proposal.name }}</h1>
             <h2>{{ proposal.date_created }}</h2>
-            <!-- {{ proposal.subproposals }} -->
-            <div v-for="(propClassify,index) in proposal.proposal_classification" class="flex flex-col bg-white p-7 gap-4">
-                <CurrViewerCourseInstitution 
-                    v-if="propClassify.target == 'Course'
-                    && propClassify.type == 'Institution'"
-                    :proposal_classification="propClassify"
-                    :subproposal="proposal.subproposals[index]"
-                />
-
-                <CurrViewerCourseRevTitleNum
-                    v-else-if="propClassify.target == 'Course'
-                    && propClassify.type == 'Revision'
-                    && propClassify.sub_type == 'Change in course number and/or course title'"
-                    :proposal_classification="propClassify"
-                    :subproposal="proposal.subproposals[index]"
-                />
+            <div class="flex flex-col gap-4">
+                <div v-for="(propClassify,index) in proposal.proposal_classification">
+                    <CurrViewerCourseInstitution 
+                        v-if="propClassify.target == 'Course'
+                        && propClassify.type == 'Institution'"
+                        :proposal_classification="propClassify"
+                        :subproposal="proposal.subproposals[index]"
+                    />
+    
+                    <CurrViewerCourseRevTitleNum
+                        v-else-if="propClassify.target == 'Course'
+                        && propClassify.type == 'Revision'
+                        && propClassify.sub_type == 'Change in course number and/or course title'"
+                        :proposal_classification="propClassify"
+                        :subproposal="proposal.subproposals[index]"
+                    />
+    
+                    <CurrViewerCourseRevDescription
+                        v-else-if="propClassify.target == 'Course'
+                        && propClassify.type == 'Revision'
+                        && propClassify.sub_type == 'Change in course description'"
+                        :proposal_classification="propClassify"
+                        :subproposal="proposal.subproposals[index]"
+                    />
+                    
+                    <CurrViewerCourseRevPrerequisites
+                        v-else-if="propClassify.target == 'Course'
+                        && propClassify.type == 'Revision'
+                        && propClassify.sub_type == 'Change in prerequisites'"
+                        :proposal_classification="propClassify"
+                        :subproposal="proposal.subproposals[index]"
+                    />
+                </div>
             </div>
         </div>
 

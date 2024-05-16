@@ -31,3 +31,5 @@ Route::get('code-to-course/{code}', [CourseController::class, 'codeToCourse']);
 Route::post('save-proposal', [ProposalController::class, 'save']);
 Route::get('get-proposals-basic-info', [ProposalController::class, 'getProposalsBasicInfo']);
 Route::get('proposal/{id}', [ProposalController::class, 'getProposal']);
+
+//Course Revisions Proposals

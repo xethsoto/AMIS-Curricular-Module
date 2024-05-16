@@ -89,7 +89,9 @@ class ProposalController extends Controller
                             'name' => $title
                         ]);
                         $proposal = json_decode($proposalTitle, true);
-    
+                        
+                        $courseRevs = [];    // lists all courses that had course code revisions
+
                         // Saving each subproposal of a proposal
                         for ($i = 0; $i < count($action); $i++){
                             $proposalClassification = ProposalClassification::create([
@@ -116,33 +118,23 @@ class ProposalController extends Controller
                                             break;
                                         case 'Revision':
                                             $controller = new CourseRevisionController();
+                                            $courseBeforeUpd = null;
+                                            $courseRef = null;
 
-                                            //different functions for different subtypes
-                                            switch($propSubType){
-                                                case 'Change in course number and/or course title':
-                                                    $newCourseCode = $controller->changeCodeTitle($proposal, $content[$i]);
-                                                    if ($newCourseCode != $content[$i]['selectedCourse']){
-                                                        foreach($content as $key => $value){
-                                                            // we change the selectedCourse on each content to match the new course code
-                                                            $content[$key]['selectedCourse'] = $newCourseCode;
-                                                        }
-                                                    }
+                                            // check if course is in the list of courses that had course code revisions
+                                            foreach($courseRevs as $course){
+                                                if ($course['id'] == $content[$i]['selectedCourse']['id']){
+                                                    $courseRef = $course;
                                                     break;
-                                                case 'Change in course description':
-                                                    $controller->changeDesc($proposal, $content[$i]);
-                                                    break;     
-                                                case 'Change in prerequisites':
-                                                    $controller->changePrereqs($proposal, $content[$i]);
-                                                    break;                                      
-                                                case 'Change in semester offering':
-                                                    $controller->changeSemOffered($proposal, $content[$i]);
-                                                    break;
-                                                case 'Change in number of hours':
-                                                    $controller->changeHours($proposal, $content[$i]);
-                                                    break;
-                                                case 'Change in course content':
-                                                    $controller->changeContent($proposal, $content[$i]);
-                                                    break;
+                                                }
+                                            }
+
+                                            //get course before update if code and/or title were changed
+                                            $courseBeforeUpd = $controller->save($proposal, $content[$i], $propSubType, $courseRef);
+
+                                            //we add the course to the list of courses that had course code revisions
+                                            if ($courseBeforeUpd){
+                                                $courseRevs[] = $courseBeforeUpd;
                                             }
                                             break;
                                     }

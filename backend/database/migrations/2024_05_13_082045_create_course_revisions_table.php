@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
             $table->string('type');
+            $table->string('curr_course_code');
+            $table->string('curr_course_title');
             $table->foreignId('prop_id')->constrained('proposals')->cascadeOnDelete();
         });
     }

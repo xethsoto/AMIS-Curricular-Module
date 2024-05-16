@@ -46,7 +46,7 @@
     // will not update the table
     watchEffect(() => {
         console.log("excludeCourse = ", excludeCourse)
-        courses.value = fetchedCourses.value.filter(course => course.code !== excludeCourse)
+        courses.value = fetchedCourses.value.filter(course => course.id !== excludeCourse)
     })
     
     const viewTable = ref(true)

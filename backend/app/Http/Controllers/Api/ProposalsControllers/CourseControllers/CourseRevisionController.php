@@ -22,9 +22,8 @@ use App\Models\Proposal\CourseProp\CourseRevision\CourseRevision;
 use App\Models\Proposal\CourseProp\CourseRevision\PrevSemOffered;
 
 class CourseRevisionController extends Controller
-{    
-    //Change in course number and/or course title
-    public function changeCodeTitle($proposal, $content)
+{   
+    public function save($proposal, $content, $propSubType, $courseRef)
     {
         try{
             // Check if there is a selected course
@@ -35,13 +34,68 @@ class CourseRevisionController extends Controller
                 throw new ValidationException($validator);
             }
 
+            $id = $content['selectedCourse']['id'];
             // Check if course exists in the database
-            $course = Course::where('code', $content['selectedCourse'])
-                ->first();
+            $course = Course::find($id);
             if (!$course){
-                throw new Exception("Changing Code and Title Failed: ".$content['selectedCourse']." is not found.");
+                throw new Exception($content['selectedCourse']['code']." is not found.");
             }
 
+            // Course Revision Proposal Creation
+            if($courseRef){
+                // if this revision is part of a bulk course revisions and the course code was changed
+                $courseRevision = CourseRevision::create([
+                    'course_id' => $course['id'],
+                    'type' => $propSubType,
+                    'curr_course_code' => $courseRef['code'],
+                    'curr_course_title' => $courseRef['title'],
+                    'prop_id' => $proposal['id']
+                ]);
+            } else {
+                $courseRevision = CourseRevision::create([
+                    'course_id' => $course['id'],
+                    'type' => $propSubType,
+                    'curr_course_code' => $course['code'],
+                    'curr_course_title' => $course['title'],
+                    'prop_id' => $proposal['id']
+                ]);
+            }
+            
+            switch($propSubType){
+                case 'Change in course number and/or course title':
+                    return $this->changeCodeTitle($content, $course, $courseRevision['id']);
+                    break;
+                case 'Change in course description':
+                    return $this->changeDesc($content, $course, $courseRevision['id']);
+                    break;     
+                case 'Change in prerequisites':
+                    return $this->changePrereqs($content, $course, $courseRevision['id']);
+                    break;                                      
+                case 'Change in semester offering':
+                    return $this->changeSemOffered($content, $course, $courseRevision['id']);
+                    break;
+                case 'Change in number of hours':
+                    return $this->changeHours($content, $course, $courseRevision['id']);
+                    break;
+                case 'Change in course content':
+                    return $this->changeContent($content, $course, $courseRevision['id']);
+                    break;
+            }
+        } catch (\Exception $e){
+            error_log($e->getMessage());
+            if($e instanceof ValidationException){
+                throw $e;
+            }
+            throw new Exception($e->getMessage());
+        }
+
+            
+    }
+
+    //Change in course number and/or course title
+    private function changeCodeTitle($content, $course, $courseRevId)
+    {
+        try{
             // Check if appropriate fields are filled
             if($content['formType'] == 'Code only'){
                 $validator = Validator::make($content, [
@@ -70,16 +124,9 @@ class CourseRevisionController extends Controller
             * and updating the course entry
             */
 
-            // Course Revision Proposal Creation
-            $courseRevision = CourseRevision::create([
-                'course_id' => $course['id'],
-                'type' => 'TitleNum', // 'TitleNum' is the type for 'Change in Course Code and Title'
-                'prop_id' => $proposal['id']
-            ]);
-
             // Course Revision TitleNum Creation
             $create = array_filter([
-                'rev_id' => $courseRevision['id'],
+                'rev_id' => $courseRevId,
                 'prev_code' => $course['code'],
                 'new_code' => $content['newCourseCode'],
                 'prev_title' => $course['title'],
@@ -89,6 +136,12 @@ class CourseRevisionController extends Controller
             });
             TitleNum::create($create);
             
+            $beforeUpdCourse = [
+                'id' => $course['id'],
+                'code' => $course['code'],
+                'title' => $course['title']
+            ];
+
             // Updating the actual course
             $updates = array_filter([
                 'code' => $content['newCourseCode'],
@@ -98,7 +151,9 @@ class CourseRevisionController extends Controller
             });
             $course->update($updates);
 
-            return $course['code'];  // we return the course code to edit the selected course of other subproposals
+            if ($content['newCourseCode']){
+                return $beforeUpdCourse;  // we return the course before its code and/or title were updated
+            }
 
         } catch (\Exception $e) {
             error_log($e->getMessage());
@@ -110,24 +165,15 @@ class CourseRevisionController extends Controller
     }
 
     //Change in course description
-    public function changeDesc($proposal, $content)
+    private function changeDesc($content, $course, $courseRevId)
     {
         try{
-            // Check if there is a selected course
+            // Check if there is a newDescription
             $validator = Validator::make($content, [
-                'selectedCourse' => 'required',
                 'newDescription' => 'required'
             ]);
             if ($validator->fails()) {
                 throw new ValidationException($validator);
-            }
-
-            error_log("Course in description = ".$content['selectedCourse']);
-            // Check if course exists in the database
-            $course = Course::where('code', $content['selectedCourse'])
-                ->first();
-            if (!$course){
-                throw new Exception("Changing description failed: ".$content['selectedCourse']." is not found.");
             }
 
             /*
@@ -135,16 +181,9 @@ class CourseRevisionController extends Controller
             * and updating the course entry
             */
 
-            // Course Revision Proposal Creation
-            $courseRevision = CourseRevision::create([
-                'course_id' => $course['id'],
-                'type' => 'Desc', // 'Desc' is the type for 'Change in Course Description'
-                'prop_id' => $proposal['id']
-            ]);
-
             // Course Revision Desc Creation
             Desc::create([
-                'rev_id' => $courseRevision['id'],
+                'rev_id' => $courseRevId,
                 'prev_desc' => $course['desc'],
                 'new_desc' => $content['newDescription']
             ]);
@@ -153,6 +192,8 @@ class CourseRevisionController extends Controller
             $course->update([
                 'desc' => $content['newDescription'],
             ]);
+
+            return;
             
         } catch (\Exception $e) {
             error_log($e->getMessage());
@@ -164,33 +205,13 @@ class CourseRevisionController extends Controller
     }
 
     //Chnage in course prerequisites
-    public function changePrereqs($proposal, $content)
+    private function changePrereqs($content, $course, $courseRevId)
     {
         try{
-            // Check if there is a selected course
-            $validator = Validator::make($content, [
-                'selectedCourse' => 'required',
-            ]);
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            // Check if course exists in the database
-            $course = Course::where('code', $content['selectedCourse'])
-                ->first();
-            if (!$course){
-                throw new Exception("Changing prerequisites failed: ".$content['selectedCourse']." is not found.");
-            }
-
             /*
             * Creating new course revision proposal
             * and Course Revision Prereqs
             */
-            $courseRevision = CourseRevision::create([
-                'course_id' => $course['id'],
-                'type' => 'Prereqs', // 'Prereqs' is the type for 'Change in Course Prerequisites'
-                'prop_id' => $proposal['id']
-            ]);
 
             // Getting the current prerequisites and the new prerequisites
             $currPrereqs = CoursePrereqs::where('course_id', $course->id)->pluck('prereq_code')->toArray();
@@ -199,7 +220,7 @@ class CourseRevisionController extends Controller
             // Creating new prereqs entry
             foreach($newPrereqs as $prereq){
                 Prereqs::create([
-                    'rev_id' => $courseRevision['id'],
+                    'rev_id' => $courseRevId,
                     'prereq_code' => $prereq
                 ]);
             }
@@ -207,7 +228,7 @@ class CourseRevisionController extends Controller
             // Creating previous prereqs entry
             foreach($currPrereqs as $prereq){
                 PrevPrereqs::create([
-                    'rev_id' => $courseRevision['id'],
+                    'rev_id' => $courseRevId,
                     'prereq_code' => $prereq
                 ]);
             }
@@ -243,7 +264,7 @@ class CourseRevisionController extends Controller
     }
 
     //Change in semester offering
-    public function changeSemOffered($proposal, $content)
+    private function changeSemOffered($content, $course, $courseRevId)
     {
         try{
             // Check if there is a selected course
@@ -265,11 +286,6 @@ class CourseRevisionController extends Controller
             * Creating new course revision proposal 
             * and Course Revision sem offered
             */
-            $courseRevision = CourseRevision::create([
-                'course_id' => $course['id'],
-                'type' => 'SemOffered', // 'SemOffered' is the type for 'Change in Semester Offered
-                'prop_id' => $proposal['id']
-            ]);
         
             // Getting the previous sem offered and the new sem offered
             $currSemOffered = CourseSemOffered::where('course_id', $course->id)->pluck('sem_offered')->toArray();
@@ -278,7 +294,7 @@ class CourseRevisionController extends Controller
             // Adding 
             foreach($currSemOffered as $sem_offered){
                 PrevSemOffered::create([
-                    'rev_id' => $courseRevision['id'],
+                    'rev_id' => $courseRevId,
                     'sem_offered' => $sem_offered
                 ]);
             }
@@ -286,7 +302,7 @@ class CourseRevisionController extends Controller
             // Adding the new sem offered for the specific course
             foreach($newSemOffered as $sem_offered){
                 SemOffered::create([
-                    'rev_id' => $courseRevision['id'],
+                    'rev_id' => $courseRevId,
                     'sem_offered' => $sem_offered
                 ]);
             }
@@ -322,7 +338,7 @@ class CourseRevisionController extends Controller
     }
 
     // Change in number of hours
-    public function changeHours($proposal, $content)
+    private function changeHours($content, $course, $courseRevId)
     {
         try{
             // Check if there is a selected course
@@ -345,17 +361,9 @@ class CourseRevisionController extends Controller
             * Creating new course revision proposal 
             * and updating the actual course entry
             */
-
-            // Creating the course revision proposal
-            $courseRevision = CourseRevision::create([
-                'course_id' => $course['id'],
-                'type' => 'NumOfHours', // 'NumOfHours' is the type for 'Change in Number of Hours'
-                'prop_id' => $proposal['id']
-            ]);
-
             // Creating the new number of hours entry
             NumOfHours::create([
-                'rev_id' => $courseRevision['id'],
+                'rev_id' => $courseRevId,
                 'prev_num_of_hours' => $course['num_of_hours'],
                 'new_num_of_hours' => $content['newNumOfHours']
             ]);
@@ -375,7 +383,7 @@ class CourseRevisionController extends Controller
     }
 
     // Change in course content
-    public function changeContent($proposal, $content)
+    private function changeContent($content, $course, $courseRevId)
     {
         try{
             // Check if there is a selected course
@@ -399,16 +407,8 @@ class CourseRevisionController extends Controller
             * Creating new course revision proposal 
             * and updating the actual course entry
             */
-
-            // Creating the course revision proposal
-            $courseRevision = CourseRevision::create([
-                'course_id' => $course['id'],
-                'type' => 'Content', // 'Content' is the type for 'Change in Course Content'
-                'prop_id' => $proposal['id']
-            ]);
-
             Content::create([
-                'rev_id' => $courseRevision['id'],
+                'rev_id' => $courseRevId,
                 'prev_goal' => $course['goal'],
                 'new_goal' => $content['newGoal'],
                 'prev_outline' => $course['outline'],

@@ -2,8 +2,9 @@
 
 namespace App\Models\Proposal\CourseProp\CourseRevision;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Course\Course;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Prereqs extends Model
 {
@@ -16,4 +17,10 @@ class Prereqs extends Model
         'rev_id',
         'prereq_code',
     ];
+
+    public function getCourse(){
+        return Course::select('id', 'code', 'title')
+        ->where('code', $this->prereq_code)
+        ->first();
+    }
 }

@@ -230,6 +230,10 @@
         "Change in course sequencing",
         "Change in the number of units"
     ]
+
+    /*
+    * NOTE: Changing the values will affect the processing of the forms
+    */
     const courseRevTypes = [
         "Change in course number and/or course title",
         "Change in course description",

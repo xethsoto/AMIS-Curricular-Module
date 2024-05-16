@@ -20,7 +20,7 @@
 <script setup>
     const emit = defineEmits(['selectedCourse', 'rationale'])
 
-    const selectedCourse = ref("")
+    const selectedCourse = ref(null)
     const rationale = ref("")
 
     watchEffect(() => {

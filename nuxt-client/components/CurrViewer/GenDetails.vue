@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-4">
         <h3 class="font-bold text-center text-lg"><slot name="title"></slot></h3>
-        <div class="flex flex-row">
+        <div class="flex flex-row gap-10">
             <div class="flex flex-1 flex-col">
                 <slot name="firstHalf">
                 </slot>

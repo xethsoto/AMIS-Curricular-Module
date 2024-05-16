@@ -12,17 +12,17 @@
                     v-model="formContent.formType"
                     :options="formTypeOptions"
                 />
-                <FormInput 
-                    v-if="formContent.formType === 'Title only' || formContent.formType === 'Code and Title'"
-                    type="text-field" 
-                    label="New Course Title" 
-                    @input="formContent.newCourseTitle = $event"
-                />
                 <FormInput
                     v-if="formContent.formType === 'Code only' || formContent.formType === 'Code and Title'"
                     type="text-field"
                     label="New Course Code"
                     @input="formContent.newCourseCode = $event"
+                />
+                <FormInput 
+                    v-if="formContent.formType === 'Title only' || formContent.formType === 'Code and Title'"
+                    type="text-field" 
+                    label="New Course Title" 
+                    @input="formContent.newCourseTitle = $event"
                 />
             </div>
         </template>
