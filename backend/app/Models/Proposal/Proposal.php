@@ -2,6 +2,7 @@
 
 namespace App\Models\Proposal;
 
+use App\Models\Course\Course;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Proposal\CourseProp\CourseCrosslist;
 use App\Models\Proposal\CourseProp\CourseInstitution;
@@ -70,12 +71,9 @@ class Proposal extends Model
         $courseRevResults = CourseRevision::where('prop_id', $this->id)
             ->get()->toArray();
 
-        error_log("courseRevResults: " . print_r($courseRevResults, true) . "\n");
-
         // For each revision, we relate the appropriate revision data to it
         $courseRevisions = [];
         foreach($courseRevResults as $revision){
-            error_log('$revision: ' . print_r($revision, true) . "\n");
             switch($revision['type']){
                 case 'Change in course number and/or course title':
                     $revision['details'] = TitleNum::where('rev_id', $revision['id'])->first();
@@ -124,8 +122,14 @@ class Proposal extends Model
             $courseRevisions[] = $revision;
         }
 
-        // $courseRevisions = array_reduce($courseRevisions, 'array_merge', []);
-        $result = [$courseInstitutions, $courseRevisions];
+        $courseCrosslisting = CourseCrosslist::where('prop_id', $this->id)
+            ->get()
+            ->each(function ($crosslisted) {
+                $crosslisted->course_id = Course::select('id', 'code', 'title')->find($crosslisted->course_id);
+                $crosslisted->crosslist_id = Course::select('id', 'code', 'title')->find($crosslisted->crosslist_id);
+            })->toArray();
+
+        $result = [$courseInstitutions, $courseRevisions, $courseCrosslisting];
             
         //removes empty arrays
         return array_reduce($result, 'array_merge', []);
