@@ -2,9 +2,30 @@
     <div class="flex flex-col gap-4">
         <PrimeToast />
         <h1 class="font-bold text-lg">Proposal Encoding</h1>
+
+        <!-- Proposal Title -->
         <FormInput type="text-field" label="Proposal Title" @input="proposalTitle = $event"/>
+
+        <!-- Proposal Date -->
+        <div class="flex flex-col">
+            <label>
+                <span class="text-sm">Date</span>
+            </label>
+            <PrimeCalendar v-model="creationDate"
+                dateFormat="dd/mm/yy" 
+                showIcon 
+                showButtonBar
+                class="w-fit"
+                :pt="{ 
+                    input: {
+                        class: 'p-2 text-base text-input'
+                    }   
+                }"
+            />
+        </div>
+
+        <!-- Subproposals -->
         <div v-if="numOfProp" class="flex flex-col gap-4">
-            
             <!-- Render multiple tabs depending on the number of proposals -->
             <PrimeAccordion v-for="num in numOfProp" :key="num">
                 <PrimeAccordionTab>
@@ -112,12 +133,20 @@
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
+                        
+                        <!-- Course Adoption -->
+                        <FormCourseAdoption
+                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Adoption'"
+                            @inputValue="formContent[num-1]=$event"
+                            class="flex flex-col gap-4"
+                        />
 
                         <FormDegProgInstitution
                             v-else-if="propAction[num-1].propTarget==='Degree Program' && propAction[num-1].propType==='Institution'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
+
                     </div>
 
                 </PrimeAccordionTab>
@@ -139,13 +168,21 @@
 <script setup>
     import { useToast } from 'primevue/usetoast'
     import { useRouter } from 'vue-router'
+    import { format } from 'date-fns'
+
+    const test = new Date()
 
     const router = useRouter()
 
     const toast = useToast()    //notification
 
     const proposalTitle = ref("Proposal Test Title")
+    const creationDate = ref(null)
     const numOfProp = ref(0)
+
+    watchEffect(() => {
+        console.log("creationDate = ", creationDate.value)
+    })
     
     const propAction = reactive([])
     const formContent = reactive([])
@@ -165,6 +202,7 @@
     const submitProposal = async () => {
         const proposalData = {
             "title": proposalTitle.value,
+            "date": format(creationDate.value, 'yyyy-MM-dd'),
             "action": propAction,
             "content": formContent
         }
@@ -247,6 +285,12 @@
     
 </script>
 
-<style scoped>
-
+<style>
+    /* Date Calendar Button */
+    .p-button.p-component.p-button-icon-only.p-datepicker-trigger{
+        background-color: maroon;
+        color: white;
+        border-top-right-radius: 7px;
+        border-bottom-right-radius: 7px;
+    }
 </style>

@@ -19,6 +19,17 @@
                         <DetailSpan title="Number of Hours: " :content="courseInfo.course.num_of_hours"/>
                         <DetailSpan title="Goal: " :content="courseInfo.course.goal"/>
                         <DetailSpan title="Status: " :content="courseInfo.course.status"/>
+                        <div v-if="courseInfo.crosslisted">
+                            <div class="flex flex-row gap-4">
+                                <p class="font-semibold">Crosslisted with: </p>
+                                <NuxtLink
+                                        :to="`/courses-management/${courseInfo.crosslisted.id}`"
+                                        class="nav-link"
+                                >
+                                    {{ `${courseInfo.crosslisted.code}: ${courseInfo.crosslisted.title}` }}
+                                </NuxtLink>
+                            </div>
+                        </div>
                     </template>
                 </CurrViewerGenDetails>
                 <hr class="hr-temp">
@@ -52,9 +63,9 @@
                             <div v-for="req in courseInfo.requisites">
                                 <NuxtLink
                                     :to="`/courses-management/${req.id}`"
-                                    class="text-blue-900 hover:text-blue-300"
+                                    class="nav-link"
                                 >
-                                {{ `${req.code}: ${req.title}` }}
+                                    {{ `${req.code}: ${req.title}` }}
                                 </NuxtLink>
                             </div>
                         </div>
@@ -128,22 +139,26 @@
                 
                 <!-- History -->
                 <p class="font-bold text-lg text-center">Course History</p>
-                <!-- <div class="timeline-container">
-                    <PrimeTimeline :value="events" layout="horizontal" class="w-full md:w-20rem overflow-x-auto" @wheel="handleScroll">
-                        <template #marker="slotProps">
-                            <div class="border-2 border-solid border-black">
-                                <div v-for="testing in slotProps">
-                                    {{ testing.item }}
-                                </div>
-                            </div>
-                        </template>
+                <div class="timeline-container">
+                    <PrimeTimeline 
+                        :value="courseInfo.events" 
+                        layout="horizontal"
+                        align="alternate"
+                        class="overflow-x-auto"
+                        @wheel="handleScroll"
+                    >
                         <template #content="slotProps">
-                            <div class="container w-96">
-                                
+                            <div class="container w-full">
+                                <NuxtLink
+                                    :to="`/proposals-management/${slotProps.item.id}`"
+                                    class="nav-link"
+                                >
+                                    {{slotProps.item.name}}
+                                </NuxtLink>
                             </div>
                         </template>
                     </PrimeTimeline>
-                </div> -->
+                </div>
                 
             </template>
         </NuxtLayout>
@@ -153,130 +168,28 @@
 <script setup>
     const { id } = useRoute().params
 
-    const events = [
-        {
-            item: "Institution"
-        },
-        {
-            item: "Revision"
-        },
-        {
-            item: "Revision"
-        },
-        {
-            item: "Revision"
-        },
-        {
-            item: "Revision"
-        },
-        {
-            item: "Abolition"
-        },
-   ]
-
     // fetching course and course requisites
     const { pending, data: courseInfo } = useAsyncData(
         'courseInfo',
         async () => {
-            const [course, requisites] = await Promise.all([
+            const [course, requisites, events, crosslisted] = await Promise.all([
                 $fetch('http://localhost:8000/api/course/' + id),
-                $fetch('http://localhost:8000/api/requisites/' + id)
+                $fetch('http://localhost:8000/api/requisites/' + id),
+                $fetch('http://localhost:8000/api/get-proposals-by-course/' + id),
+                $fetch('http://localhost:8000/api/get-crosslisted/' + id)
             ])
 
             return {
                 course,
-                requisites
+                requisites,
+                events,
+                crosslisted
             }
         },
         {
             server: false
         }
     )
-
-    console.log("courseInfo = ", courseInfo)
-
-    // // fetching course
-    // // const courseURI = 'http://localhost:3001/courses/' + id
-    // // const { data: course } = await useFetch(courseURI, {key: id})
-    // // if (!course.value){
-    // //     throw createError({ statusCode: 404, statusMessage: "Course not found", fatal: true })
-    // // }
-
-    // //fetching courses
-    // const coursesURI = 'http://localhost:3001/courses'
-    // const { data: courses } = await useFetch(coursesURI)
-
-    // // course - semester offerings
-    // const semOfferedURI = 'http://localhost:3001/sem_offered?course_id=' + id 
-    // const { data: semOfferedData } = await useFetch(semOfferedURI)
-    // const semOffered = ref("")
-    // semOfferedData.value.forEach((entry) => {
-    //     semOffered.value += `${entry.sem_offered} `
-    // })
-
-    // // course prerequisites and requisites
-    // const prereqURI = 'http://localhost:3001/course_prereq?course_id=' + id
-    // const { data: prereqData } = await useFetch(prereqURI)
-    // const prereqs = courses.value.filter((course) => {
-    //         return prereqData.value.some((prereq) => {
-    //             return Number(course.id) === prereq.prereq_id
-    //         })
-    //     })
-    
-    // const reqURI = 'http://localhost:3001/course_prereq?prereq_id=' + id
-    // const { data: reqData } = await useFetch(reqURI)
-    // const reqs = courses.value.filter((course) => {
-    //         return reqData.value.some((req) => {
-    //             return Number(course.id) === req.course_id
-    //     })
-    // })
-
-    // const { data: curricula } = await useFetch('http://localhost:3001/curriculum')
-    // const { data: degProgs } = await useFetch('http://localhost:3001/deg_prog')
-    // const { data: majors } = await useFetch('http://localhost:3001/majors')
-    // const { data: degProgMajors } = await useFetch('http://localhost:3001/deg_prog_majors')
-    
-    // const currCourseURI = 'http://localhost:3001/curr_course?course_id=' + id
-    // const { data: currCourse } = await useFetch(currCourseURI)
-
-    // // curricula that require said courses
-    // const curriculaIds = [...new Set(currCourse.value.map(obj => obj.curr_id))] // eliminates duplicate values
-    // const filteredCurricula = curricula.value.filter((curriculum) => {
-    //     return curriculaIds.includes(Number(curriculum.id))
-    // })
-
-    // // degree programs of the curriculum that requires the course
-    // const degProgIds = [...new Set(filteredCurricula.map(obj => obj.deg_prog_id))]
-    // const filteredDegProgs = degProgs.value.filter((degProg) => {
-    //     return degProgIds.includes(Number(degProg.id))
-    // })
-
-    // // majors that require specific course
-    // const majorsIds = [...new Set(filteredCurricula.map(obj => obj.major_id))]
-    // const filteredMajors = majors.value.filter((major) => {
-    //     return majorsIds.includes(Number(major.id))
-    // })
-    
-    // // Timeline
-    // const scrollableElement = ref(null);
-
-    // const handleScroll = ((event) => {
-    //     // Calculate the horizontal scroll amount based on the deltaX property
-    //     const delta = event.deltaX || event.deltaY;
-    //     // Adjust the scrollLeft property of the scrollable element
-    //     event.currentTarget.scrollLeft += delta;
-
-    //     if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
-    //         event.preventDefault();
-    //         // Prevent the window from scrolling
-    //         window.scrollTo({
-    //         left: window.scrollX,
-    //         top: window.scrollY,
-    //         behavior: 'instant'
-    //         });
-    //     }
-    // })
-
 </script>
 
 <style scoped>

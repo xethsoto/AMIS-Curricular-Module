@@ -49,6 +49,44 @@
                         :proposal_classification="propClassify"
                         :subproposal="proposal.subproposals[index]"
                     />
+
+                    <CurrViewerCourseRevSemOffering
+                        v-else-if="propClassify.target == 'Course'
+                        && propClassify.type == 'Revision'
+                        && propClassify.sub_type == 'Change in semester offering'"
+                        :proposal_classification="propClassify"
+                        :subproposal="proposal.subproposals[index]"
+                    />
+
+                    <CurrViewerCourseRevNumOfHours
+                        v-else-if="propClassify.target == 'Course'
+                        && propClassify.type == 'Revision'
+                        && propClassify.sub_type == 'Change in number of hours'"
+                        :proposal_classification="propClassify"
+                        :subproposal="proposal.subproposals[index]"
+                    />
+
+                    <CurrViewerCourseRevContent
+                        v-else-if="propClassify.target == 'Course'
+                        && propClassify.type == 'Revision'
+                        && propClassify.sub_type == 'Change in course content'"
+                        :proposal_classification="propClassify"
+                        :subproposal="proposal.subproposals[index]"
+                    />
+
+                    <CurrViewerCourseCrosslisting
+                        v-else-if="propClassify.target == 'Course'
+                        && propClassify.type == 'Crosslisting'"
+                        :proposal_classification="propClassify"
+                        :subproposal="proposal.subproposals[index]"
+                    />
+
+                    <CurrViewerCourseAbolition
+                        v-else-if="propClassify.target == 'Course'
+                        && propClassify.type == 'Abolition'"
+                        :proposal_classification="propClassify"
+                        :subproposal="proposal.subproposals[index]"
+                    />
                 </div>
             </div>
         </div>
