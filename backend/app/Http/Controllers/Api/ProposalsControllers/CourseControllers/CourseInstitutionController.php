@@ -14,21 +14,9 @@ use Exception;
 
 class CourseInstitutionController extends Controller
 {
-    public function save($proposal, $content)
+    public function save($proposal, $content, $date)
     {
         try{
-            // Course Proposal
-            $courseInstitution = CourseInstitution::create([
-                'code' => $content['num'],
-                'title' => $content['title'],
-                'desc' => $content['desc'],
-                'credit' => $content['credit'],
-                'num_of_hours' => $content['numOfHours'],
-                'goal' => $content['goal'],
-                'outline' => $content['outline'],
-                'prop_id' => $proposal['id']
-            ]);
-    
             // Course
             $newCourse = Course::create([
                 'code' => $content['num'],
@@ -38,7 +26,22 @@ class CourseInstitutionController extends Controller
                 'num_of_hours' => $content['numOfHours'],
                 'goal' => $content['goal'],
                 'outline' => $content['outline'],
-                'status' => 'Active'
+                'status' => 'Active',
+                'created_at' => $date,
+                'updated_at' => $date,
+            ]);
+
+            // Course Proposal
+            $courseInstitution = CourseInstitution::create([
+                'course_id' => $newCourse['id'],
+                'code' => $content['num'],
+                'title' => $content['title'],
+                'desc' => $content['desc'],
+                'credit' => $content['credit'],
+                'num_of_hours' => $content['numOfHours'],
+                'goal' => $content['goal'],
+                'outline' => $content['outline'],
+                'prop_id' => $proposal['id']
             ]);
             
             // adding the prerequisites of the course proposal

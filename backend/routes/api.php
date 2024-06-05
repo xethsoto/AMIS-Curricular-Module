@@ -30,6 +30,8 @@ Route::get('code-to-course/{code}', [CourseController::class, 'codeToCourse']);
 //Proposals
 Route::post('save-proposal', [ProposalController::class, 'save']);
 Route::get('get-proposals-basic-info', [ProposalController::class, 'getProposalsBasicInfo']);
+Route::get('get-proposals-by-course/{id}', [ProposalController::class, 'getProposalsByCourseId']);
 Route::get('proposal/{id}', [ProposalController::class, 'getProposal']);
+Route::get('get-crosslisted/{id}', [ProposalController::class, 'checkIfCrosslisted']);
 
 //Course Revisions Proposals

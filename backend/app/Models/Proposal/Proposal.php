@@ -3,6 +3,7 @@
 namespace App\Models\Proposal;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Proposal\CourseProp\CourseCrosslist;
 use App\Models\Proposal\CourseProp\CourseInstitution;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Proposal\CourseProp\CourseRevision\Desc;
@@ -13,6 +14,7 @@ use App\Models\Proposal\CourseProp\CourseRevision\NumOfHours;
 use App\Models\Proposal\CourseProp\CourseRevision\SemOffered;
 use App\Models\Proposal\CourseProp\CourseRevision\PrevPrereqs;
 use App\Models\Proposal\CourseProp\CourseRevision\CourseRevision;
+use App\Models\Proposal\CourseProp\CourseRevision\PrevSemOffered;
 
 class Proposal extends Model
 {
@@ -21,8 +23,15 @@ class Proposal extends Model
     protected $table = 'proposals';
 
     protected $fillable = [
-        'name'
+        'name',
+        'created_at',
+        'updated_at'
     ];
+
+    public function usesTimestamps(): bool
+    {
+        return false;
+    }
 
     /* Proposal has many proposal classification
     *  Target = Course, Degree Program
@@ -32,6 +41,21 @@ class Proposal extends Model
     public function proposalClassification()
     {
         return $this->hasMany(ProposalClassification::class, 'prop_id');
+    }
+
+    public function courseInstitutions()
+    {
+        return $this->hasMany(CourseInstitution::class, 'prop_id');
+    }
+
+    public function courseRevisions()
+    {
+        return $this->hasMany(CourseRevision::class, 'prop_id');
+    }
+
+    public function courseCrosslists()
+    {
+        return $this->hasMany(CourseCrosslist::class, 'prop_id');
     }
 
     public function getSubproposals()
@@ -76,7 +100,19 @@ class Proposal extends Model
                     
                     break;
                 case 'Change in semester offering':
-                    $revision['details'] = SemOffered::where('rev_id', $revision['id'])->first();
+                    // Proposed Semester Offerings
+                    $result = SemOffered::where('rev_id', $revision['id'])->get();
+                    $semOfferings = $result->map(function($semOffered){
+                        return $semOffered->sem_offered;
+                    })->join(', ');
+                    $revision['details']['curr_sem_offered'] = $semOfferings;
+
+                    // Previous Semester Offerings
+                    $result = PrevSemOffered::where('rev_id', $revision['id'])->get();
+                    $semOfferings = $result->map(function($semOffered){
+                        return $semOffered->sem_offered;
+                    })->join(', ');
+                    $revision['details']['prev_sem_offered'] = $semOfferings;
                     break;
                 case 'Change in number of hours':
                     $revision['details'] = NumOfHours::where('rev_id', $revision['id'])->first();

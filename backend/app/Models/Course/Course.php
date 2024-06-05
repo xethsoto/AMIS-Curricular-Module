@@ -19,8 +19,15 @@ class Course extends Model
         'num_of_hours',
         'goal',
         'outline',
-        'status'
+        'status',
+        'created_at',
+        'updated_at'
     ];
+
+    public function usesTimestamps(): bool
+    {
+        return false;
+    }
 
     public function prereqs()
     {

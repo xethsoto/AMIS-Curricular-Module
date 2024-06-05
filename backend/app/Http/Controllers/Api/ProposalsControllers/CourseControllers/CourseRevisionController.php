@@ -23,7 +23,7 @@ use App\Models\Proposal\CourseProp\CourseRevision\PrevSemOffered;
 
 class CourseRevisionController extends Controller
 {   
-    public function save($proposal, $content, $propSubType, $courseRef)
+    public function save($proposal, $content, $date, $propSubType, $courseRef)
     {
         try{
             // Check if there is a selected course
@@ -63,22 +63,22 @@ class CourseRevisionController extends Controller
             
             switch($propSubType){
                 case 'Change in course number and/or course title':
-                    return $this->changeCodeTitle($content, $course, $courseRevision['id']);
+                    return $this->changeCodeTitle($content, $course, $courseRevision['id'], $date);
                     break;
                 case 'Change in course description':
-                    return $this->changeDesc($content, $course, $courseRevision['id']);
+                    return $this->changeDesc($content, $course, $courseRevision['id'], $date);
                     break;     
                 case 'Change in prerequisites':
-                    return $this->changePrereqs($content, $course, $courseRevision['id']);
+                    return $this->changePrereqs($content, $course, $courseRevision['id'], $date);
                     break;                                      
                 case 'Change in semester offering':
-                    return $this->changeSemOffered($content, $course, $courseRevision['id']);
+                    return $this->changeSemOffered($content, $course, $courseRevision['id'], $date);
                     break;
                 case 'Change in number of hours':
-                    return $this->changeHours($content, $course, $courseRevision['id']);
+                    return $this->changeHours($content, $course, $courseRevision['id'], $date);
                     break;
                 case 'Change in course content':
-                    return $this->changeContent($content, $course, $courseRevision['id']);
+                    return $this->changeContent($content, $course, $courseRevision['id'], $date);
                     break;
             }
         } catch (\Exception $e){
@@ -93,7 +93,7 @@ class CourseRevisionController extends Controller
     }
 
     //Change in course number and/or course title
-    private function changeCodeTitle($content, $course, $courseRevId)
+    private function changeCodeTitle($content, $course, $courseRevId, $date)
     {
         try{
             // Check if appropriate fields are filled
@@ -145,7 +145,8 @@ class CourseRevisionController extends Controller
             // Updating the actual course
             $updates = array_filter([
                 'code' => $content['newCourseCode'],
-                'title' => $content['newCourseTitle']
+                'title' => $content['newCourseTitle'],
+                'updated_at' => $date,
             ], function ($value) {
                 return !is_null($value);
             });
@@ -165,7 +166,7 @@ class CourseRevisionController extends Controller
     }
 
     //Change in course description
-    private function changeDesc($content, $course, $courseRevId)
+    private function changeDesc($content, $course, $courseRevId, $date)
     {
         try{
             // Check if there is a newDescription
@@ -191,6 +192,7 @@ class CourseRevisionController extends Controller
             // Updating the actual course
             $course->update([
                 'desc' => $content['newDescription'],
+                'updated_at' => $date
             ]);
 
             return;
@@ -205,7 +207,7 @@ class CourseRevisionController extends Controller
     }
 
     //Chnage in course prerequisites
-    private function changePrereqs($content, $course, $courseRevId)
+    private function changePrereqs($content, $course, $courseRevId, $date)
     {
         try{
             /*
@@ -254,6 +256,11 @@ class CourseRevisionController extends Controller
                     ->delete();
             }
 
+            // Updating the actual course
+            $course->update([
+                'updated_at' => $date
+            ]);
+
         } catch (\Exception $e) {
             error_log($e->getMessage());
             if($e instanceof ValidationException){
@@ -264,7 +271,7 @@ class CourseRevisionController extends Controller
     }
 
     //Change in semester offering
-    private function changeSemOffered($content, $course, $courseRevId)
+    private function changeSemOffered($content, $course, $courseRevId, $date)
     {
         try{
             // Check if there is a selected course
@@ -273,13 +280,6 @@ class CourseRevisionController extends Controller
             ]);
             if ($validator->fails()) {
                 throw new ValidationException($validator);
-            }
-
-            // Check if course exists in the database
-            $course = Course::where('code', $content['selectedCourse'])
-                ->first();
-            if (!$course){
-                throw new Exception($content['selectedCourse']." is not found.");
             }
 
             /*
@@ -328,6 +328,11 @@ class CourseRevisionController extends Controller
                     ->delete();
             }
 
+            // Updating the actual course
+            $course->update([
+                'updated_at' => $date
+            ]);
+
         } catch (\Exception $e) {
             error_log($e->getMessage());
             if($e instanceof ValidationException){
@@ -338,7 +343,7 @@ class CourseRevisionController extends Controller
     }
 
     // Change in number of hours
-    private function changeHours($content, $course, $courseRevId)
+    private function changeHours($content, $course, $courseRevId, $date)
     {
         try{
             // Check if there is a selected course
@@ -349,14 +354,10 @@ class CourseRevisionController extends Controller
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
-
-            // Check if course exists in the database
-            $course = Course::where('code', $content['selectedCourse'])
-                ->first();
-            if (!$course){
-                throw new Exception($content['selectedCourse']." is not found.");
-            }
-                
+            
+            error_log('$course = '.$course);
+            error_log('$date = '.$date);
+            
             /*
             * Creating new course revision proposal 
             * and updating the actual course entry
@@ -370,7 +371,8 @@ class CourseRevisionController extends Controller
 
             // Updating the actual course
             $course->update([
-                'num_of_hours' => $content['newNumOfHours']
+                'num_of_hours' => $content['newNumOfHours'],
+                'updated_at' => $date
             ]);
 
         } catch (\Exception $e) {
@@ -383,7 +385,7 @@ class CourseRevisionController extends Controller
     }
 
     // Change in course content
-    private function changeContent($content, $course, $courseRevId)
+    private function changeContent($content, $course, $courseRevId, $date)
     {
         try{
             // Check if there is a selected course
@@ -394,13 +396,6 @@ class CourseRevisionController extends Controller
             ]);
             if ($validator->fails()) {
                 throw new ValidationException($validator);
-            }
-
-            // Check if course exists in the database
-            $course = Course::where('code', $content['selectedCourse'])
-                ->first();
-            if (!$course){
-                throw new Exception($content['selectedCourse']." is not found.");
             }
 
             /*
@@ -417,7 +412,8 @@ class CourseRevisionController extends Controller
 
             $course->update([
                 'goal' => $content['newGoal'],
-                'outline' => $content['newOutline']
+                'outline' => $content['newOutline'],
+                'updated_at' => $date
             ]);
 
         } catch (\Exception $e) {

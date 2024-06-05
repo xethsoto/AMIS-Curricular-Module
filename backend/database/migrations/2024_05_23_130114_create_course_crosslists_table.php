@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('proposals', function (Blueprint $table) {
+        Schema::create('course_crosslists', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->date('created_at');
-            $table->date('updated_at');
+            $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
+            $table->foreignId('crosslist_id')->constrained('courses')->cascadeOnDelete();
+            $table->foreignId('prop_id')->constrained('proposals')->cascadeOnDelete();
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('proposals');
+        Schema::dropIfExists('course_crosslists');
     }
 };
