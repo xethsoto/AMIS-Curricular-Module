@@ -23,6 +23,7 @@ class CourseInstitution extends Model
         'num_of_hours',
         'goal',
         'outline',
+        'univ_origin',
         'prop_id'
     ];
 

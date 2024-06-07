@@ -2,22 +2,42 @@
 
 namespace App\Http\Controllers\Api\ProposalsControllers\CourseControllers;
 
+use Exception;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Course\Course;
+use App\Http\Controllers\Controller;
 use App\Models\Course\CoursePrereqs;
 use App\Models\Course\CourseSemOffered;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use App\Models\Proposal\CourseProp\CourseInstitution;
 use App\Models\Proposal\CourseProp\CoursePropPrereqs;
 use App\Models\Proposal\CourseProp\CoursePropSemOffered;
-use Exception;
 
 class CourseInstitutionController extends Controller
 {
-    public function save($proposal, $content, $date)
+    public function saveInstitution($proposal, $content, $date)
     {
         try{
-            // Course
+            $validator = Validator::make($content, [
+                'num' => 'required|string',
+                'title' => 'required|string',
+                'desc' => 'required|string',
+                'credit' => 'required|integer',
+                'numOfHours' => 'required|integer',
+                'goal' => 'required|string',
+                'outline' => 'required|string',
+                'prereqs' => 'required|array',
+                'sem_offered' => 'required|array',
+            ]);
+
+            if ($validator->fails()){
+                throw new ValidationException($validator);
+            }
+
+            /*
+            * Create a new course and course proposal
+            */
             $newCourse = Course::create([
                 'code' => $content['num'],
                 'title' => $content['title'],
@@ -31,7 +51,6 @@ class CourseInstitutionController extends Controller
                 'updated_at' => $date,
             ]);
 
-            // Course Proposal
             $courseInstitution = CourseInstitution::create([
                 'course_id' => $newCourse['id'],
                 'code' => $content['num'],
@@ -43,7 +62,82 @@ class CourseInstitutionController extends Controller
                 'outline' => $content['outline'],
                 'prop_id' => $proposal['id']
             ]);
-            
+
+            $this->addSemPrereqs($courseInstitution, $newCourse, $content);
+
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            if($e instanceof ValidationException){
+                throw $e;
+            }
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function saveAdoption($proposal, $content, $date)
+    {
+        try{
+            $validator = Validator::make($content, [
+                'num' => 'required|string',
+                'title' => 'required|string',
+                'desc' => 'required|string',
+                'credit' => 'required|integer',
+                'numOfHours' => 'required|integer',
+                'goal' => 'required|string',
+                'outline' => 'required|string',
+                'prereqs' => 'required|array',
+                'sem_offered' => 'required|array',
+                'univ_origin' => 'required|string',
+            ]);
+
+            if ($validator->fails()){
+                throw new ValidationException($validator);
+            }
+
+            /*
+            * Create a new course and course proposal
+            */
+            $newCourse = Course::create([
+                'code' => $content['num'],
+                'title' => $content['title'],
+                'desc' => $content['desc'],
+                'credit' => $content['credit'],
+                'num_of_hours' => $content['numOfHours'],
+                'goal' => $content['goal'],
+                'outline' => $content['outline'],
+                'status' => 'Active',
+                'univ_origin' => $content['univ_origin'],
+                'created_at' => $date,
+                'updated_at' => $date,
+            ]);
+                                
+            $courseInstitution = CourseInstitution::create([
+                'course_id' => $newCourse['id'],
+                'code' => $content['num'],
+                'title' => $content['title'],
+                'desc' => $content['desc'],
+                'credit' => $content['credit'],
+                'num_of_hours' => $content['numOfHours'],
+                'goal' => $content['goal'],
+                'outline' => $content['outline'],
+                'univ_origin' => $content['univ_origin'],
+                'prop_id' => $proposal['id']
+            ]);
+
+            $this->addSemPrereqs($courseInstitution, $newCourse, $content);
+
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            if($e instanceof ValidationException){
+                throw $e;
+            }
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function addSemPrereqs($courseInstitution, $newCourse, $content)
+    {
+        try{
             // adding the prerequisites of the course proposal
             // and the course itself
             foreach ($content['prereqs'] as $courseCode) {

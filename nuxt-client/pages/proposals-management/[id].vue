@@ -95,6 +95,13 @@
                             :proposal_classification="propClassify"
                             :subproposal="proposal.subproposals[index]"
                         />
+
+                        <CurrViewerCourseAdoption
+                            v-else-if="propClassify.target == 'Course'
+                            && propClassify.type == 'Adoption'"
+                            :proposal_classification="propClassify"
+                            :subproposal="proposal.subproposals[index]"
+                        />
                     </div>
                 </div>
             </div>

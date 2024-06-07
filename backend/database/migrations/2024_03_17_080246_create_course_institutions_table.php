@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('num_of_hours');
             $table->text('goal');
             $table->text('outline');
+            $table->string('univ_origin')->nullable();
             $table->foreignId('prop_id')->constrained('proposals')->cascadeOnDelete();
         });
     }

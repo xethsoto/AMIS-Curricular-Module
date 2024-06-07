@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('goal');
             $table->text('outline');
             $table->string('status');
+            $table->string('univ_origin')->nullable();
             $table->timestamps();
         });
     }

@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\ProposalsControllers\CourseControllers\CourseCrossl
 use App\Http\Controllers\Api\ProposalsControllers\CourseControllers\CourseAbolishmentController;
 use App\Http\Controllers\Api\ProposalsControllers\CourseControllers\CourseInstitutionController;
 use App\Http\Controllers\Api\ProposalsControllers\DegProgControllers\DegProgInstitutionController;
+use App\Models\Proposal\CourseProp\CourseAdoption;
 
 class ProposalController extends Controller
 {
@@ -64,31 +65,31 @@ class ProposalController extends Controller
                     'message' => $actionValidator->errors()->all()
                 ], 422);
             } else {
-                //Check if fields in the formContent variable are empty
-                $rules = [];
+                // //Check if fields in the formContent variable are empty
+                // $rules = [];
 
-                // REFACTOR: Validation can possibly be moved to the respective controllers
-                $i  = 0;
-                foreach ($content as $form){
-                    foreach ($form as $field => $value){
-                        if ($action[$i]['propType'] == 'Institution'){
-                            // Non-revisions do not allow null values
-                            if($field == 'prereqs' && $action[$i]['propTarget'] == 'Course' && $action[$i]['propType'] == 'Institution'){
-                                continue; //skips prereq in Course Institutions
-                            }
-                            $rules["$i.$field"] = 'required';
-                        }
-                    }
-                    $i++;
-                }
-                $formsValidator = Validator::make($content, $rules);
+                // // REFACTOR: Validation can possibly be moved to the respective controllers
+                // $i  = 0;
+                // foreach ($content as $form){
+                //     foreach ($form as $field => $value){
+                //         if ($action[$i]['propType'] == 'Institution'){
+                //             // Non-revisions do not allow null values
+                //             if($field == 'prereqs' && $action[$i]['propTarget'] == 'Course' && $action[$i]['propType'] == 'Institution'){
+                //                 continue; //skips prereq in Course Institutions
+                //             }
+                //             $rules["$i.$field"] = 'required';
+                //         }
+                //     }
+                //     $i++;
+                // }
+                // $formsValidator = Validator::make($content, $rules);
 
-                if ($formsValidator->fails()) {
-                    return response()->json([
-                        'status' => 422,
-                        'message' => $formsValidator->errors()->all()
-                    ], 422);
-                } else {
+                // if ($formsValidator->fails()) {
+                //     return response()->json([
+                //         'status' => 422,
+                //         'message' => $formsValidator->errors()->all()
+                //     ], 422);
+                // } else {
 
                     try{
                         DB::beginTransaction();
@@ -104,6 +105,15 @@ class ProposalController extends Controller
 
                         // Saving each subproposal of a proposal
                         for ($i = 0; $i < count($action); $i++){
+
+                            // Rationale Validation
+                            $validator = Validator::make($content[$i], [
+                                'rationale' => 'required|string',
+                            ]);
+                            if ($validator->fails()){
+                                throw new ValidationException($validator);
+                            }
+
                             $proposalClassification = ProposalClassification::create([
                                 'prop_id' => $proposal['id'],
                                 'target' => $action[$i]['propTarget'],
@@ -124,7 +134,7 @@ class ProposalController extends Controller
                                     switch($propType){
                                         case 'Institution':
                                             $controller = new CourseInstitutionController();
-                                            $controller->save($proposal, $content[$i], $date);
+                                            $controller->saveInstitution($proposal, $content[$i], $date);
                                             break;
                                         case 'Revision':
                                             $controller = new CourseRevisionController();
@@ -156,6 +166,8 @@ class ProposalController extends Controller
                                             $controller->save($proposal, $content[$i]);
                                             break;
                                         case 'Adoption':
+                                            $controller = new CourseInstitutionController();
+                                            $controller->saveAdoption($proposal, $content[$i], $date);
                                             break;
                                     }
                                     break;
@@ -192,21 +204,24 @@ class ProposalController extends Controller
                         'status' => 200,
                         'message' => "Successfully created proposal"
                     ], 200);
-                }
+                // }
             }
         }
     }
 
     // Get all proposals
-    public function getProposals()
-    {
-        $proposals = Proposal::with(
-            'proposalClassification',
-            'courseInstitutions',
-            'courseRevisions'
-        )->get();
-        return response()->json($proposals);
-    }
+    // IS THIS STILL NEEDED?
+    // public function getProposals()
+    // {
+    //     $proposals = Proposal::with(
+    //         'proposalClassification',
+    //         'courseInstitutions',
+    //         'courseRevisions',
+    //         'courseCrosslists',
+    //         'courseAbolishments'
+    //     )->get();
+    //     return response()->json($proposals);
+    // }
 
     /* 
     * Get proposals (w/o subproposals) 

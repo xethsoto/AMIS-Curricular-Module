@@ -20,6 +20,7 @@ class Course extends Model
         'goal',
         'outline',
         'status',
+        'univ_origin',
         'created_at',
         'updated_at'
     ];

@@ -49,7 +49,7 @@
     <label>Semester Offering</label>
     <SemOffering @input="formContent.sem_offered=$event"/>
 
-    <FormInput type="text-field" label="University Origin" @input="formContent.origin = $event"/>
+    <FormInput type="text-field" label="University Origin" @input="formContent.univ_origin = $event"/>
     <FormInput type="text-area" label="Rationale" @input="formContent.rationale = $event"/>
 </template>
 
@@ -71,7 +71,7 @@
         outline: "",
         prereqs: [],
         sem_offered: [],
-        origin: "",
+        univ_origin: "",
         rationale: ""
     })
     const meta = [
