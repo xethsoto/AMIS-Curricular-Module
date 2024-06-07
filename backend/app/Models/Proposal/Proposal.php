@@ -3,6 +3,7 @@
 namespace App\Models\Proposal;
 
 use App\Models\Course\Course;
+use App\Models\Proposal\CourseProp\CourseAbolishment;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Proposal\CourseProp\CourseCrosslist;
 use App\Models\Proposal\CourseProp\CourseInstitution;
@@ -53,6 +54,11 @@ class Proposal extends Model
     {
         return $this->hasMany(CourseRevision::class, 'prop_id');
     }
+
+    public function courseAbolishments()
+    {
+        return $this->hasMany(CourseAbolishment::class, 'prop_id');
+    }   
 
     public function courseCrosslists()
     {
@@ -122,14 +128,20 @@ class Proposal extends Model
             $courseRevisions[] = $revision;
         }
 
+        $courseAbolishment = CourseAbolishment::where('prop_id', $this->id)
+            ->get()
+            ->each(function ($abolishment) {
+                $abolishment->course = Course::select('id', 'code', 'title')->find($abolishment->course_id);
+            })->toArray();
+
         $courseCrosslisting = CourseCrosslist::where('prop_id', $this->id)
             ->get()
             ->each(function ($crosslisted) {
-                $crosslisted->course_id = Course::select('id', 'code', 'title')->find($crosslisted->course_id);
-                $crosslisted->crosslist_id = Course::select('id', 'code', 'title')->find($crosslisted->crosslist_id);
+                $crosslisted->course = Course::select('id', 'code', 'title')->find($crosslisted->course_id);
+                $crosslisted->crosslist = Course::select('id', 'code', 'title')->find($crosslisted->crosslist_id);
             })->toArray();
 
-        $result = [$courseInstitutions, $courseRevisions, $courseCrosslisting];
+        $result = [$courseInstitutions, $courseRevisions, $courseCrosslisting, $courseAbolishment];
             
         //removes empty arrays
         return array_reduce($result, 'array_merge', []);

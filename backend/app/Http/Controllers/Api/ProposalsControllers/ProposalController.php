@@ -12,16 +12,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Models\Proposal\ProposalClassification;
-use App\Models\Proposal\CourseProp\CourseCrosslist;
+use Illuminate\Contracts\Routing\ResponseFactory;
 
+use App\Models\Proposal\CourseProp\CourseCrosslist;
 use App\Models\Proposal\CourseProp\CourseInstitution;
 use App\Models\Proposal\DegProgProp\DegProgInstitution;
 use App\Models\Proposal\CourseProp\CourseRevision\CourseRevision;
 use App\Http\Controllers\Api\ProposalsControllers\CourseControllers\CourseRevisionController;
 use App\Http\Controllers\Api\ProposalsControllers\CourseControllers\CourseCrosslistController;
+use App\Http\Controllers\Api\ProposalsControllers\CourseControllers\CourseAbolishmentController;
 use App\Http\Controllers\Api\ProposalsControllers\CourseControllers\CourseInstitutionController;
 use App\Http\Controllers\Api\ProposalsControllers\DegProgControllers\DegProgInstitutionController;
-use Illuminate\Contracts\Routing\ResponseFactory;
 
 class ProposalController extends Controller
 {
@@ -147,6 +148,8 @@ class ProposalController extends Controller
                                             }
                                             break;
                                         case 'Abolition':
+                                            $controller = new CourseAbolishmentController();
+                                            $controller->save($proposal, $content[$i]);
                                             break;
                                         case 'Crosslisting':
                                             $controller = new CourseCrosslistController();
@@ -218,6 +221,8 @@ class ProposalController extends Controller
         })->orWhereHas('courseCrosslists', function ($query) use ($id) {
             $query->where('course_id', $id)
                 ->orWhere('crosslist_id', $id);
+        })->orWhereHas('courseAbolishments', function ($query) use ($id) {
+            $query->where('course_id', $id);
         })->get();
 
         return response()->json($proposals);

@@ -15,80 +15,90 @@
             <p class="text-center font-bold">Loading data. Please wait...</p>
         </div>
         <div v-else>
-            <h1>{{ proposal.name }}</h1>
-            <h2>{{ proposal.date_created }}</h2>
-            <div class="flex flex-col gap-4">
-                <div v-for="(propClassify,index) in proposal.proposal_classification">
-                    <CurrViewerCourseInstitution 
-                        v-if="propClassify.target == 'Course'
-                        && propClassify.type == 'Institution'"
-                        :proposal_classification="propClassify"
-                        :subproposal="proposal.subproposals[index]"
-                    />
-    
-                    <CurrViewerCourseRevTitleNum
-                        v-else-if="propClassify.target == 'Course'
-                        && propClassify.type == 'Revision'
-                        && propClassify.sub_type == 'Change in course number and/or course title'"
-                        :proposal_classification="propClassify"
-                        :subproposal="proposal.subproposals[index]"
-                    />
-    
-                    <CurrViewerCourseRevDescription
-                        v-else-if="propClassify.target == 'Course'
-                        && propClassify.type == 'Revision'
-                        && propClassify.sub_type == 'Change in course description'"
-                        :proposal_classification="propClassify"
-                        :subproposal="proposal.subproposals[index]"
-                    />
-                    
-                    <CurrViewerCourseRevPrerequisites
-                        v-else-if="propClassify.target == 'Course'
-                        && propClassify.type == 'Revision'
-                        && propClassify.sub_type == 'Change in prerequisites'"
-                        :proposal_classification="propClassify"
-                        :subproposal="proposal.subproposals[index]"
-                    />
+            <div class="flex flex-col gap-2">
+                
+                <!-- Proposal Title -->
+                <h1 class="font-bold text-xl text-center">{{ proposal.name }}</h1>
+                <h2 class="text-center">
+                    <span class="font-semibold">Date created: </span>
+                    <span class="italic">{{ proposal.date_created }}</span>
+                </h2>
 
-                    <CurrViewerCourseRevSemOffering
-                        v-else-if="propClassify.target == 'Course'
-                        && propClassify.type == 'Revision'
-                        && propClassify.sub_type == 'Change in semester offering'"
-                        :proposal_classification="propClassify"
-                        :subproposal="proposal.subproposals[index]"
-                    />
+                <!-- Subproposals -->
+                <div class="flex flex-col gap-4">
+                    <div v-for="(propClassify,index) in proposal.proposal_classification">
+                        <CurrViewerCourseInstitution 
+                            v-if="propClassify.target == 'Course'
+                            && propClassify.type == 'Institution'"
+                            :proposal_classification="propClassify"
+                            :subproposal="proposal.subproposals[index]"
+                        />
+        
+                        <CurrViewerCourseRevTitleNum
+                            v-else-if="propClassify.target == 'Course'
+                            && propClassify.type == 'Revision'
+                            && propClassify.sub_type == 'Change in course number and/or course title'"
+                            :proposal_classification="propClassify"
+                            :subproposal="proposal.subproposals[index]"
+                        />
+        
+                        <CurrViewerCourseRevDescription
+                            v-else-if="propClassify.target == 'Course'
+                            && propClassify.type == 'Revision'
+                            && propClassify.sub_type == 'Change in course description'"
+                            :proposal_classification="propClassify"
+                            :subproposal="proposal.subproposals[index]"
+                        />
+                        
+                        <CurrViewerCourseRevPrerequisites
+                            v-else-if="propClassify.target == 'Course'
+                            && propClassify.type == 'Revision'
+                            && propClassify.sub_type == 'Change in prerequisites'"
+                            :proposal_classification="propClassify"
+                            :subproposal="proposal.subproposals[index]"
+                        />
 
-                    <CurrViewerCourseRevNumOfHours
-                        v-else-if="propClassify.target == 'Course'
-                        && propClassify.type == 'Revision'
-                        && propClassify.sub_type == 'Change in number of hours'"
-                        :proposal_classification="propClassify"
-                        :subproposal="proposal.subproposals[index]"
-                    />
+                        <CurrViewerCourseRevSemOffering
+                            v-else-if="propClassify.target == 'Course'
+                            && propClassify.type == 'Revision'
+                            && propClassify.sub_type == 'Change in semester offering'"
+                            :proposal_classification="propClassify"
+                            :subproposal="proposal.subproposals[index]"
+                        />
 
-                    <CurrViewerCourseRevContent
-                        v-else-if="propClassify.target == 'Course'
-                        && propClassify.type == 'Revision'
-                        && propClassify.sub_type == 'Change in course content'"
-                        :proposal_classification="propClassify"
-                        :subproposal="proposal.subproposals[index]"
-                    />
+                        <CurrViewerCourseRevNumOfHours
+                            v-else-if="propClassify.target == 'Course'
+                            && propClassify.type == 'Revision'
+                            && propClassify.sub_type == 'Change in number of hours'"
+                            :proposal_classification="propClassify"
+                            :subproposal="proposal.subproposals[index]"
+                        />
 
-                    <CurrViewerCourseCrosslisting
-                        v-else-if="propClassify.target == 'Course'
-                        && propClassify.type == 'Crosslisting'"
-                        :proposal_classification="propClassify"
-                        :subproposal="proposal.subproposals[index]"
-                    />
+                        <CurrViewerCourseRevContent
+                            v-else-if="propClassify.target == 'Course'
+                            && propClassify.type == 'Revision'
+                            && propClassify.sub_type == 'Change in course content'"
+                            :proposal_classification="propClassify"
+                            :subproposal="proposal.subproposals[index]"
+                        />
 
-                    <CurrViewerCourseAbolition
-                        v-else-if="propClassify.target == 'Course'
-                        && propClassify.type == 'Abolition'"
-                        :proposal_classification="propClassify"
-                        :subproposal="proposal.subproposals[index]"
-                    />
+                        <CurrViewerCourseCrosslisting
+                            v-else-if="propClassify.target == 'Course'
+                            && propClassify.type == 'Crosslisting'"
+                            :proposal_classification="propClassify"
+                            :subproposal="proposal.subproposals[index]"
+                        />
+
+                        <CurrViewerCourseAbolishment
+                            v-else-if="propClassify.target == 'Course'
+                            && propClassify.type == 'Abolition'"
+                            :proposal_classification="propClassify"
+                            :subproposal="proposal.subproposals[index]"
+                        />
+                    </div>
                 </div>
             </div>
+
         </div>
 
 
