@@ -4,7 +4,7 @@
     </div>
     <!-- There is an issue where transition from this page to other page (say, proposal management causes an error) -->
     <!-- Above code fixes it -->
-    <NuxtLayout name="curricular-viewer" prevLink="/courses-management" :pending="pending">
+    <NuxtLayout v-else name="curricular-viewer" prevLink="/courses-management">
         <template v-slot:viewer-title>Course Viewer</template>
         <template v-slot:title>{{ `${courseInfo.course.code} (${courseInfo.course.title})` }}</template>
         <template v-slot:contents>
@@ -89,58 +89,6 @@
 
             <hr class="hr-temp">
 
-            <!-- Degree Programs Requiring This Course -->
-
-            <p class="font-bold text-lg text-center">Degree Programs Requiring This Course</p>
-            <PrimeAccordion v-if="filteredDegProgs" :multiple="true">
-                <PrimeAccordionTab v-for="degProg in filteredDegProgs" :header="degProg.name">
-                    <div v-if="degProg.has_majors" class="grid grid-cols-2 gap-4">
-                        <div v-for="degMajorObj in degProgMajors" class="text-center">
-
-                            <!-- Filters appropriate deg_prog - major relationship -->
-                            <div v-if="degMajorObj.deg_prog_id == degProg.id">
-
-                                <div v-for="major in filteredMajors">
-                                    <div v-if="major.id == degMajorObj.major_id">
-                                        <p class="font-semibold">{{ major.name }}</p>
-                                    </div>
-                                </div>
-
-                                <!-- Fills in the curriculum that requires current course -->
-                                <!-- <div v-for="curriculum in filteredCurricula">
-                                    <div v-if="curriculum.major_id == degMajorObj.major_id" class="flex flex-row justify-around">
-                                        <ULink class="nav-link">{{ curriculum.name }}</ULink>
-                                        <div v-for="obj in currCourse">
-                                            <div v-if="obj.curr_id == curriculum.id" class="font-bold">
-                                                {{ obj.course_type }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
-
-                            <</div>
-                        </div>
-                    </div>
-                    <div v-else>
-                        <div v-for="curriculum in filteredCurricula">
-                            <div v-if="curriculum.deg_prog_id == degProg.id" class="flex flex-row justify-around">
-                                <ULink class="nav-link">{{ curriculum.name }}</ULink>
-                                <div v-for="obj in currCourse">
-                                    <div v-if="obj.curr_id == curriculum.id" class="font-bold">
-                                        <p>{{ obj.course_type }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </PrimeAccordionTab>
-            </PrimeAccordion>
-            <div v-else>
-                <p class="text-semibold text-center italic">No Degree Programs require this course</p>
-            </div>
-
-            <hr class="hr-temp">
-            
             <!-- History -->
             <p class="font-bold text-lg text-center">Course History</p>
             <div class="timeline-container">

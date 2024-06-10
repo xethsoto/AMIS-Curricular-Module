@@ -12,11 +12,11 @@
         </div>
 
         <!-- Body -->
-        <div v-if="pending">
+        <!-- <div v-if="pending">
             <p class="text-center font-bold">Loading data. Please wait...</p>
-        </div>
+        </div> -->
         
-        <div v-else class="flex flex-col bg-white p-7 gap-4">
+        <div class="flex flex-col bg-white p-7 gap-4">
             <!-- Title -->
             <h2 class="font-bold text-xl">
                 <slot name="title"></slot>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-    const {prevLink, pending} = defineProps(['prevLink', 'pending'])
+    const {prevLink} = defineProps(['prevLink'])
 </script>
 
 <style scoped>
