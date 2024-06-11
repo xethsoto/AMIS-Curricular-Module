@@ -5,7 +5,6 @@
         paginator
         :rows="5"
         :rowsPerPageOptions="rowsOption ? rowsPerPageOptions : null"
-        :globalFilterFields="globalFilterFields"
         :pt="{ header: 'table-header', table: 'actual-table' }"
     >  
 
@@ -44,12 +43,12 @@
         data,
         searchLabel,
         rowsOption,
-        globalFilterFields
+        proposalTable
     } = defineProps([
         'data',
         'searchLabel',
         'rowsOption',
-        'globalFilterFields'
+        'proposalTable'
     ])
     const rowsPerPageOptions = [5, 10, 20, 50]
     const filters = ref({
@@ -61,13 +60,24 @@
 
     watchEffect(() => {
 
-        // global filtering 
-        globalFilterFields.forEach((field) => {
-            filters.value[field] = {
+        if (proposalTable){
+            // globalFilterFields.value = ['name']
+            filters.name = {
                 value: null,
                 matchMode: 'contains'
             }
-        })        
+        } else {
+            // globalFilterFields.value = ['code', 'title']
+            filters.code = {
+                value: null,
+                matchMode: 'contains'
+            }
+
+            filters.title = {
+                value: null,
+                matchMode: 'contains'
+            }
+        }      
     })
 </script>
 

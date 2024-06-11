@@ -9,7 +9,6 @@
             :data="data"
             :searchLabel=searchLabel
             :rowsOption="true"
-            :globalFilterFields="globalFilterFields"
             :loading="loading"
         >
             <template #more-filters>
@@ -48,14 +47,14 @@
         uri,
         noStatus,
         searchLabel,
-        globalFilterFields,
+        proposalTable,
     } = defineProps([
         'data',
         'meta',
         'uri',
         'noStatus',
         'searchLabel',
-        'globalFilterFields'
+        'proposalTable'
     ])
 
     const selectItem = async (item) => {

@@ -19,6 +19,11 @@ class CourseInstitutionController extends Controller
     public function saveInstitution($proposal, $content, $date)
     {
         try{
+            $messages = [
+                'num.required' => 'The code field is required',
+                'num.string' => 'The code field must be a string',
+            ];
+
             $validator = Validator::make($content, [
                 'num' => 'required|string',
                 'title' => 'required|string',
@@ -29,7 +34,7 @@ class CourseInstitutionController extends Controller
                 'outline' => 'required|string',
                 'prereqs' => 'required|array',
                 'sem_offered' => 'required|array',
-            ]);
+            ], $messages);
 
             if ($validator->fails()){
                 throw new ValidationException($validator);
@@ -77,6 +82,11 @@ class CourseInstitutionController extends Controller
     public function saveAdoption($proposal, $content, $date)
     {
         try{
+            $messages = [
+                'num.required' => 'The code field is required',
+                'num.string' => 'The code field must be a string',
+            ];
+
             $validator = Validator::make($content, [
                 'num' => 'required|string',
                 'title' => 'required|string',
@@ -88,7 +98,7 @@ class CourseInstitutionController extends Controller
                 'prereqs' => 'required|array',
                 'sem_offered' => 'required|array',
                 'univ_origin' => 'required|string',
-            ]);
+            ], $messages);
 
             if ($validator->fails()){
                 throw new ValidationException($validator);

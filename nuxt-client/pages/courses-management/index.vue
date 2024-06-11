@@ -5,7 +5,6 @@
             :meta="meta"
             :uri="uri"
             searchLabel="Filter By Course Code or Title"
-            :globalFilterFields="['code', 'title']"
         >
             <template v-slot:title>Courses Management</template>
         </NuxtLayout>

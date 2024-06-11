@@ -5,8 +5,8 @@
             :meta="meta"
             :uri="uri"
             searchLabel="Filter By Proposal Name"
-            :globalFilterFields="['name']"
             :noStatus="true"
+            :proposalTable="true"
         >
             <template v-slot:title>Proposals Management</template>
 
