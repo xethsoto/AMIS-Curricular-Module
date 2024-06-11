@@ -176,13 +176,9 @@
 
     const toast = useToast()    //notification
 
-    const proposalTitle = ref("Proposal Test Title")
+    const proposalTitle = ref("")
     const creationDate = ref(null)
     const numOfProp = ref(0)
-
-    watchEffect(() => {
-        console.log("creationDate = ", creationDate.value)
-    })
     
     const propAction = reactive([])
     const formContent = reactive([])
@@ -215,10 +211,6 @@
                 body: JSON.stringify(proposalData)
             })
             
-            // console.log("response = ", response)
-            // const responseData = response.error
-            // console.log("responseData = ", responseData)
-            
             if (error.value) {
                 console.log("Error in uploading data: ", error.value.data?.message)
 
@@ -235,7 +227,7 @@
 
                 toast.add({
                     severity: 'success',
-                    summary: data.message,
+                    summary: "Data uploaded successfully",
                     life: 3000
                 })
                 router.push('/proposals-management');
