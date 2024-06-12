@@ -19,7 +19,7 @@
                             :to="`/courses-management/${prereq.id}`"
                             class="nav-link"
                         >
-                        {{ `${prereq.code}: ${prereq.title}` }}
+                        {{ `${prereq.code} (${prereq.title})` }}
                         </NuxtLink>
                     </div>
                     <div v-else>
@@ -30,13 +30,13 @@
                 <template v-slot:secondHalf>
                     <p class="font-bold text-center">Proposed Changes</p>
                     <p class="font-semibold">Proposed Prerequisites: </p>
-                    <div v-if="subproposal.details.curr_prereqs.length > 0" 
+                    <div v-if="subproposal.details.curr_prereqs.length >" 
                     v-for="prereq in subproposal.details.curr_prereqs">
                         <NuxtLink
                             :to="`/courses-management/${prereq.id}`"
                             class="nav-link"
                         >
-                        {{ `${prereq.code}: ${prereq.title}` }}
+                        {{ `${prereq.code} (${prereq.title})` }}
                         </NuxtLink>
                     </div>
                     <div v-else>

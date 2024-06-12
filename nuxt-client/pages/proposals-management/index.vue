@@ -36,14 +36,14 @@
     /* converting classification array to string
     *  for table displaying
     */
-
     watchEffect(() => {
         if (proposals.value){
             proposals.value.forEach(proposal => {
-                proposal.target = proposal.target.join(', ')
-                proposal.type = proposal.type.join(', ')
+                // convert to Set to remove duplicates
+                proposal.target = [...new Set(proposal.target)].join(', ')
+                proposal.type = [...new Set(proposal.type)].join(', ')
                 // excluding null sub types to join
-                proposal.sub_type = proposal.sub_type.filter((subType) => subType !== null).join(', ')
+                proposal.sub_type = [...new Set(proposal.sub_type.filter((subType) => subType !== null))].join(', ')
             })
         }
     })

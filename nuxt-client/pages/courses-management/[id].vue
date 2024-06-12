@@ -30,7 +30,7 @@
                                     :to="`/courses-management/${courseInfo.crosslisted.id}`"
                                     class="nav-link"
                             >
-                                {{ `${courseInfo.crosslisted.code}: ${courseInfo.crosslisted.title}` }}
+                                {{ `${courseInfo.crosslisted.code} (${courseInfo.crosslisted.title})` }}
                             </NuxtLink>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                                     :to="`/courses-management/${prereq.id}`"
                                     class="nav-link"
                                 >
-                                {{ `${prereq.code}: ${prereq.title}` }}
+                                {{ `${prereq.code} (${prereq.title})` }}
                                 </NuxtLink>
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                                 :to="`/courses-management/${req.id}`"
                                 class="nav-link"
                             >
-                                {{ `${req.code}: ${req.title}` }}
+                                {{ `${req.code} (${req.title})` }}
                             </NuxtLink>
                         </div>
                     </div>

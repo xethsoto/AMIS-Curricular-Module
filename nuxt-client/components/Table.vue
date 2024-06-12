@@ -27,7 +27,6 @@
             </div>
         </template>
 
-
         <slot name="columns"></slot>
 
     </PrimeDataTable>
@@ -61,13 +60,11 @@
     watchEffect(() => {
 
         if (proposalTable){
-            // globalFilterFields.value = ['name']
             filters.name = {
                 value: null,
                 matchMode: 'contains'
             }
         } else {
-            // globalFilterFields.value = ['code', 'title']
             filters.code = {
                 value: null,
                 matchMode: 'contains'
