@@ -65,167 +65,127 @@ class ProposalController extends Controller
                     'message' => $actionValidator->errors()->all()
                 ], 422);
             } else {
-                // //Check if fields in the formContent variable are empty
-                // $rules = [];
+                try{
+                    DB::beginTransaction();
 
-                // // REFACTOR: Validation can possibly be moved to the respective controllers
-                // $i  = 0;
-                // foreach ($content as $form){
-                //     foreach ($form as $field => $value){
-                //         if ($action[$i]['propType'] == 'Institution'){
-                //             // Non-revisions do not allow null values
-                //             if($field == 'prereqs' && $action[$i]['propTarget'] == 'Course' && $action[$i]['propType'] == 'Institution'){
-                //                 continue; //skips prereq in Course Institutions
-                //             }
-                //             $rules["$i.$field"] = 'required';
-                //         }
-                //     }
-                //     $i++;
-                // }
-                // $formsValidator = Validator::make($content, $rules);
+                    $proposalTitle = Proposal::create([
+                        'name' => $title,
+                        'created_at' => $date,
+                        'updated_at' => $date
+                    ]);
+                    $proposal = json_decode($proposalTitle, true);
+                    
+                    $courseRevs = [];    // lists all courses that had course code revisions
 
-                // if ($formsValidator->fails()) {
-                //     return response()->json([
-                //         'status' => 422,
-                //         'message' => $formsValidator->errors()->all()
-                //     ], 422);
-                // } else {
+                    // Saving each subproposal of a proposal
+                    for ($i = 0; $i < count($action); $i++){
 
-                    try{
-                        DB::beginTransaction();
-
-                        $proposalTitle = Proposal::create([
-                            'name' => $title,
-                            'created_at' => $date,
-                            'updated_at' => $date
+                        // Rationale Validation
+                        $validator = Validator::make($content[$i], [
+                            'rationale' => 'required|string',
                         ]);
-                        $proposal = json_decode($proposalTitle, true);
-                        
-                        $courseRevs = [];    // lists all courses that had course code revisions
-
-                        // Saving each subproposal of a proposal
-                        for ($i = 0; $i < count($action); $i++){
-
-                            // Rationale Validation
-                            $validator = Validator::make($content[$i], [
-                                'rationale' => 'required|string',
-                            ]);
-                            if ($validator->fails()){
-                                throw new ValidationException($validator);
-                            }
-
-                            $proposalClassification = ProposalClassification::create([
-                                'prop_id' => $proposal['id'],
-                                'target' => $action[$i]['propTarget'],
-                                'type' => $action[$i]['propType'],
-                                'sub_type' => $action[$i]['propSubType'],
-                                'rationale' => $content[$i]['rationale']
-                            ]);
-
-                            $propTarget = $action[$i]['propTarget'];
-                            $propType = $action[$i]['propType'];
-                            if($action[$i]['propSubType']){
-                                $propSubType = $action[$i]['propSubType'];
-                            }
-
-                            // Forms Controller
-                            switch($propTarget){
-                                case 'Course':
-                                    switch($propType){
-                                        case 'Institution':
-                                            $controller = new CourseInstitutionController();
-                                            $controller->saveInstitution($proposal, $content[$i], $date);
-                                            break;
-                                        case 'Revision':
-                                            $controller = new CourseRevisionController();
-                                            $courseBeforeUpd = null;
-                                            $courseRef = null;
-
-                                            // check if course is in the list of courses that had course code revisions
-                                            foreach($courseRevs as $course){
-                                                if ($course['id'] == $content[$i]['selectedCourse']['id']){
-                                                    $courseRef = $course;
-                                                    break;
-                                                }
-                                            }
-
-                                            //get course before update if code and/or title were changed
-                                            $courseBeforeUpd = $controller->save($proposal, $content[$i], $date, $propSubType, $courseRef);
-
-                                            //we add the course to the list of courses that had course code revisions
-                                            if ($courseBeforeUpd){
-                                                $courseRevs[] = $courseBeforeUpd;
-                                            }
-                                            break;
-                                        case 'Abolition':
-                                            $controller = new CourseAbolishmentController();
-                                            $controller->save($proposal, $content[$i]);
-                                            break;
-                                        case 'Crosslisting':
-                                            $controller = new CourseCrosslistController();
-                                            $controller->save($proposal, $content[$i]);
-                                            break;
-                                        case 'Adoption':
-                                            $controller = new CourseInstitutionController();
-                                            $controller->saveAdoption($proposal, $content[$i], $date);
-                                            break;
-                                    }
-                                    break;
-                                case 'Degree Program':
-                                    switch($propType){
-                                        case 'Institution':
-                                            $controller = new DegProgInstitutionController();
-                                            $controller->save($proposal, $content[$i]);
-                                            break;
-                                    }
-                                    break;
-                            }
+                        if ($validator->fails()){
+                            throw new ValidationException($validator);
                         }
 
+                        $proposalClassification = ProposalClassification::create([
+                            'prop_id' => $proposal['id'],
+                            'target' => $action[$i]['propTarget'],
+                            'type' => $action[$i]['propType'],
+                            'sub_type' => $action[$i]['propSubType'],
+                            'rationale' => $content[$i]['rationale']
+                        ]);
 
-                        DB::commit();
-                    } catch (\Exception $e) { 
-                        DB::rollback();
-
-                        if ($e instanceof ValidationException) {
-                            return response()->json([
-                                'status' => 422,
-                                'message' => Arr::flatten($e->errors())
-                            ], 422);
+                        $propTarget = $action[$i]['propTarget'];
+                        $propType = $action[$i]['propType'];
+                        if($action[$i]['propSubType']){
+                            $propSubType = $action[$i]['propSubType'];
                         }
 
+                        // Forms Controller
+                        switch($propTarget){
+                            case 'Course':
+                                switch($propType){
+                                    case 'Institution':
+                                        $controller = new CourseInstitutionController();
+                                        $controller->saveInstitution($proposal, $content[$i], $date);
+                                        break;
+                                    case 'Revision':
+                                        $controller = new CourseRevisionController();
+                                        $courseBeforeUpd = null;
+                                        $courseRef = null;
+
+                                        // check if course is in the list of courses that had course code revisions
+                                        foreach($courseRevs as $course){
+                                            if ($course['id'] == $content[$i]['selectedCourse']['id']){
+                                                $courseRef = $course;
+                                                break;
+                                            }
+                                        }
+
+                                        //get course before update if code and/or title were changed
+                                        $courseBeforeUpd = $controller->save($proposal, $content[$i], $date, $propSubType, $courseRef);
+
+                                        //we add the course to the list of courses that had course code revisions
+                                        if ($courseBeforeUpd){
+                                            $courseRevs[] = $courseBeforeUpd;
+                                        }
+                                        break;
+                                    case 'Abolition':
+                                        $controller = new CourseAbolishmentController();
+                                        $controller->save($proposal, $content[$i]);
+                                        break;
+                                    case 'Crosslisting':
+                                        $controller = new CourseCrosslistController();
+                                        $controller->save($proposal, $content[$i]);
+                                        break;
+                                    case 'Adoption':
+                                        $controller = new CourseInstitutionController();
+                                        $controller->saveAdoption($proposal, $content[$i], $date);
+                                        break;
+                                }
+                                break;
+                            case 'Degree Program':
+                                switch($propType){
+                                    case 'Institution':
+                                        $controller = new DegProgInstitutionController();
+                                        $controller->save($proposal, $content[$i]);
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+
+
+                    DB::commit();
+                } catch (\Exception $e) { 
+                    DB::rollback();
+
+                    if ($e instanceof ValidationException) {
                         return response()->json([
-                            'status' => 500,
-                            'message' => $e->getMessage()
-                        ], 500);
+                            'status' => 422,
+                            'message' => Arr::flatten($e->errors())
+                        ], 422);
                     }
 
                     return response()->json([
-                        'status' => 200,
-                        'message' => "Successfully created proposal"
-                    ], 200);
-                // }
+                        'status' => 500,
+                        'message' => $e->getMessage()
+                    ], 500);
+                }
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => "Successfully created proposal"
+                ], 200);
             }
         }
     }
 
-    // Get all proposals
-    // IS THIS STILL NEEDED?
-    // public function getProposals()
-    // {
-    //     $proposals = Proposal::with(
-    //         'proposalClassification',
-    //         'courseInstitutions',
-    //         'courseRevisions',
-    //         'courseCrosslists',
-    //         'courseAbolishments'
-    //     )->get();
-    //     return response()->json($proposals);
-    // }
-
     /* 
     * Get proposals (w/o subproposals) 
     * that are referenced by a specific course
+    * @return sorted proposals by created_at as JSON
     */
     public function getProposalsByCourseId($id)
     {
@@ -238,7 +198,7 @@ class ProposalController extends Controller
                 ->orWhere('crosslist_id', $id);
         })->orWhereHas('courseAbolishments', function ($query) use ($id) {
             $query->where('course_id', $id);
-        })->get();
+        })->get()->sortBy('created_at')->values();
 
         return response()->json($proposals);
     }

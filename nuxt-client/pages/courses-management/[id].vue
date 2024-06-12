@@ -91,23 +91,39 @@
 
             <!-- History -->
             <p class="font-bold text-lg text-center">Course History</p>
-            <div class="timeline-container">
+            <div class="h-80">
                 <PrimeTimeline 
                     :value="courseInfo.events" 
                     layout="horizontal"
-                    align="alternate"
-                    class="container w-full overflow-x-auto"
+                    class="container w-full flex flex-nowrap"
                     @wheel="handleScroll"
+                    :pt="{
+                        root: {
+                            class: 'overflow-x-auto h-full pb-4'  
+                        },
+                        event: {
+                            class: 'min-w-96'
+                        },
+                        content: {
+                            class: ''
+                        },
+                        opposite: {
+                            class: 'h-2'
+                        }
+                    }"
                 >
-                    <template #content="slotProps">
-                        <div class="container w-full">
-                            <NuxtLink
-                                :to="`/proposals-management/${slotProps.item.id}`"
-                                class="nav-link"
-                            >
-                                {{slotProps.item.name}}
-                            </NuxtLink>
+                    <template #opposite="slotProps">
+                        <div class="flex h-full items-end">
+                            <p class="italic text-left text-sm text-slate-500">{{slotProps.item.created_at}}</p>
                         </div>
+                    </template>
+                    <template #content="slotProps">
+                        <NuxtLink
+                            :to="`/proposals-management/${slotProps.item.id}`"
+                            class="nav-link"
+                        >
+                            <p class="text-sm break-words">{{slotProps.item.name}}</p>
+                        </NuxtLink>
                     </template>
                 </PrimeTimeline>
             </div>
