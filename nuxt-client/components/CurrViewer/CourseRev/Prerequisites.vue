@@ -30,7 +30,7 @@
                 <template v-slot:secondHalf>
                     <p class="font-bold text-center">Proposed Changes</p>
                     <p class="font-semibold">Proposed Prerequisites: </p>
-                    <div v-if="subproposal.details.curr_prereqs.length >" 
+                    <div v-if="subproposal.details.curr_prereqs.length > 0" 
                     v-for="prereq in subproposal.details.curr_prereqs">
                         <NuxtLink
                             :to="`/courses-management/${prereq.id}`"
