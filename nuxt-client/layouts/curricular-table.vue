@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-4 mb-96">
+    <div class="flex flex-col gap-4 mb-8">
         <h1 class="page-title mb-8">
             <slot name="title"></slot>    
         </h1>
