@@ -18,7 +18,7 @@
 
 <script setup>
     const emit = defineEmits(['input'])
-    const semOfferings = ["1st Semester", "2nd Semester", "Midyear"]
+    const semOfferings = ["1st Semester", "2nd Semester", "Midyear", "Summer"]
 
     const semOffered = ref([])
 
