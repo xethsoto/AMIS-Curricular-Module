@@ -19,10 +19,7 @@
                             :to="`/courses-management/${prereq.id}`"
                             class="nav-link"
                         >
-                            <DetailSpan
-                                :title="`${prereq.code}:`"
-                                :content="prereq.title"
-                            />
+                            {{ `${prereq.code} (${prereq.title})` }}
                         </NuxtLink>
                         <p v-else class="italic"> No Prerequisites </p>
                 </template>
