@@ -170,8 +170,6 @@
     import { useRouter } from 'vue-router'
     import { format } from 'date-fns'
 
-    const test = new Date()
-
     const router = useRouter()
 
     const toast = useToast()    //notification
