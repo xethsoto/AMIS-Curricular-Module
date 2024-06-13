@@ -10,6 +10,10 @@
     @apply bg-maroon hover:bg-red-700 text-white p-2 !important;
 }
 
+.btn-green{
+    @apply bg-green-500 hover:bg-green-700 text-white p-2 !important;
+}
+
 .page-title{
     @apply text-2xl font-bold;
 }

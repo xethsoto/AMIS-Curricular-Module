@@ -27,16 +27,12 @@
 <script setup>
     const {inputFieldLabel} = defineProps(['inputFieldLabel'])
     const emit = defineEmits(['input'])
-    const selectedCourse = reactive({
-        id: "",
-        code: "",
-    })
     const searchLabel = "Filter by Course Code"
+    const selectedCourse = ref({code: null})
 
     const selectItem = (item, showTable) => {
         showTable()
-        selectedCourse.id = item.data.id
-        selectedCourse.code = item.data.code
+        selectedCourse.value = item.data
     }
 
     // condition for item selecting in course table
