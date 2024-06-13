@@ -30,22 +30,20 @@
     </header>
 
     <!-- Drawer -->
-    <div v-if="openedDrawer" class="drawer absolute bg-white h-full z-50 w-1/6">
-        <div class="">
-            <PrimeAccordion>
-                <PrimeAccordionTab class="font-medium" header="Academic Catalog">
-                    <NuxtLink to="/courses-management">
-                        <PrimeButton class="font-semibold p-1" label="Courses Management"/>
-                    </NuxtLink>
-                    <NuxtLink to="/proposals-management">
-                        <PrimeButton class="font-semibold p-1" label="Proposals Management"/>
-                    </NuxtLink>
-                    <NuxtLink to="/proposal-encoding">
-                        <PrimeButton class="font-semibold p-1" label="Proposal Encoding"/>
-                    </NuxtLink>
-                </PrimeAccordionTab>
-            </PrimeAccordion>
-        </div>
+    <div v-if="openedDrawer" class="drawer fixed bg-white h-full z-50 w-1/6">
+        <PrimeAccordion>
+            <PrimeAccordionTab class="font-medium" header="Academic Catalog">
+                <NuxtLink to="/courses-management">
+                    <PrimeButton class="font-semibold p-1" label="Courses Management"/>
+                </NuxtLink>
+                <NuxtLink to="/proposals-management">
+                    <PrimeButton class="font-semibold p-1" label="Proposals Management"/>
+                </NuxtLink>
+                <NuxtLink to="/proposal-encoding">
+                    <PrimeButton class="font-semibold p-1" label="Proposal Encoding"/>
+                </NuxtLink>
+            </PrimeAccordionTab>
+        </PrimeAccordion>
     </div>
 
     <div id="main-part" class="relative overflow-x-hidden items-top justify-center min-h-screen h-full pt-10">
@@ -69,7 +67,7 @@
     const closeDrawer = (event) => {
         if (!event.target.closest('.drawer')){
             openedDrawer.value = false
-            document.removeEventListener('click', handleOutsideClick)
+            document.removeEventListener('click', closeDrawer)
         }
     }
 
