@@ -7,64 +7,77 @@
             Change in course prerequisites
         </template>
         <template #main-fields>
-            <!-- New prerequisites list and table -->
-            <div v-if="formContent.selectedCourse">
-                <label class="text-base font-bold">New Prerequisites</label>
-                <div class="flex flex-col gap-4">
-                    <p class="text-sm italic text-red-500">
-                        <span class="font-bold">NOTE: </span>
-                        <span>Leaving the field empty means </span>
-                        <span class="bold">NO PREREQUISITES</span>
-                    </p>
 
-                    <!-- Input Field -->
-                    <PrimeInputGroup>
-                        <PrimeInputText
-                            disabled
-                            v-model="formContent.newPrereqs" 
-                            class="border-2 p-2 text-input"
-                        />
-                        <PrimeButton
-                            icon="pi pi-calendar" 
-                            style="color: white" 
-                            class="bg-maroon" 
-                            @click="showTable"
-                        />
-                    </PrimeInputGroup>
-                    <Table v-if="viewTable"
-                        :data="courses" 
-                        searchLabel="Filter by Course Code" 
-                        :rowsOption="false" 
-                        class="border-2"
-                    >
-                        <template v-slot:columns>
-                            <PrimeColumn 
-                                v-for="entry in meta"
-                                sortable 
-                                :key="entry.field" 
-                                :field="entry.field" 
-                                :header="entry.header"
-                            >
-                            </PrimeColumn>
+            <div v-if="formContent.selectedCourse"
+                class="flex flex-col gap-4"
+            >
+                <!-- Old prerequisites list -->
+                <div>
+                    <label class="text-base font-bold">Old Prerequisites</label>
+                    <p v-if="prereqsView">{{ prereqsView }}</p>
+                    <p v-else>No Prerequisites</p>
+                </div>   
 
-                            <PrimeColumn key="action" field="action" header="Action">
-                                <template #body="slotProps">
-                                    <PrimeButton v-if="formContent.newPrereqs.includes(slotProps.data.code)"
-                                        class="btn-maroon w-20"
-                                        label="Remove"
-                                        @click="removePrereq(slotProps.data.code)"
-                                    />
-                                    <PrimeButton v-else
-                                        class="btn-green w-20"
-                                        label="Select"
-                                        @click="formContent.newPrereqs.push(slotProps.data.code)"
-                                    />
-                                </template>
-                            </PrimeColumn>
-
-                        </template>
-                    </Table>
+                <!-- New prerequisites list and table -->
+                <div>
+                    <label class="text-base font-bold">New Prerequisites</label>
+                    <div class="flex flex-col gap-4">
+                        <p class="text-sm italic text-red-500">
+                            <span class="font-bold">NOTE: </span>
+                            <span>Leaving the field empty means </span>
+                            <span class="bold">NO PREREQUISITES</span>
+                        </p>
+    
+                        <!-- Input Field -->
+                        <PrimeInputGroup>
+                            <PrimeInputText
+                                disabled
+                                v-model="formContent.newPrereqs" 
+                                class="border-2 p-2 text-input"
+                            />
+                            <PrimeButton
+                                icon="pi pi-calendar" 
+                                style="color: white" 
+                                class="bg-maroon" 
+                                @click="showTable"
+                            />
+                        </PrimeInputGroup>
+                        <Table v-if="viewTable"
+                            :data="courses" 
+                            searchLabel="Filter by Course Code" 
+                            :rowsOption="false" 
+                            class="border-2"
+                        >
+                            <template v-slot:columns>
+                                <PrimeColumn 
+                                    v-for="entry in meta"
+                                    sortable 
+                                    :key="entry.field" 
+                                    :field="entry.field" 
+                                    :header="entry.header"
+                                >
+                                </PrimeColumn>
+    
+                                <PrimeColumn key="action" field="action" header="Action">
+                                    <template #body="slotProps">
+                                        <PrimeButton v-if="formContent.newPrereqs.includes(slotProps.data.code)"
+                                            class="btn-maroon w-20"
+                                            label="Remove"
+                                            @click="removePrereq(slotProps.data.code)"
+                                        />
+                                        <PrimeButton v-else
+                                            class="btn-green w-20"
+                                            label="Select"
+                                            @click="formContent.newPrereqs.push(slotProps.data.code)"
+                                        />
+                                    </template>
+                                </PrimeColumn>
+    
+                            </template>
+                        </Table>
+                    </div>
                 </div>
+
             </div>
         </template>
     </NuxtLayout>
@@ -109,6 +122,7 @@
         newPrereqs: [],
         rationale: ""
     })
+    const prereqsView = ref(null)
 
     const removePrereq = (code) => {
         const index = formContent.newPrereqs.indexOf(code)
@@ -119,12 +133,11 @@
         
     watch(() => formContent.selectedCourse, (newSelectedCourse) => {
         formContent.newPrereqs = newSelectedCourse?.prereqs
+        prereqsView.value = newSelectedCourse?.prereqs.join(", ")
         console.log("formContent.newPrereqs = ", formContent.newPrereqs)
-    }, {deep: true})
+    })
 
     watch(formContent, (newVal) => {
-        console.log("formContent.selectedCourse = ", formContent.selectedCourse)
-        // console.log("formContent.newPrereqs = ", formContent.newPrereqs)
         emit('inputValue', newVal)
     }, {deep: true})
 </script>
