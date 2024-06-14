@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('desc');
             $table->integer('credit');
-            $table->integer('num_of_hours');
+            $table->string('num_of_hours');
             $table->text('goal');
             $table->text('outline');
             $table->string('univ_origin')->nullable();
