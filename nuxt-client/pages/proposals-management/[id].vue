@@ -20,7 +20,7 @@
                 <!-- Proposal Title -->
                 <h1 class="font-bold text-xl text-center">{{ proposal.name }}</h1>
                 <h2 class="text-center">
-                    <span class="font-semibold">Date created: </span>
+                    <span class="font-semibold">Date effective: </span>
                     <span class="italic">{{ proposal.date_created }}</span>
                 </h2>
 

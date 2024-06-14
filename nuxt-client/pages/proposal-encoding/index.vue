@@ -9,7 +9,7 @@
         <!-- Proposal Date -->
         <div class="flex flex-col">
             <label>
-                <span class="text-sm">Date</span>
+                <span class="text-sm">Date Effective</span>
             </label>
             <PrimeCalendar v-model="creationDate"
                 dateFormat="dd/mm/yy" 

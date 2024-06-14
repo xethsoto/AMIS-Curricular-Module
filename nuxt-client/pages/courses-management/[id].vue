@@ -62,7 +62,7 @@
                 </div>
 
                 <div class="flex flex-col flex-1 gap-2">
-                    <p class="font-semibold">Requisites:</p>
+                    <p class="font-semibold">Prerequisites to the following courses:</p>
                     <div v-if="courseInfo.requisites.length">
                         <div v-for="req in courseInfo.requisites">
                             <NuxtLink
@@ -74,7 +74,7 @@
                         </div>
                     </div>
                     <div v-else>
-                        <p class="italic">No Requisites</p>
+                        <p class="italic">No courses require this course as a prerequisite</p>
                     </div>
                 </div>
             </div>

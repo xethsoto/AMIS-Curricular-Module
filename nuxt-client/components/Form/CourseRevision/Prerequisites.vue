@@ -11,11 +11,13 @@
             <div v-if="formContent.selectedCourse"
                 class="flex flex-col gap-4"
             >
-                <!-- Old prerequisites list -->
+                <!-- Current prerequisites list -->
                 <div>
-                    <label class="text-base font-bold">Old Prerequisites</label>
-                    <p v-if="prereqsView">{{ prereqsView }}</p>
-                    <p v-else>No Prerequisites</p>
+                    <label class="text-base font-bold">Current Course Prerequisites</label>
+                    <div class="ml-4">
+                        <p v-if="prereqsView">{{ prereqsView }}</p>
+                        <p v-else class="italic">No prerequisites</p>
+                    </div>
                 </div>   
 
                 <!-- New prerequisites list and table -->
@@ -25,7 +27,7 @@
                         <p class="text-sm italic text-red-500">
                             <span class="font-bold">NOTE: </span>
                             <span>Leaving the field empty means </span>
-                            <span class="bold">NO PREREQUISITES</span>
+                            <span class="font-bold">NO PREREQUISITES</span>
                         </p>
     
                         <!-- Input Field -->
@@ -114,7 +116,6 @@
         viewTable.value = !viewTable.value
     }
     
-    
     const emit = defineEmits(['inputValue'])
     
     const formContent = reactive({
@@ -134,7 +135,6 @@
     watch(() => formContent.selectedCourse, (newSelectedCourse) => {
         formContent.newPrereqs = newSelectedCourse?.prereqs
         prereqsView.value = newSelectedCourse?.prereqs.join(", ")
-        console.log("formContent.newPrereqs = ", formContent.newPrereqs)
     })
 
     watch(formContent, (newVal) => {
