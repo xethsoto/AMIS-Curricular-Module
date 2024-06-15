@@ -228,7 +228,7 @@
                     summary: "Data uploaded successfully",
                     life: 3000
                 })
-                router.push('/proposals-management');
+                router.push('/proposals-management/' + data.value.proposal_id);
             }
 
         } catch (error) {

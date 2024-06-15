@@ -176,7 +176,8 @@ class ProposalController extends Controller
 
                 return response()->json([
                     'status' => 200,
-                    'message' => "Successfully created proposal"
+                    'message' => "Successfully created proposal",
+                    'proposal_id' => $proposalTitle->id
                 ], 200);
             }
         }
