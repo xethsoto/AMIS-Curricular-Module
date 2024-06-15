@@ -152,7 +152,7 @@ class CourseRevisionController extends Controller
             });
             $course->update($updates);
 
-            if ($content['newCourseCode']){
+            if ($content['newCourseCode'] || $content['newCourseTitle']){
                 return $beforeUpdCourse;  // we return the course before its code and/or title were updated
             }
 
@@ -194,8 +194,6 @@ class CourseRevisionController extends Controller
                 'desc' => $content['newDescription'],
                 'updated_at' => $date
             ]);
-
-            return;
             
         } catch (\Exception $e) {
             error_log($e->getMessage());
