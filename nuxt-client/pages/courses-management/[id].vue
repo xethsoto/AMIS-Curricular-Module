@@ -18,7 +18,7 @@
                     <DetailSpan title="Description: " :content="courseInfo.course.desc"/>
                 </template>
                 <template v-slot:secondHalf>
-                    <DetailSpan title="Semesters Offered: " :content="courseInfo.course.sem_offered"/>
+                    <DetailSpan title="Semesters Offered: " :content="semOfferedView"/>
                     <DetailSpan title="Credit: " :content="courseInfo.course.credit"/>
                     <DetailSpan title="Number of Hours: " :content="courseInfo.course.num_of_hours"/>
                     <DetailSpan title="Goal: " :content="courseInfo.course.goal"/>
@@ -158,6 +158,16 @@
             server: false
         }
     )
+
+    const semOfferedView = ref('No semester offering indicated')
+
+    watchEffect(() => {
+        if (courseInfo.value && courseInfo.value.course && courseInfo.value.course.sem_offered) {
+            semOfferedView.value = courseInfo.value.course.sem_offered.join(', ');
+        }
+    });
+
+    
 </script>
 
 <style scoped>

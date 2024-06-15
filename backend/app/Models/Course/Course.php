@@ -49,6 +49,21 @@ class Course extends Model
     public function getSemOffered()
     {
         $semOffered = $this->semOffered;
-        return $semOffered->pluck('sem_offered');
+        $pluckedSemOffered = $semOffered->pluck('sem_offered')->toArray();
+
+        // sort sem offered numbers first then letters
+        usort($pluckedSemOffered, function ($a, $b) {
+            if (is_numeric($a) && is_numeric($b)) {
+                return $a - $b; // sort numbers in ascending order
+            } elseif (is_numeric($a)) {
+                return -1; // put numbers before letters
+            } elseif (is_numeric($b)) {
+                return 1; // put numbers before letters
+            } else {
+                return strcmp($a, $b); // sort letters in lexicographical order
+            }
+        });
+
+        return $pluckedSemOffered;
     }
 }

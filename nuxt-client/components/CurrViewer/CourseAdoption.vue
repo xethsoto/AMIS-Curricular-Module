@@ -27,7 +27,7 @@
                         <p v-else class="italic"> No Prerequisites </p>
                 </template>
                 <template v-slot:secondHalf>
-                    <DetailSpan title="Semester Offered: " :content="subproposal.sem_offered"/>
+                    <DetailSpan title="Semester Offered: " :content="semOfferedView"/>
                     <DetailSpan title="Course Credit: " :content="subproposal.credit"/>
                     <DetailSpan title="Number of Hours: " :content="subproposal.num_of_hours"/>
                     <DetailSpan title="Course Goal: " :content="subproposal.goal"/>
@@ -45,6 +45,14 @@
 
 <script setup>
     const { proposal_classification, subproposal } = defineProps(['proposal_classification', 'subproposal'])
+
+    // Converting sem offered array to string
+    const semOfferedView = ref('No semester offering indicated')
+    watchEffect(() => {
+        if (subproposal) {
+            semOfferedView.value = subproposal.sem_offered.join(', ');
+        }
+    });
 </script>
 
 <style scoped>

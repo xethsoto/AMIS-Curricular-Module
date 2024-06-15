@@ -14,10 +14,22 @@
 <script setup>
     const uri = "/courses-management/"
 
-    const { data: courses } = await useFetch('http://localhost:8000/api/get-courses', {
+    const { data: fetchedCourses } = await useFetch('http://localhost:8000/api/get-courses', {
         lazy: false,
         server: false
     })
+
+    const courses = ref([]);
+
+    watchEffect(() => {
+        if (fetchedCourses.value) {
+            courses.value = fetchedCourses.value.map(course => {
+                course.sem_offered = course.sem_offered.join(', ');
+
+                return course;
+            });
+        }
+    });
 
     const meta = [
         {
@@ -41,6 +53,8 @@
             header: "Units",
         }
     ]
+
+
 </script>
 
 <style scoped>
