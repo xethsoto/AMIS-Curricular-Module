@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-5">
+    <div class="flex flex-col gap-5 mb-8">
         <!-- Title -->
         <div class="flex flex-row gap-4">
             <NuxtLink to="/proposals-management">
