@@ -15,7 +15,7 @@
                     <p>{{ subproposal.details.prev_num_of_hours }}</p>
                 </template>
                 <template v-slot:secondHalf>
-                    <p class="font-bold text-center">Propoosed Changes</p>
+                    <p class="font-bold text-center">Proposed Changes</p>
                     <p class="font-semibold">Proposed Number of Hours: </p>
                     <p>{{ subproposal.details.new_num_of_hours }}</p>
                 </template>

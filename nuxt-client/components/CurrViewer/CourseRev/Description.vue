@@ -15,7 +15,7 @@
                     <p>{{ subproposal.details.prev_desc }}</p>
                 </template>
                 <template v-slot:secondHalf>
-                    <p class="font-bold text-center">Propoosed Changes</p>
+                    <p class="font-bold text-center">Proposed Changes</p>
                     <p class="font-semibold">Proposed Description: </p>
                     <p>{{ subproposal.details.new_desc }}</p>
                 </template>
