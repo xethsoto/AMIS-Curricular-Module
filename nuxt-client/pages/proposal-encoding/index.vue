@@ -73,76 +73,96 @@
                         
                         <!-- Course Institution Form -->
                         <FormCourseInstitution 
-                            v-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Institution'"
+                            v-if="propAction[num-1].propTarget==='Course'
+                            && propAction[num-1].propType==='Institution'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
 
                         <!-- Course Abolition Form -->
                         <FormCourseAbolition
-                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Abolition'"
+                            v-else-if="propAction[num-1].propTarget==='Course'
+                            && propAction[num-1].propType==='Abolition'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
                         
                         <!-- Course Revision Forms -->
                         <FormCourseRevisionTitleNum
-                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[0]"
+                            v-else-if="propAction[num-1].propTarget==='Course'
+                            && propAction[num-1].propType==='Revision'
+                            && propAction[num-1].propSubType===courseRevTypes[0]"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
 
                         <FormCourseRevisionDescription
-                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[1]"
+                            v-else-if="propAction[num-1].propTarget==='Course'
+                            && propAction[num-1].propType==='Revision'
+                            && propAction[num-1].propSubType===courseRevTypes[1]"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
 
                         <FormCourseRevisionPrerequisites
-                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[2]"
+                            v-else-if="propAction[num-1].propTarget==='Course'
+                            && propAction[num-1].propType==='Revision'
+                            && propAction[num-1].propSubType===courseRevTypes[2]"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
 
                         <FormCourseRevisionSemOffering
-                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[3]"
+                            v-else-if="propAction[num-1].propTarget==='Course'
+                            && propAction[num-1].propType==='Revision'
+                            && propAction[num-1].propSubType===courseRevTypes[3]"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4" 
                         />
 
                         <FormCourseRevisionNumOfHours
-                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[4]"
+                            v-else-if="propAction[num-1].propTarget==='Course'
+                            && propAction[num-1].propType==='Revision'
+                            && propAction[num-1].propSubType===courseRevTypes[4]"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
 
-                        <!-- Course Revision for addition/deletion of laboratory/recitation/computation -->
-                            <!-- TODO: Missing course revision sub types -->
-                            <!-- Addition of laboratory/recitation/computation -->
-                            <!-- Deletion of laboratory/recitation/computation -->
-                        <!--------------------------->
+                        <FormCourseRevisionCredit
+                            v-else-if="propAction[num-1].propTarget==='Course'
+                            && propAction[num-1].propType==='Revision'
+                            && propAction[num-1].propSubType===courseRevTypes[5]"
+                            @inputValue="formContent[num-1]=$event"
+                            class="flex flex-col gap-4"
+                        />
+
                         <FormCourseRevisionContent
-                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Revision' && propAction[num-1].propSubType===courseRevTypes[7]"
+                            v-else-if="propAction[num-1].propTarget==='Course'
+                            && propAction[num-1].propType==='Revision'
+                            && propAction[num-1].propSubType===courseRevTypes[6]"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
                         
                         <!-- Course Crosslisting -->
                         <FormCourseCrosslisting
-                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Crosslisting'"
+                            v-else-if="propAction[num-1].propTarget==='Course'
+                            && propAction[num-1].propType==='Crosslisting'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
                         
                         <!-- Course Adoption -->
                         <FormCourseAdoption
-                            v-else-if="propAction[num-1].propTarget==='Course' && propAction[num-1].propType==='Adoption'"
+                            v-else-if="propAction[num-1].propTarget==='Course'
+                            && propAction[num-1].propType==='Adoption'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
 
                         <FormDegProgInstitution
-                            v-else-if="propAction[num-1].propTarget==='Degree Program' && propAction[num-1].propType==='Institution'"
+                            v-else-if="propAction[num-1].propTarget==='Degree Program'
+                            && propAction[num-1].propType==='Institution'"
                             @inputValue="formContent[num-1]=$event"
                             class="flex flex-col gap-4"
                         />
@@ -194,6 +214,9 @@
     }
 
     const submitProposal = async () => {
+
+        validate()
+
         const proposalData = {
             "title": proposalTitle.value,
             "date": format(creationDate.value, 'yyyy-MM-dd'),
@@ -236,6 +259,36 @@
         }
     }
 
+    const validate = () => {
+        if (!proposalTitle.value){
+            toast.add({
+                severity: 'error',
+                summary: "Error in uploading data",
+                detail: "'Proposal Title' is empty",
+                life: 5000
+            });
+        }
+
+        if (!creationDate.value){
+            toast.add({
+                severity: 'error',
+                summary: "Error in uploading data",
+                detail: "'Date Effective' is empty",
+                life: 5000
+            });
+        }
+
+        if(numOfProp.value <= 0){
+            toast.add({
+                severity: 'error',
+                summary: "Error in uploading data",
+                detail: "No subproposals added. Please add a subproposal to continue.",
+                life: 5000
+            });
+        }
+
+    }
+
     // Dropdown choices
     const targetSelection = ["Course", "Curriculum", "Degree Program"]
     const degProgTypeSelect = [
@@ -268,8 +321,7 @@
         "Change in prerequisites",
         "Change in semester offering",
         "Change in number of hours",
-        "Addition of laboratory/recitation/computation",
-        "Deletion of laboratory/recitation/computation",
+        "Change in course credit",
         "Change in course content"
     ]
     

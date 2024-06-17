@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\CourseController;
 use Illuminate\Validation\ValidationException;
 use App\Models\Proposal\CourseProp\CourseRevision\Desc;
+use App\Models\Proposal\CourseProp\CourseRevision\Credit;
 use App\Models\Proposal\CourseProp\CourseRevision\Content;
 use App\Models\Proposal\CourseProp\CourseRevision\Prereqs;
 use App\Models\Proposal\CourseProp\CourseRevision\TitleNum;
@@ -76,6 +77,9 @@ class CourseRevisionController extends Controller
                     break;
                 case 'Change in number of hours':
                     return $this->changeHours($content, $course, $courseRevision['id'], $date);
+                    break;
+                case 'Change in course credit':
+                    return $this->changeCredit($content, $course, $courseRevision['id'], $date);
                     break;
                 case 'Change in course content':
                     return $this->changeContent($content, $course, $courseRevision['id'], $date);
@@ -353,9 +357,6 @@ class CourseRevisionController extends Controller
                 throw new ValidationException($validator);
             }
             
-            error_log('$course = '.$course);
-            error_log('$date = '.$date);
-            
             /*
             * Creating new course revision proposal 
             * and updating the actual course entry
@@ -411,6 +412,44 @@ class CourseRevisionController extends Controller
             $course->update([
                 'goal' => $content['newGoal'],
                 'outline' => $content['newOutline'],
+                'updated_at' => $date
+            ]);
+
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            if($e instanceof ValidationException){
+                throw $e;
+            }
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    private function changeCredit($content, $course, $courseRevId, $date)
+    {
+        try{
+            // Check if there is a selected course
+            $validator = Validator::make($content, [
+                'selectedCourse' => 'required',
+                'newCredit' => 'required'
+            ]);
+            if ($validator->fails()) {
+                throw new ValidationException($validator);
+            }
+
+            /*
+            * Creating new course revision proposal 
+            * and updating the actual course entry
+            */
+            // Creating the new credit entry
+            Credit::create([
+                'rev_id' => $courseRevId,
+                'prev_credit' => $course['credit'],
+                'new_credit' => $content['newCredit']
+            ]);
+
+            // Updating the actual course
+            $course->update([
+                'credit' => $content['newCredit'],
                 'updated_at' => $date
             ]);
 

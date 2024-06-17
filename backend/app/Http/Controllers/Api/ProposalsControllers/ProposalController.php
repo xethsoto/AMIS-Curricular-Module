@@ -50,7 +50,6 @@ class ProposalController extends Controller
                 'message' => $validator->errors()->all()
             ], 422);
         } else {
-
             // Check if fields in the action variable are not empty
             $actionValidator = Validator::make($action, [
                 '*' => 'array:propTarget,propType,propSubType',

@@ -3,12 +3,13 @@
 namespace App\Models\Proposal;
 
 use App\Models\Course\Course;
-use App\Models\Proposal\CourseProp\CourseAbolishment;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Proposal\CourseProp\CourseCrosslist;
+use App\Models\Proposal\CourseProp\CourseAbolishment;
 use App\Models\Proposal\CourseProp\CourseInstitution;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Proposal\CourseProp\CourseRevision\Desc;
+use App\Models\Proposal\CourseProp\CourseRevision\Credit;
 use App\Models\Proposal\CourseProp\CourseRevision\Content;
 use App\Models\Proposal\CourseProp\CourseRevision\Prereqs;
 use App\Models\Proposal\CourseProp\CourseRevision\TitleNum;
@@ -120,6 +121,9 @@ class Proposal extends Model
                     break;
                 case 'Change in number of hours':
                     $revision['details'] = NumOfHours::where('rev_id', $revision['id'])->first();
+                    break;
+                case 'Change in course credit':
+                    $revision['details'] = Credit::where('rev_id', $revision['id'])->first();
                     break;
                 case 'Change in course content':
                     $revision['details'] = Content::where('rev_id', $revision['id'])->first();

@@ -82,6 +82,14 @@
                             :subproposal="proposal.subproposals[index]"
                         />
 
+                        <CurrViewerCourseRevCredit
+                            v-else-if="propClassify.target == 'Course'
+                            && propClassify.type == 'Revision'
+                            && propClassify.sub_type == 'Change in course credit'"
+                            :proposal_classification="propClassify"
+                            :subproposal="proposal.subproposals[index]"
+                        />
+
                         <CurrViewerCourseCrosslisting
                             v-else-if="propClassify.target == 'Course'
                             && propClassify.type == 'Crosslisting'"
