@@ -14,7 +14,7 @@
                     <DetailSpan title="Course Number: " :content="subproposal.code"/>
                     <DetailSpan title="Course Description: " :content="subproposal.title"/>
                     <DetailSpan title="Prerequisites: "/>
-                        <NuxtLink v-if="subproposal.prereqs"
+                        <NuxtLink v-if="subproposal.prereqs.length > 0"
                             v-for="prereq in subproposal.prereqs" 
                             :to="`/courses-management/${prereq.id}`"
                             class="nav-link"
