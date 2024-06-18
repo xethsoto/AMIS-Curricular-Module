@@ -20,10 +20,11 @@
 
                 <!-- Current Semester Offering/s -->
                 <label class="text-base font-bold">New Semester Offerings</label>
-                <label class="text-sm italic text-red-500">
+                <p class="text-sm italic text-red-500">
                     <span class="font-bold">NOTE: </span>
-                    <span>Please also tick current semester offering/s if they are still needed</span>
-                </label>
+                    <span>No boxes ticked means </span>
+                    <span class="font-bold">NO SEMESTER OFFERING</span>
+                </p>    
                 <SemOffering
                     @input="formContent.newSemOffering = $event"
                     :initVal="formContent.currSemOffering"
