@@ -153,10 +153,11 @@
                         />
                         
                         <!-- Course Adoption -->
-                        <FormCourseAdoption
+                        <FormCourseInstitution
                             v-else-if="propAction[num-1].propTarget==='Course'
                             && propAction[num-1].propType==='Adoption'"
                             @inputValue="formContent[num-1]=$event"
+                            :adoption="true"
                             class="flex flex-col gap-4"
                         />
 
