@@ -15,13 +15,14 @@ class CourseAbolishmentController extends Controller
     public function save ($proposal, $content)
     {
         try {
-            error_log(print_r($proposal, true));
+            $messages = [
+                'selectedCourse.required' => "Please select a course to revise",
+            ];
 
             // Check if there is a selected course
             $validator = Validator::make($content, [
                 'selectedCourse' => 'required'
-            ]);
-
+            ], $messages);
             if($validator->fails()){
                 throw new ValidationException($validator);
             }

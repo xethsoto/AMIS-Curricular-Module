@@ -76,8 +76,6 @@ class ProposalController extends Controller
 
                     // Saving each subproposal of a proposal
                     for ($i = 0; $i < count($action); $i++){
-                        error_log('$content[$i]: ' .print_r($content[$i], true));
-                        error_log('$content[$i].rationale: ' .($content[$i]['rationale']));
 
                         // Rationale Validation
                         $validator = Validator::make($content[$i], [
@@ -87,7 +85,7 @@ class ProposalController extends Controller
                             throw new ValidationException($validator);
                         }
 
-                        $proposalClassification = ProposalClassification::create([
+                        ProposalClassification::create([
                             'prop_id' => $proposal['id'],
                             'target' => $action[$i]['propTarget'],
                             'type' => $action[$i]['propType'],

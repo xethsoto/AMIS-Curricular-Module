@@ -15,11 +15,16 @@ class CourseCrosslistController extends Controller
     public function save($proposal, $content)
     {
         try{
+            $messages = [
+                'selectedCourse.required' => "Please select a course to crosslist",
+                'crosslistCourse.required' => "Please select a course to crosslist with"
+            ];
+
             // Check if there is a selected course and crosslist course
             $validator = Validator::make($content, [
                 'selectedCourse' => 'required',
                 'crosslistCourse' => 'required'
-            ]);
+            ], $messages);
             if($validator->fails()){
                 throw new ValidationException($validator);
             }

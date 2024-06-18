@@ -20,8 +20,21 @@ class CourseInstitutionController extends Controller
     {
         try{
             $messages = [
-                'num.required' => 'The code field is required',
-                'num.string' => 'The code field must be a string',
+                'num.required' => "The 'Course Code' field is required",
+                'num.string' => "The 'Course Code' field must be a string",
+                'title' => "The 'Course Title' field is required",
+                'title' => "The 'Course Title' field must be a string",
+                'description' => "The 'Course Description' field is required",
+                'description' => "The 'Course Description' field must be a string",
+                'credit' => "The 'Course Credit' field is required",
+                'credit' => "The 'Course Credit' field must be an integer",
+                'numOfHours' => "The 'Number of Hours' field is required",
+                'numOfHours' => "The 'Number of Hours' field must be a string",
+                'goal' => "The 'Course Goal' field is required",
+                'goal' => "The 'Course Goal' field must be a string",
+                'outline' => "The 'Course Outline' field is required",
+                'outline' => "The 'Course Outline' field must be a string",
+                'sem_offered' => "The 'Semesters Offered' field is required",
             ];
 
             $validator = Validator::make($content, [
@@ -32,7 +45,6 @@ class CourseInstitutionController extends Controller
                 'numOfHours' => 'required|string',
                 'goal' => 'required|string',
                 'outline' => 'required|string',
-                'prereqs' => 'required|array',
                 'sem_offered' => 'required|array',
             ], $messages);
 
@@ -83,8 +95,22 @@ class CourseInstitutionController extends Controller
     {
         try{
             $messages = [
-                'num.required' => 'The code field is required',
-                'num.string' => 'The code field must be a string',
+                'num.required' => "The 'Course Code' field is required",
+                'num.string' => "The 'Course Code' field must be a string",
+                'title' => "The 'Course Title' field is required",
+                'title' => "The 'Course Title' field must be a string",
+                'desc' => "The 'Course Description' field is required",
+                'desc' => "The 'Course Description' field must be a string",
+                'credit' => "The 'Course Credit' field is required",
+                'credit' => "The 'Course Credit' field must be an integer",
+                'numOfHours' => "The 'Number of Hours' field is required",
+                'numOfHours' => "The 'Number of Hours' field must be a string",
+                'goal' => "The 'Course Goal' field is required",
+                'goal' => "The 'Course Goal' field must be a string",
+                'outline' => "The 'Course Outline' field is required",
+                'outline' => "The 'Course Outline' field must be a string",
+                'univ_origin' => "The 'University Origin' field is required",
+                'univ_origin' => "The 'University Origin' field must be a string",
             ];
 
             $validator = Validator::make($content, [
@@ -95,8 +121,6 @@ class CourseInstitutionController extends Controller
                 'numOfHours' => 'required|string',
                 'goal' => 'required|string',
                 'outline' => 'required|string',
-                'prereqs' => 'required|array',
-                'sem_offered' => 'required|array',
                 'univ_origin' => 'required|string',
             ], $messages);
 

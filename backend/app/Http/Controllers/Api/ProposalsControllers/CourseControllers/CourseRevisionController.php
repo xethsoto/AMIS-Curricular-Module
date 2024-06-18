@@ -27,10 +27,14 @@ class CourseRevisionController extends Controller
     public function save($proposal, $content, $date, $propSubType, $courseRef)
     {
         try{
+            $messages = [
+                'selectedCourse.required' => "Please select a course to revise",
+            ];
+
             // Check if there is a selected course
             $validator = Validator::make($content, [
                 'selectedCourse' => 'required',
-            ]);
+            ], $messages);
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
@@ -100,22 +104,29 @@ class CourseRevisionController extends Controller
     private function changeCodeTitle($content, $course, $courseRevId, $date)
     {
         try{
+            $messages = [
+                'newCourseCode.required' => "The 'New Course Code' field is empty. Please enter a new course code",
+                'newCourseCode.string' => "The 'New Course Title' field is not a string. Please enter a string",
+                'newCourseTitle.required' => "The 'New Course Title' field is empty. Please enter a new course title",
+                'newCourseTitle.string' => "Please enter a valid string for the 'New Course Title' field"
+            ];
+
             // Check if appropriate fields are filled
             if($content['formType'] == 'Code only'){
                 $validator = Validator::make($content, [
-                    'newCourseCode' => 'required'
-                ]);
+                    'newCourseCode' => 'required|string'
+                ], $messages);
 
             } else if ($content['formType'] == 'Title only'){
                 $validator = Validator::make($content, [
-                    'newCourseTitle' => 'required'
-                ]);
+                    'newCourseTitle' => 'required|string'
+                ], $messages);
 
             } else {    // Both code and title
                 $validator = Validator::make($content, [
                     'newCourseCode' => 'required',
                     'newCourseTitle' => 'required'
-                ]);
+                ], $messages);
             }
 
             if ($validator->fails()){
@@ -173,10 +184,16 @@ class CourseRevisionController extends Controller
     private function changeDesc($content, $course, $courseRevId, $date)
     {
         try{
+            $messages = [
+                'newDescription.required' => "The 'New Course Description' field is empty. Please enter a new course description",
+                'newDescription.string' => "The 'New Course Description' field is not a string. Please enter a string"
+            ];
+
             // Check if there is a newDescription
             $validator = Validator::make($content, [
-                'newDescription' => 'required'
-            ]);
+                'newDescription' => 'required|string'
+            ], $messages);
+
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
@@ -276,14 +293,6 @@ class CourseRevisionController extends Controller
     private function changeSemOffered($content, $course, $courseRevId, $date)
     {
         try{
-            // Check if there is a selected course
-            $validator = Validator::make($content, [
-                'selectedCourse' => 'required',
-            ]);
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
             /*
             * Creating new course revision proposal 
             * and Course Revision sem offered
@@ -315,7 +324,7 @@ class CourseRevisionController extends Controller
             $semOfferedToAdd = array_diff($newSemOffered, $currSemOffered);
             $semOfferedToDel = array_diff($currSemOffered, $newSemOffered);
 
-            // Adding new prerequisites
+            // Adding new sem offering
             foreach ($semOfferedToAdd as $semOffered){
                 CourseSemOffered::create([
                     'course_id' => $course->id,
@@ -323,7 +332,7 @@ class CourseRevisionController extends Controller
                 ]);
             }
 
-            // Deleting removed prerequisites
+            // Deleting removed sem offering
             foreach ($semOfferedToDel as $semOffered){
                 CourseSemOffered::where('course_id', $course->id)
                     ->where('sem_offered', $semOffered)
@@ -348,11 +357,15 @@ class CourseRevisionController extends Controller
     private function changeHours($content, $course, $courseRevId, $date)
     {
         try{
+            $messages = [
+                'newNumOfHours.required' => "The 'New Number of Hours' field is empty. Please enter a new course description",
+                'newNumOfHours.string' => "The 'New Number of Hours' field is not a string. Please enter a string"
+            ];
+            
             // Check if there is a selected course
             $validator = Validator::make($content, [
-                'selectedCourse' => 'required',
-                'newNumOfHours' => 'required'
-            ]);
+                'newNumOfHours' => 'required|string'
+            ], $messages);
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
@@ -387,12 +400,17 @@ class CourseRevisionController extends Controller
     private function changeContent($content, $course, $courseRevId, $date)
     {
         try{
+            $messages = [
+                'newGoal.required' => "The 'New Course Goal' field is empty. Please enter a new course goal",
+                'newGoal.string' => "The 'New Course Goal' field is not a string. Please enter a string",
+                'newOutline.required' => "The 'New Course Outline' field is empty. Please enter a new course outline",
+                'newOutline.string' => "The 'New Course Outline' field is not a string. Please enter a string"
+            ];
             // Check if there is a selected course
             $validator = Validator::make($content, [
-                'selectedCourse' => 'required',
-                'newGoal' => 'required',
-                'newOutline' => 'required'
-            ]);
+                'newGoal' => 'required|string',
+                'newOutline' => 'required|string'
+            ], $messages);
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
@@ -427,11 +445,15 @@ class CourseRevisionController extends Controller
     private function changeCredit($content, $course, $courseRevId, $date)
     {
         try{
+            $messages = [
+                'newCredit.required' => "The 'New Course Credit' field is empty. Please enter a new course credit",
+                'newCredit.integer' => "The 'New Course Credit' field must be an integer. Please enter an integer"
+            ];
+            
             // Check if there is a selected course
             $validator = Validator::make($content, [
-                'selectedCourse' => 'required',
-                'newCredit' => 'required'
-            ]);
+                'newCredit' => 'required|integer'
+            ], $messages);
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
