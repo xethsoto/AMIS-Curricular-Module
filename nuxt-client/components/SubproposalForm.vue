@@ -81,11 +81,12 @@
     />
     
     <!-- Course Adoption -->
-    <FormCourseAdoption
+    <FormCourseInstitution
         v-else-if="target==='Course'
         && type==='Adoption'"
         @inputValue="content=$event"
         class="flex flex-col gap-4"
+        :adoption="true"
     />
 
     <FormDegProgInstitution

@@ -157,9 +157,7 @@
             proposalData.date = format(proposalData.date, 'yyyy-MM-dd')
 
             console.log("Submitting Form = ", proposalData);
-            
-            proposalData = toRaw(proposalData)
-    
+                
             try {
                 const { data, error } = await useFetch('http://localhost:8000/api/save-proposal',{
                     method: 'POST',
