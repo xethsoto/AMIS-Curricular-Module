@@ -4,14 +4,14 @@
         <h1 class="font-bold text-lg">Proposal Encoding</h1>
 
         <!-- Proposal Title -->
-        <FormInput type="text-field" label="Proposal Title" @input="proposalTitle = $event"/>
+        <FormInput type="text-field" label="Proposal Title" @input="proposalData.title = $event"/>
 
         <!-- Proposal Date -->
         <div class="flex flex-col">
             <label>
                 <span class="text-sm">Date Effective</span>
             </label>
-            <PrimeCalendar v-model="creationDate"
+            <PrimeCalendar v-model="proposalData.date"
                 dateFormat="dd/mm/yy" 
                 showIcon 
                 showButtonBar
@@ -25,12 +25,19 @@
         </div>
 
         <!-- Subproposals -->
-        <div v-if="numOfProp" class="flex flex-col gap-4">
+        <div v-if="proposalData.action" class="flex flex-col gap-4">
             <!-- Render multiple tabs depending on the number of proposals -->
-            <PrimeAccordion v-for="num in numOfProp" :key="num">
-                <PrimeAccordionTab>
+            <PrimeAccordion class="flex flex-col gap-4">
+                <PrimeAccordionTab
+                    v-for="(item, index) in proposalData.action" :key="item.id"
+                >
                     <template #header>
-                        <span class="text-gray-500 text-sm font-medium">Proposal #{{ num }}</span>
+                        <p class="text-gray-500 text-sm font-medium">Proposal #{{ index+1 }}</p>
+                        <PrimeButton
+                            icon="pi pi-times"
+                            class="btn-maroon m-0"
+                            @click.stop="removeProposal(item.id)"
+                        />
                     </template>
 
                     <div class="flex flex-col gap-4">
@@ -39,134 +46,47 @@
                             <Dropdown class="flex-1"
                                 :items="targetSelection"
                                 label="Target"
-                                @dropdownVal="propAction[num-1].propTarget = $event"
+                                @dropdownVal="proposalData.action[index].propTarget = $event"
                             />
 
-                            <Dropdown v-if="propAction[num-1].propTarget==='Course'"
+                            <Dropdown v-if="proposalData.action[index].propTarget==='Course'"
                                 class="flex-1"
                                 :items="courseTypeSelect"
                                 label="Type"
-                                @dropdownVal="propAction[num-1].propType = $event"
+                                @dropdownVal="proposalData.action[index].propType = $event"
                             />
                             <Dropdown v-else
                                 class="flex-1"
                                 :items="degProgTypeSelect"
                                 label="Type"
-                                @dropdownVal="propAction[num-1].propType = $event"
+                                @dropdownVal="proposalData.action[index].propType = $event"
                             />
 
-                            <div class="flex-1" v-if="propAction[num-1].propType==='Revision' && propAction[num-1].propTarget!=='Curriculum'">
-                                <Dropdown v-if="propAction[num-1].propTarget==='Degree Program'"
+                            <div class="flex-1" v-if="proposalData.action[index].propType==='Revision'
+                                && proposalData.action[index].propTarget!=='Curriculum'"
+                            >
+                                <Dropdown v-if="proposalData.action[index].propTarget==='Degree Program'"
                                     :items="degProgRevTypes"
                                     label="Sub-type"
-                                    @dropdownVal="propAction[num-1].propSubType = $event"
+                                    @dropdownVal="proposalData.action[index].propSubType = $event"
                                 />
                                 <Dropdown v-else
                                     :items="courseRevTypes"
                                     label="Sub-type"
-                                    @dropdownVal="propAction[num-1].propSubType = $event"
+                                    @dropdownVal="proposalData.action[index].propSubType = $event"
                                 />
                             </div>
                         </div>
     
                         <hr class="hr-temp">
                         
-                        <!-- Course Institution Form -->
-                        <FormCourseInstitution 
-                            v-if="propAction[num-1].propTarget==='Course'
-                            && propAction[num-1].propType==='Institution'"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4"
+                        <!-- Render a subproposal form based on the the proposal classification -->
+                        <SubproposalForm
+                            :target="proposalData.action[index].propTarget"
+                            :type="proposalData.action[index].propType"
+                            :subType="proposalData.action[index].propSubType"
+                            @content="proposalData.content[index]=$event"
                         />
-
-                        <!-- Course Abolition Form -->
-                        <FormCourseAbolition
-                            v-else-if="propAction[num-1].propTarget==='Course'
-                            && propAction[num-1].propType==='Abolition'"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4"
-                        />
-                        
-                        <!-- Course Revision Forms -->
-                        <FormCourseRevisionTitleNum
-                            v-else-if="propAction[num-1].propTarget==='Course'
-                            && propAction[num-1].propType==='Revision'
-                            && propAction[num-1].propSubType===courseRevTypes[0]"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4"
-                        />
-
-                        <FormCourseRevisionDescription
-                            v-else-if="propAction[num-1].propTarget==='Course'
-                            && propAction[num-1].propType==='Revision'
-                            && propAction[num-1].propSubType===courseRevTypes[1]"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4"
-                        />
-
-                        <FormCourseRevisionPrerequisites
-                            v-else-if="propAction[num-1].propTarget==='Course'
-                            && propAction[num-1].propType==='Revision'
-                            && propAction[num-1].propSubType===courseRevTypes[2]"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4"
-                        />
-
-                        <FormCourseRevisionSemOffering
-                            v-else-if="propAction[num-1].propTarget==='Course'
-                            && propAction[num-1].propType==='Revision'
-                            && propAction[num-1].propSubType===courseRevTypes[3]"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4" 
-                        />
-
-                        <FormCourseRevisionNumOfHours
-                            v-else-if="propAction[num-1].propTarget==='Course'
-                            && propAction[num-1].propType==='Revision'
-                            && propAction[num-1].propSubType===courseRevTypes[4]"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4"
-                        />
-
-                        <FormCourseRevisionCredit
-                            v-else-if="propAction[num-1].propTarget==='Course'
-                            && propAction[num-1].propType==='Revision'
-                            && propAction[num-1].propSubType===courseRevTypes[5]"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4"
-                        />
-
-                        <FormCourseRevisionContent
-                            v-else-if="propAction[num-1].propTarget==='Course'
-                            && propAction[num-1].propType==='Revision'
-                            && propAction[num-1].propSubType===courseRevTypes[6]"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4"
-                        />
-                        
-                        <!-- Course Crosslisting -->
-                        <FormCourseCrosslisting
-                            v-else-if="propAction[num-1].propTarget==='Course'
-                            && propAction[num-1].propType==='Crosslisting'"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4"
-                        />
-                        
-                        <!-- Course Adoption -->
-                        <FormCourseAdoption
-                            v-else-if="propAction[num-1].propTarget==='Course'
-                            && propAction[num-1].propType==='Adoption'"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4"
-                        />
-
-                        <FormDegProgInstitution
-                            v-else-if="propAction[num-1].propTarget==='Degree Program'
-                            && propAction[num-1].propType==='Institution'"
-                            @inputValue="formContent[num-1]=$event"
-                            class="flex flex-col gap-4"
-                        />
-
                     </div>
 
                 </PrimeAccordionTab>
@@ -191,102 +111,124 @@
     import { format } from 'date-fns'
 
     const router = useRouter()
+    const toast = useToast()    //validation notification
 
-    const toast = useToast()    //notification
+    const proposalData = reactive({
+        "title": ref(""),
+        "date": ref(null),
+        "action": [],
+        "content": []
+    })
 
-    const proposalTitle = ref("")
-    const creationDate = ref(null)
-    const numOfProp = ref(0)
-    
-    const propAction = reactive([])
-    const formContent = reactive([])
+    let idCounter = 0
 
     const addProposal = () => {
-        numOfProp.value++
-        propAction.push(reactive(
+        proposalData.action.push(reactive(
             {
+                id: idCounter++,
                 propTarget: "",
                 propType: "",
                 propSubType: ""
             }
         ))
-        formContent.push({})
+        proposalData.content.push({})
+
+        console.log("Proposal Data Action = ", proposalData.action)
+        console.log("Proposal Data Content = ", proposalData.content)
+    }
+
+    const removeProposal = (itemId) => {
+        const index = proposalData.action.findIndex(item => item.id === itemId)
+
+        if (index !== -1) {
+            proposalData.action.splice(index, 1)
+            proposalData.content.splice(index, 1)
+        }
+
+        console.log("Proposal Data Action = ", proposalData.action)
+        console.log("Proposal Data Content = ", proposalData.content)
     }
 
     const submitProposal = async () => {
 
-        validate()
+        const valid = validate()
 
-        const proposalData = {
-            "title": proposalTitle.value,
-            "date": format(creationDate.value, 'yyyy-MM-dd'),
-            "action": propAction,
-            "content": formContent
-        }
+        if (valid){
+            proposalData.date = format(proposalData.date, 'yyyy-MM-dd')
 
-        console.log("Submitting Form = ", proposalData);
-
-        try {
-            const { data, error } = await useFetch('http://localhost:8000/api/save-proposal',{
-                method: 'POST',
-                body: JSON.stringify(proposalData)
-            })
+            console.log("Submitting Form = ", proposalData);
             
-            if (error.value) {
-                console.log("Error in uploading data: ", error.value.data?.message)
-
-                error.value.data.message.forEach(msg => {
+            proposalData = toRaw(proposalData)
+    
+            try {
+                const { data, error } = await useFetch('http://localhost:8000/api/save-proposal',{
+                    method: 'POST',
+                    body: JSON.stringify(proposalData)
+                })
+                
+                if (error.value) {
+                    console.log("Error in uploading data: ", error.value.data?.message)
+    
+                    error.value.data.message.forEach(msg => {
+                        toast.add({
+                            severity: 'error',
+                            summary: "Error in uploading data",
+                            detail: msg,
+                            life: 3000
+                        })
+                    })
+                } else {
+                    console.log("Data uploaded successfully")
+    
                     toast.add({
-                        severity: 'error',
-                        summary: "Error in uploading data",
-                        detail: msg,
+                        severity: 'success',
+                        summary: "Data uploaded successfully",
                         life: 3000
                     })
-                })
-            } else {
-                console.log("Data uploaded successfully")
-
-                toast.add({
-                    severity: 'success',
-                    summary: "Data uploaded successfully",
-                    life: 3000
-                })
-                router.push('/proposals-management/' + data.value.proposal_id);
+                    router.push('/proposals-management/' + data.value.proposal_id);
+                }
+    
+            } catch (error) {
+                console.error('Critical error in uploading file: ', error)
             }
-
-        } catch (error) {
-            console.error('Critical error in uploading file: ', error)
         }
     }
 
     const validate = () => {
-        if (!proposalTitle.value){
+        let valid = true
+    
+        if (!proposalData.title){
             toast.add({
                 severity: 'error',
                 summary: "Error in uploading data",
-                detail: "'Proposal Title' is empty",
+                detail: "'Proposal Title' is empty. Please input a proposal title.",
                 life: 5000
             });
+            valid = false
         }
 
-        if (!creationDate.value){
+        if (!proposalData.date){
             toast.add({
                 severity: 'error',
                 summary: "Error in uploading data",
-                detail: "'Date Effective' is empty",
+                detail: "'Date Effective' is empty. Please input a date.",
                 life: 5000
             });
+            valid = false
         }
 
-        if(numOfProp.value <= 0){
+        // if there are no subproposals added
+        if(proposalData.action.length <= 0){
             toast.add({
                 severity: 'error',
                 summary: "Error in uploading data",
-                detail: "No subproposals added. Please add a subproposal to continue.",
+                detail: "No subproposals added. Please add a subproposal.",
                 life: 5000
             });
+            valid = false
         }
 
+        return valid
     }
 
     // Dropdown choices

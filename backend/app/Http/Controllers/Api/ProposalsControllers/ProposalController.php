@@ -29,8 +29,6 @@ class ProposalController extends Controller
 {
     public function save(Request $request)
     {
-        $requestData = $request->all();
-
         $title = $request->title;
         $date = $request->date;
         $action = $request->action;
@@ -52,12 +50,12 @@ class ProposalController extends Controller
         } else {
             // Check if fields in the action variable are not empty
             $actionValidator = Validator::make($action, [
-                '*' => 'array:propTarget,propType,propSubType',
+                '*' => 'array:id,propTarget,propType,propSubType',
                 '*.propTarget' => 'required|alpha',
                 '*.propType' => 'required|alpha',
                 '*.propSubType' => 'required_if:*.propType,Revision'
             ]);
-
+            
             if ($actionValidator->fails()) {
                 return response()->json([
                     'status' => 422,
@@ -78,6 +76,8 @@ class ProposalController extends Controller
 
                     // Saving each subproposal of a proposal
                     for ($i = 0; $i < count($action); $i++){
+                        error_log('$content[$i]: ' .print_r($content[$i], true));
+                        error_log('$content[$i].rationale: ' .($content[$i]['rationale']));
 
                         // Rationale Validation
                         $validator = Validator::make($content[$i], [
