@@ -98,7 +98,6 @@
         if (!prereqs.value.includes(code)) {
             prereqs.value.push(code)
         }
-        console.log("prereqs = ", prereqs.value)
     }
 
     watchEffect(() => {

@@ -25,11 +25,11 @@
         </div>
 
         <!-- Subproposals -->
-        <div v-if="proposalData.action" class="flex flex-col gap-4">
+        <div v-if="proposalData.subproposals" class="flex flex-col gap-4">
             <!-- Render multiple tabs depending on the number of proposals -->
             <PrimeAccordion class="flex flex-col gap-4">
                 <PrimeAccordionTab
-                    v-for="(item, index) in proposalData.action" :key="item.id"
+                    v-for="(item, index) in proposalData.subproposals" :key="item.id"
                 >
                     <template #header>
                         <p class="text-gray-500 text-sm font-medium">Proposal #{{ index+1 }}</p>
@@ -46,34 +46,34 @@
                             <Dropdown class="flex-1"
                                 :items="targetSelection"
                                 label="Target"
-                                @dropdownVal="proposalData.action[index].propTarget = $event"
+                                @dropdownVal="item.action.propTarget = $event"
                             />
 
-                            <Dropdown v-if="proposalData.action[index].propTarget==='Course'"
+                            <Dropdown v-if="item.action.propTarget==='Course'"
                                 class="flex-1"
                                 :items="courseTypeSelect"
                                 label="Type"
-                                @dropdownVal="proposalData.action[index].propType = $event"
+                                @dropdownVal="item.action.propType = $event"
                             />
                             <Dropdown v-else
                                 class="flex-1"
                                 :items="degProgTypeSelect"
                                 label="Type"
-                                @dropdownVal="proposalData.action[index].propType = $event"
+                                @dropdownVal="item.action.propType = $event"
                             />
 
-                            <div class="flex-1" v-if="proposalData.action[index].propType==='Revision'
-                                && proposalData.action[index].propTarget!=='Curriculum'"
+                            <div class="flex-1" v-if="item.action.propType==='Revision'
+                                && item.action.propTarget!=='Curriculum'"
                             >
-                                <Dropdown v-if="proposalData.action[index].propTarget==='Degree Program'"
+                                <Dropdown v-if="item.action.propTarget==='Degree Program'"
                                     :items="degProgRevTypes"
                                     label="Sub-type"
-                                    @dropdownVal="proposalData.action[index].propSubType = $event"
+                                    @dropdownVal="item.action.propSubType = $event"
                                 />
                                 <Dropdown v-else
                                     :items="courseRevTypes"
                                     label="Sub-type"
-                                    @dropdownVal="proposalData.action[index].propSubType = $event"
+                                    @dropdownVal="item.action.propSubType = $event"
                                 />
                             </div>
                         </div>
@@ -82,10 +82,10 @@
                         
                         <!-- Render a subproposal form based on the the proposal classification -->
                         <SubproposalForm
-                            :target="proposalData.action[index].propTarget"
-                            :type="proposalData.action[index].propType"
-                            :subType="proposalData.action[index].propSubType"
-                            @content="proposalData.content[index]=$event"
+                            :target="item.action.propTarget"
+                            :type="item.action.propType"
+                            :subType="item.action.propSubType"
+                            @content="item.content=$event"
                         />
                     </div>
 
@@ -116,33 +116,29 @@
     const proposalData = reactive({
         "title": ref(""),
         "date": ref(null),
-        "action": [],
-        "content": []
+        "subproposals": []
     })
 
     let idCounter = 0
 
     const addProposal = () => {
-        proposalData.action.push(reactive(
-            {
-                id: idCounter++,
+        proposalData.subproposals.push({
+            id: idCounter++,
+            action: {
                 propTarget: "",
                 propType: "",
                 propSubType: ""
-            }
-        ))
-        proposalData.content.push({})
-
-        console.log("Proposal Data Action = ", proposalData.action)
-        console.log("Proposal Data Content = ", proposalData.content)
+            },
+            content: {}
+        })
+        console.log("Proposal Subproposals = ", proposalData.subproposals)
     }
 
     const removeProposal = (itemId) => {
-        const index = proposalData.action.findIndex(item => item.id === itemId)
+        const index = proposalData.subproposals.findIndex(item => item.id === itemId)
 
         if (index !== -1) {
-            proposalData.action.splice(index, 1)
-            proposalData.content.splice(index, 1)
+            proposalData.subproposals.splice(index, 1)
         }
 
         console.log("Proposal Data Action = ", proposalData.action)
@@ -153,15 +149,24 @@
 
         const valid = validate()
 
+        console.log("Before validation = ", proposalData)
+
         if (valid){
             proposalData.date = format(proposalData.date, 'yyyy-MM-dd')
 
-            console.log("Submitting Form = ", proposalData);
+            const dataToSend = {
+                "title": proposalData.title,
+                "date": proposalData.date,
+                "action": proposalData.subproposals.map(subproposal => subproposal.action),
+                "content": proposalData.subproposals.map(subproposal => subproposal.content)
+            }
+
+            console.log("Submitting Form = ", dataToSend);
                 
             try {
                 const { data, error } = await useFetch('http://localhost:8000/api/save-proposal',{
                     method: 'POST',
-                    body: JSON.stringify(proposalData)
+                    body: JSON.stringify(dataToSend)
                 })
                 
                 if (error.value) {
@@ -216,7 +221,7 @@
         }
 
         // if there are no subproposals added
-        if(proposalData.action.length <= 0){
+        if(proposalData.subproposals.length <= 0){
             toast.add({
                 severity: 'error',
                 summary: "Error in uploading data",
