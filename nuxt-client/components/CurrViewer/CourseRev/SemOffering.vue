@@ -12,12 +12,14 @@
                 <template v-slot:firstHalf>
                     <p class="font-bold text-center">Previous Changes</p>
                     <p class="font-semibold">Previous Semester Offered: </p>
-                    <p>{{ subproposal.details.prev_sem_offered }}</p>
+                    <p v-if="subproposal.details.prev_sem_offered.length > 0">{{ subproposal.details.prev_sem_offered }}</p>
+                    <p v-else class="italic">No Semester Offerings</p>
                 </template>
                 <template v-slot:secondHalf>
                     <p class="font-bold text-center">Proposed Changes</p>
                     <p class="font-semibold">Proposed Semester Offered: </p>
-                    <p>{{ subproposal.details.curr_sem_offered }}</p>
+                    <p v-if="subproposal.details.curr_sem_offered">{{ subproposal.details.curr_sem_offered }}</p>
+                    <p v-else class="italic">No Semester Offerings</p>
                 </template>
             </CurrViewerGenDetails>
         
