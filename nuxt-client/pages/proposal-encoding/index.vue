@@ -43,39 +43,52 @@
                     <div class="flex flex-col gap-4">
                         <!-- Determines the type of form that should be rendered -->
                         <div class="flex flex-start gap-4 w-full">
-                            <Dropdown class="flex-1"
-                                :items="targetSelection"
-                                label="Target"
-                                @dropdownVal="item.action.propTarget = $event"
-                            />
 
-                            <Dropdown v-if="item.action.propTarget==='Course'"
-                                class="flex-1"
-                                :items="courseTypeSelect"
-                                label="Type"
-                                @dropdownVal="item.action.propType = $event"
-                            />
-                            <Dropdown v-else
-                                class="flex-1"
-                                :items="degProgTypeSelect"
-                                label="Type"
-                                @dropdownVal="item.action.propType = $event"
-                            />
-
-                            <div class="flex-1" v-if="item.action.propType==='Revision'
-                                && item.action.propTarget!=='Curriculum'"
-                            >
-                                <Dropdown v-if="item.action.propTarget==='Degree Program'"
-                                    :items="degProgRevTypes"
-                                    label="Sub-type"
-                                    @dropdownVal="item.action.propSubType = $event"
-                                />
-                                <Dropdown v-else
-                                    :items="courseRevTypes"
-                                    label="Sub-type"
-                                    @dropdownVal="item.action.propSubType = $event"
+                            <!-- Target -->
+                            <div class="flex flex-col w-full">
+                                <label for="dropdown" class="text-gray-500">
+                                    <span class="text-sm">Target</span>
+                                </label>
+                                <PrimeDropdown 
+                                    id="dropdown" 
+                                    v-model="item.action.propTarget" 
+                                    variant="filled" 
+                                    :options="targetSelection" 
+                                    class="dropdown text-base"
                                 />
                             </div>
+
+                            <!-- Type -->
+                            <div class="flex flex-col w-full">
+                                <label for="dropdown" class="text-gray-500">
+                                    <span class="text-sm">Type</span>
+                                </label>
+                                <PrimeDropdown 
+                                    id="dropdown" 
+                                    v-model="item.action.propType" 
+                                    variant="filled" 
+                                    :options="courseTypeSelect" 
+                                    class="dropdown text-base"
+                                />
+                            </div>
+
+                            <!-- Subtype -->
+                            <div 
+                                class="flex flex-col w-full"
+                                v-if="item.action.propType==='Revision'"
+                            >
+                                <label for="dropdown" class="text-gray-500">
+                                    <span class="text-sm">Sub-type</span>
+                                </label>
+                                <PrimeDropdown 
+                                    id="dropdown" 
+                                    v-model="item.action.propSubType" 
+                                    variant="filled"
+                                    :options="courseRevTypes" 
+                                    class="dropdown text-base"
+                                />
+                            </div>
+
                         </div>
     
                         <hr class="hr-temp">
@@ -125,8 +138,8 @@
         proposalData.subproposals.push({
             id: idCounter++,
             action: {
-                propTarget: "",
-                propType: "",
+                propTarget: "Course",
+                propType: "Institution",
                 propSubType: ""
             },
             content: {}
@@ -235,26 +248,14 @@
     }
 
     // Dropdown choices
-    const targetSelection = ["Course", "Curriculum", "Degree Program"]
-    const degProgTypeSelect = [
-        "Institution",
-        "Revision",
-        "Abolition"
-    ]
+    const targetSelection = ["Course"]
+
     const courseTypeSelect = [
         "Institution",
         "Revision",
         "Abolition",
         "Crosslisting",
         "Adoption"
-    ]
-    const degProgRevTypes = [
-        "Addition of Major/Area of Specialization",
-        "Deletion of Major/Area of Specialization",
-        "Inclusion of courses",
-        "Deletion of courses",
-        "Change in course sequencing",
-        "Change in the number of units"
     ]
 
     /*
@@ -279,5 +280,9 @@
         color: white;
         border-top-right-radius: 7px;
         border-bottom-right-radius: 7px;
+    }
+
+    .dropdown {
+        border: 2px solid #ccc;
     }
 </style>
