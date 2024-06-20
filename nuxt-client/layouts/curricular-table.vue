@@ -9,12 +9,8 @@
             :data="data"
             :searchLabel=searchLabel
             :rowsOption="true"
-            :loading="loading"
+            :proposalTable="proposalTable"
         >
-            <template #more-filters>
-                <slot name="more-filters"></slot>
-            </template>
-
             <template #loading> Loading Data. Please Wait...</template>
             <template v-slot:columns>
                 <PrimeColumn
@@ -60,7 +56,6 @@
     const selectItem = async (item) => {
         await navigateTo({ path: uri + item.data.id })
     }
-    
 </script>
 
 <style scoped>

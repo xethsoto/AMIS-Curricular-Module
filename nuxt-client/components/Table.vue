@@ -10,7 +10,7 @@
 
     <!-- Search Field -->
         <template #header>
-            <div class="flex flex-row">
+            <div class="flex flex-row gap-4">
                 <!-- Global Search -->
                 <div class="flex flex-col lg:w-1/4 md:w-1/2">
                     <label>
@@ -22,13 +22,69 @@
                         v-model="filters['global'].value"
                         class="text-input p-2 text-base"
                     />
-                    </div>
-                <slot name="more-filters"></slot>
+                </div>
+
+                <!-- Course Status Filter -->
+                <div
+                    v-if="proposalTable === false" 
+                    class="flex flex-col w-full"
+                >
+                    <label class="text-gray-500">
+                        <span class="text-sm">Status</span>
+                    </label>
+                    <PrimeDropdown 
+                        variant="filled"
+                        v-model="filters['status'].value" 
+                        :options="status"
+                        :showClear="true"
+                        class="dropdown text-base w-64"
+                    />
+                </div>
+                
+                <!-- Proposal Type Filter -->
+                <div 
+                    v-if="proposalTable === true"
+                    class="flex flex-col w-64"
+                >
+                    <label class="text-gray-500">
+                        <span class="text-sm">Type</span>
+                    </label>
+                    <PrimeDropdown 
+                        variant="filled"
+                        v-model="filters['type'].value" 
+                        :options="types"
+                        :showClear="true"
+                        class="dropdown text-base"
+                    />
+                </div>
+
+                <!-- Proposal Sub Type Filter -->
+                <div 
+                    v-if="proposalTable === true
+                    && filters['type'].value === 'Revision'"
+                    class="flex flex-col w-96"
+                >
+                    <label class="text-gray-500">
+                        <span class="text-sm">Sub-Type</span>
+                    </label>
+                    <PrimeDropdown 
+                        variant="filled" 
+                        v-model="filters['sub_type'].value" 
+                        :options="subTypes"
+                        :showClear="true"
+                        class="dropdown text-base"
+                    />
+                </div>
+
             </div>
         </template>
 
+        <template #empty>
+            <div class="text-center">
+                Nothing found.
+            </div>
+        </template>
         <slot name="columns"></slot>
-
     </PrimeDataTable>
 </template>
 
@@ -49,6 +105,7 @@
         'rowsOption',
         'proposalTable'
     ])
+
     const rowsPerPageOptions = [5, 10, 20, 50]
     const filters = ref({
         global: {
@@ -58,24 +115,57 @@
     })
 
     watchEffect(() => {
-
         if (proposalTable){
-            filters.name = {
+            filters.value.name = {
+                value: null,
+                matchMode: 'contains'
+            },
+            filters.value.type = {
+                value: null,
+                matchMode: 'contains'
+            },
+            filters.value.sub_type = {
                 value: null,
                 matchMode: 'contains'
             }
         } else {
-            filters.code = {
+            filters.value.code = {
                 value: null,
                 matchMode: 'contains'
             }
-
-            filters.title = {
+            filters.value.title = {
+                value: null,
+                matchMode: 'contains'
+            }
+            filters.value.status = {
                 value: null,
                 matchMode: 'contains'
             }
         }      
     })
+    console.log("proposalTable in Table.vue = ", proposalTable)
+
+    const types = [
+        "Institution",
+        "Revision",
+        "Abolition",
+        "Crosslisting",
+        "Adoption"
+    ]
+    const subTypes = [
+        "Change in course number and/or course title",
+        "Change in course description",
+        "Change in prerequisites",
+        "Change in semester offering",
+        "Change in number of hours",
+        "Change in course credit",
+        "Change in course content"
+    ]
+
+    const status = [
+        "Active",
+        "Abolished"
+    ]
 </script>
 
 <style>
@@ -91,5 +181,9 @@
         background: black !important;
         padding: 100px;
         border: 100px;
+    }
+
+    .dropdown {
+        border: 2px solid #ccc;
     }
 </style>

@@ -9,19 +9,6 @@
             :proposalTable="true"
         >
             <template v-slot:title>Proposals Management</template>
-
-            <!-- <template v-slot:more-filters>
-                <Dropdown
-                    :items="type"
-                    label="Type"
-                    class="w-1/2"
-                />
-                <Dropdown
-                    :items="subType"
-                    label="Sub-Type"
-                    class="w-1/2"
-                />
-            </template> -->
         </NuxtLayout>
     </div>
 </template>
@@ -32,7 +19,7 @@
         lazy: false,
         server: false,
     })
-    
+
     /* converting classification array to string
     *  for table displaying
     */
@@ -72,24 +59,6 @@
                 return data.sub_type ? data.sub_type : "N/A"
             }
         }
-    ]
-
-    const type = [
-        "Institution",
-        "Revision",
-        "Abolition",
-        "Crosslisting",
-        "Adoption"
-    ]
-    const subType = [
-        "Change in course number and/or course title",
-        "Change in course description",
-        "Change in prerequisites",
-        "Change in semester offering",
-        "Change in number of hours",
-        "Addition of laboratory/recitation/computation",
-        "Deletion of laboratory/recitation/computation",
-        "Change in course content"
     ]
 </script>
 

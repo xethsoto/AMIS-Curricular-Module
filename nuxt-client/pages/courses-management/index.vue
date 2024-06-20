@@ -5,6 +5,7 @@
             :meta="meta"
             :uri="uri"
             searchLabel="Filter By Course Code or Title"
+            :proposalTable = false
         >
             <template v-slot:title>Courses Management</template>
         </NuxtLayout>
