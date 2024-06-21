@@ -23,12 +23,15 @@
                     <!-- Name -->
                     <div class="flex flex-col">
                         <FormInput label="Name" type="text-field" @input="registerForm.name=$event"/>
+                        <p v-if="!isValidName" class="text-sm text-red-500">
+                            Name is required
+                        </p>
                     </div>
     
                     <!-- Email -->
                     <div class="flex flex-col">
                         <FormInput label="Email" type="text-field" @input="registerForm.email=$event"/>
-                        <p v-if="registerForm.email && !isValidEmail" class="text-sm text-red-500">
+                        <p v-if="!isValidEmail" class="text-sm text-red-500">
                             Please enter a valid email address
                         </p>
                     </div>
@@ -38,13 +41,32 @@
                         <p class="text-sm">Password</p>
                         <PrimePassword
                             v-model="registerForm.password"
+                            toggleMask
                         />
+                        <p v-if="!isValidPassword.value" class="text-sm text-red-500">
+                            {{ isValidPassword.message }}
+                        </p>
                     </div>
+
+                    <!-- Confirm Password -->
+                    <div class="flex flex-col">
+                        <p class="text-sm">Confirm Password</p>
+                        <PrimePassword
+                            v-model="confirmPassword"
+                            toggleMask
+                        />
+                        <p v-if="!passwordMatch" class="text-sm text-red-500">
+                            Password and Confirm Password do not match
+                        </p>
+                    </div>
+
                 </div>
             </template>
             <template #footer>
                 <div class="flex gap-3 mt-1">
-                    <PrimeButton label="Save" class="btn-maroon w-full" />
+                    <PrimeButton label="Save" class="btn-maroon w-full"
+                        @click="submitForm"
+                    />
                 </div>
             </template>
         </PrimeCard>
@@ -55,11 +77,46 @@
     const registerForm = reactive({
         name: '',
         email: '',
-        password: ''
+        password: '',
     })
+    const confirmPassword = ref('')
 
-    const isValidEmail = computed(() => {
+    // Validation Flags
+    const isValidName = ref(true)
+    const isValidEmail = ref(true)
+    const isValidPassword = ref({value: true, message: "Password is valid"})
+    const passwordMatch = ref(true)
+
+    const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(registerForm.email);
-    })
+        return emailRegex.test(email);
+    }
+
+    const validatePassword = (password) => {
+        const lengthCheck = password.length > 8;
+        const numberCheck = /\d/.test(password);
+        const uppercaseCheck = /[A-Z]/.test(password);
+        const lowercaseCheck = /[a-z]/.test(password);
+
+        if (!lengthCheck){
+            return {value: false, message: "Password must be at least 8 characters long"}
+        }
+
+        if (!(numberCheck && uppercaseCheck && lowercaseCheck)){
+            return {value: false, message: "Password must contain at least a number, an uppercase letter, and a lowercase letter"}
+        }
+
+        return {value: true, message: "Password is valid"}
+    }
+
+    const submitForm = () => {
+        isValidName.value = registerForm.name.length > 0
+        isValidEmail.value = validateEmail(registerForm.email)
+        isValidPassword.value = validatePassword(registerForm.password)
+        passwordMatch.value = registerForm.password === confirmPassword.value
+
+        if (isValidName.value && isValidEmail.value && isValidPassword.value.value && passwordMatch) {
+            console.log("Submitting Form")
+        }
+    }
 </script>

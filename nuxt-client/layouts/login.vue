@@ -23,7 +23,7 @@
                     <!-- Email -->
                     <div class="flex flex-col">
                         <FormInput label="Email" type="text-field" @input="loginForm.email=$event"/>
-                        <p v-if="loginForm.email && !isValidEmail" class="text-sm text-red-500">
+                        <p v-if="!isValidEmail" class="text-sm text-red-500">
                             Please enter a valid email address
                         </p>
                     </div>
@@ -32,6 +32,7 @@
                     <div class="flex flex-col">
                         <p class="text-sm">Password</p>
                         <PrimePassword
+                            toggleMask
                             v-model="loginForm.password"
                             :pt="{
                                 input: {class: 'border-2'}
@@ -42,7 +43,8 @@
             </template>
             <template #footer>
                 <div class="flex gap-3 mt-1">
-                    <PrimeButton label="Save" class="btn-maroon w-full" />
+                    <PrimeButton label="Save" class="btn-maroon w-full"
+                    @click="submitForm"/>
                 </div>
             </template>
         </PrimeCard>
@@ -55,8 +57,18 @@
         password: ''
     })
 
-    const isValidEmail = computed(() => {
+    const isValidEmail = ref(true)
+
+    const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(loginForm.email);
-    })
+        return emailRegex.test(email);
+    }
+
+    const submitForm = () => {
+        isValidEmail.value = validateEmail(loginForm.email)
+
+        if (isValidEmail.value) {
+            console.log("Submitting Form")
+        }
+    }
 </script>
