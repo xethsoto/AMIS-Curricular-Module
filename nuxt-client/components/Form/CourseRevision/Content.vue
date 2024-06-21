@@ -35,12 +35,23 @@
                         label="New Course Goal" 
                         @input="formContent.newGoal = $event"
                     />
-        
-                    <FormInput 
-                        type="text-area" 
-                        label="New Course Outline" 
-                        @input="formContent.newOutline = $event"
-                    />
+                    
+                    <!-- Course Outline -->
+                    <label>
+                        <span class="text-sm">New Course Outline</span>
+                    </label>    
+                    <PrimeEditor 
+                        v-model="formContent.newOutline"
+                        :modules="{ toolbar: false }"
+                        editorStyle="height: 320px"
+                        :pt="{
+                            toolbar: {
+                                class: 'hidden'
+                            }
+                        }"
+                        class="border-2 border-gray-300 rounded-md"
+                    >
+                    </PrimeEditor>
                 </div>
             </div>
             
@@ -49,6 +60,7 @@
 </template>
 
 <script setup>
+    import PrimeEditor from 'primevue/editor'
     const emit = defineEmits(['inputValue'])
 
     const formContent = reactive({
@@ -57,6 +69,7 @@
         newOutline: "",
         rationale: ""
     })
+
     const currGoal = ref("")
     const currOutline = ref("")
 
@@ -68,6 +81,7 @@
     watchEffect(() => {
         emit('inputValue', formContent)
     })
+
 </script>
 
 <style scoped>

@@ -5,7 +5,24 @@
     <FormInput type="text-field" label="Course Credit" @input="formContent.credit = $event"/>
     <FormInput type="text-field" label="Number of Hours" @input="formContent.numOfHours = $event"/>
     <FormInput type="text-area" label="Course Goal" @input="formContent.goal = $event"/>
-    <FormInput type="text-area" label="Course Outline" @input="formContent.outline = $event"/>
+    <!-- <FormInput type="text-area" label="Course Outline" @input="formContent.outline = $event"/> -->
+
+    <!-- Course Outline -->
+    <label>
+        <span class="text-sm">Course Outline</span>
+    </label>    
+    <PrimeEditor 
+        v-model="formContent.outline"
+        :modules="{ toolbar: false }"
+        editorStyle="height: 320px"
+        :pt="{
+            toolbar: {
+                class: 'hidden'
+            }
+        }"
+        class="border-2 border-gray-300 rounded-md"
+    >
+    </PrimeEditor>
 
     <!-- Prerequisites -->
     <label class="text-sm">Prerequisites</label>
@@ -23,6 +40,7 @@
 </template>
 
 <script setup>
+    import PrimeEditor from 'primevue/editor'
     const {adoption} = defineProps(['adoption'])
     const emit = defineEmits(['inputValue'])
 

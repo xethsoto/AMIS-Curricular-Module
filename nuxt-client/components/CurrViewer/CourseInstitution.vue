@@ -32,7 +32,7 @@
             </CurrViewerGenDetails>
         
             <DetailSpan title="Course Outline: "/>
-            <p>{{ subproposal.goal }}</p>
+            <p v-html="subproposal.outline"></p>
             <DetailSpan title="Rationale: "/>
             <p>{{ proposal_classification.rationale }}</p>
         </template>
