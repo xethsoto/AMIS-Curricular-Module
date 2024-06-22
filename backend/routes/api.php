@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\CourseController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ProposalsControllers\CourseControllers\CourseInstitutionController;
+use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\ProposalsControllers\ProposalController;
 
 /*
@@ -34,4 +34,7 @@ Route::get('get-proposals-by-course/{id}', [ProposalController::class, 'getPropo
 Route::get('proposal/{id}', [ProposalController::class, 'getProposal']);
 Route::get('get-crosslisted/{id}', [ProposalController::class, 'checkIfCrosslisted']);
 
-//Course Revisions Proposals
+//Authentication
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);

@@ -1,12 +1,9 @@
 <template>
-    <h1>Home</h1>
+    <div>Home</div>
 </template>
 
 <script setup>
-    const router = useRouter()
-    router.push('/courses-management')
+    definePageMeta({
+        middleware: 'auth'
+    })
 </script>
-
-<style scoped>
-
-</style>

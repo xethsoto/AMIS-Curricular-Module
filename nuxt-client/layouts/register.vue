@@ -1,5 +1,6 @@
 <template>
-    <div class="flex justify-center">
+    <PrimeToast />
+    <div class="flex flex-col gap-2 items-center">
         <PrimeCard style="width: 25rem; overflow: hidden">
             <template #header>
                 <div class="flex justify-center mt-4">
@@ -70,10 +71,26 @@
                 </div>
             </template>
         </PrimeCard>
+
+        <p>
+            Already have an account? Login
+            <NuxtLink to="/login" class="nav-link underline">here</NuxtLink>
+        </p>
     </div>
 </template>
 
 <script setup>
+    import { useToast } from 'primevue/usetoast'
+    import { useRouter } from 'vue-router'
+    
+
+    const toast = useToast()
+    const router = useRouter()
+    const authToken = useCookie('auth-token')
+    if (authToken.value) {
+        router.push('/')
+    }
+
     const registerForm = reactive({
         name: '',
         email: '',
@@ -109,14 +126,51 @@
         return {value: true, message: "Password is valid"}
     }
 
-    const submitForm = () => {
+    const submitForm = async () => {
         isValidName.value = registerForm.name.length > 0
         isValidEmail.value = validateEmail(registerForm.email)
         isValidPassword.value = validatePassword(registerForm.password)
         passwordMatch.value = registerForm.password === confirmPassword.value
 
         if (isValidName.value && isValidEmail.value && isValidPassword.value.value && passwordMatch) {
-            console.log("Submitting Form")
+
+            console.log("registerForm = ", registerForm)
+            try {
+                const responseObj = {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(registerForm)
+                }
+
+                console.log("responseObj = ", responseObj)
+                const response = await fetch('http://localhost:8000/api/register', responseObj)
+
+
+                console.log("response = ", response)
+
+                if (!response.ok) {
+                    throw new Error('Network error')
+                }
+
+                const data = await response.json()
+
+                console.log("data = ", data)
+
+                if (data.token) {
+                    localStorage.setItem('auth_token', data.token)
+                    router.push('/courses-management')
+                } else {
+                    throw new Error('Token not received')
+                }
+            } catch (error) {
+                console.log(error)
+                toast.add({
+                    severity: 'error',
+                    summary: error,
+                    detail: error.message,
+                    life: 3000
+                })
+            }
         }
     }
 </script>

@@ -1,5 +1,6 @@
 <template>
-    <div class="flex justify-center">
+    <PrimeToast />
+    <div class="flex flex-col gap-2 items-center">
         <PrimeCard style="width: 25rem; overflow: hidden">
             <template #header>
                 <div class="flex justify-center mt-4">
@@ -43,15 +44,30 @@
             </template>
             <template #footer>
                 <div class="flex gap-3 mt-1">
-                    <PrimeButton label="Save" class="btn-maroon w-full"
+                    <PrimeButton label="Login" class="btn-maroon w-full"
                     @click="submitForm"/>
                 </div>
             </template>
         </PrimeCard>
+
+        <p>
+            Don't have an account? Register
+            <NuxtLink to="/register" class="nav-link underline">here</NuxtLink>
+        </p>
     </div>
 </template>
 
 <script setup>
+    import { useToast } from 'primevue/usetoast'
+    import { useRouter } from 'vue-router'
+
+    const toast = useToast()
+    const router = useRouter()
+    const authToken = useCookie('auth-token')
+    if (authToken.value) {
+        router.push('/')
+    }
+
     const loginForm = reactive({
         email: '',
         password: ''
@@ -64,11 +80,42 @@
         return emailRegex.test(email);
     }
 
-    const submitForm = () => {
+    const submitForm = async () => {
         isValidEmail.value = validateEmail(loginForm.email)
 
+        const authToken = useCookie('auth-token')
+
         if (isValidEmail.value) {
-            console.log("Submitting Form")
+            try {
+                const response = await fetch('http://localhost:8000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginForm)
+                })
+
+                const data = await response.json()
+
+                if (!response.ok) {
+                    throw new Error(data.message)
+                }
+
+                if (data.token) {
+                    authToken.value = data.token
+                    router.push('/courses-management')
+                } else {
+                    throw new Error('Token not received')
+                }
+            } catch (error) {
+                console.log("Error: ", error)
+                toast.add({
+                    severity: 'error',
+                    summary: error,
+                    detail: error.message,
+                    life: 3000
+                })
+            }
         }
     }
 </script>

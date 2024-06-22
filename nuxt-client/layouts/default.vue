@@ -15,7 +15,7 @@
             </div>
 
             <!-- Account Name and Three-dots Icon -->
-            <div class="flex items-center gap-4">
+            <!-- <div class="flex items-center gap-4">
                 <div class="flex items-center">
                     <img src="assets\images\no-picture.webp" alt="No Profile Picture" class="h-8 w-auto md:mr-4">
                     <h1 class="font-semibold text-lg text-gray-900 hidden md:flex items-center">{{ name }}</h1>
@@ -25,6 +25,16 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
                     </svg>
                 </PrimeButton>
+            </div> -->
+            <div class="flex items-center gap-4">
+                <div class="flex items-center">
+                    <img src="assets\images\no-picture.webp" alt="No Profile Picture" class="h-8 w-auto md:mr-4">
+                    <h1 class="font-semibold text-lg text-gray-900 hidden md:flex items-center">{{ name }}</h1>
+                </div>
+                <div>
+                    <PrimeButton type="button" icon="pi pi-ellipsis-v" @click="ellipsisToggle" aria-haspopup="true" aria-controls="overlay_menu" />
+                    <PrimeMenu ref="ellipsisMenu" id="overlay_menu" :model="ellipsisItems" :popup="true" />
+                </div>
             </div>
         </nav>
     </header>
@@ -55,8 +65,13 @@
 </template>
 
 <script setup>
+    import { useRouter } from 'vue-router'
+
     const openedDrawer = ref(false)
     const name = ref('USER')
+    const ellipsisMenu = ref()
+    const authToken = useCookie('auth-token')
+    const router = useRouter()
 
     const openDrawer = (event) => {
         event.stopPropagation()
@@ -70,6 +85,26 @@
             document.removeEventListener('click', closeDrawer)
         }
     }
+
+    const logout = () => {
+        authToken.value = null
+        router.push('/login')
+    }
+
+    const ellipsisItems = ref([
+        {
+            items: [
+                {
+                    label: 'Logout',
+                    command: logout
+                }
+            ]
+        }
+    ]);
+
+    const ellipsisToggle = (event) => {
+        ellipsisMenu.value.toggle(event);
+    };
 
 </script>
 
