@@ -126,7 +126,7 @@
                         life: 3000
                     })
 
-                    router.push('/courses-management')
+                    router.push('/')
                 } else {
                     throw new Error('Token not received')
                 }
