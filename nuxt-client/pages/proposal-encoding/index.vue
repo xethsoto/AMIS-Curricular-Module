@@ -123,6 +123,10 @@
     import { useRouter } from 'vue-router'
     import { format } from 'date-fns'
 
+    definePageMeta({
+        middleware: ['auth']
+    })
+
     const router = useRouter()
     const toast = useToast()    //validation notification
 

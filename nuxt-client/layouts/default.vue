@@ -14,18 +14,6 @@
                 </div>
             </div>
 
-            <!-- Account Name and Three-dots Icon -->
-            <!-- <div class="flex items-center gap-4">
-                <div class="flex items-center">
-                    <img src="assets\images\no-picture.webp" alt="No Profile Picture" class="h-8 w-auto md:mr-4">
-                    <h1 class="font-semibold text-lg text-gray-900 hidden md:flex items-center">{{ name }}</h1>
-                </div>
-                <PrimeButton>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="h-6 w-6 inline-block cursor-pointer">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                    </svg>
-                </PrimeButton>
-            </div> -->
             <div class="flex items-center gap-4">
                 <div class="flex items-center">
                     <img src="assets\images\no-picture.webp" alt="No Profile Picture" class="h-8 w-auto md:mr-4">
@@ -49,7 +37,7 @@
                 <NuxtLink to="/proposals-management">
                     <PrimeButton class="font-semibold p-1" label="Proposals Management"/>
                 </NuxtLink>
-                <NuxtLink to="/proposal-encoding">
+                <NuxtLink v-if="userType === 'admin'" to="/proposal-encoding">
                     <PrimeButton class="font-semibold p-1" label="Proposal Encoding"/>
                 </NuxtLink>
             </PrimeAccordionTab>
@@ -67,11 +55,19 @@
 <script setup>
     import { useRouter } from 'vue-router'
 
+    const userType = useCookie('user-type')
+
+    definePageMeta({
+        middleware: ['auth']
+    })
+
     const openedDrawer = ref(false)
-    const name = ref('USER')
     const ellipsisMenu = ref()
-    const authToken = useCookie('auth-token')
     const router = useRouter()
+    
+    const authToken = useCookie('auth-token')
+    const userTypeCookie = useCookie('user-type')
+    const name = useCookie('username')
 
     const openDrawer = (event) => {
         event.stopPropagation()
@@ -88,6 +84,7 @@
 
     const logout = () => {
         authToken.value = null
+        userTypeCookie.value = null
         router.push('/login')
     }
 

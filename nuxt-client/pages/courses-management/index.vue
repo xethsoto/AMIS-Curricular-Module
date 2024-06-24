@@ -13,11 +13,11 @@
 </template>
 
 <script setup>
-    definePageMeta({
-        middleware: 'auth'
-    })
-
     const uri = "/courses-management/"
+
+    definePageMeta({
+        middleware: ['auth']
+    })
 
     const { data: fetchedCourses } = await useFetch('http://localhost:8000/api/get-courses', {
         lazy: false,

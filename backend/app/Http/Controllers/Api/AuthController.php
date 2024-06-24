@@ -59,8 +59,10 @@ class AuthController extends Controller
             ], 500);
         }
 
-        // return response()->json(['user' => $user], 201);
-        return response()->json(['token' => $token], 200);
+        return response()->json([
+            'token' => $token,
+            'userType' => $user->type
+        ],200);
     }
 
     public function login(Request $request)
@@ -70,7 +72,7 @@ class AuthController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'email' => 'required|string|email|max:255',
-                'password' => 'required|string|min:8',
+                'password' => 'required|string',
             ]);
             if($validator->fails()){
                 throw new ValidationException($validator);
@@ -100,7 +102,11 @@ class AuthController extends Controller
             ], 500);
         }
 
-        return response()->json(['token' => $token], 200);
+        return response()->json([
+            'token' => $token,
+            'name' => $user->name,
+            'userType' => $user->type
+        ],200);
     }
 
     public function logout(Request $request)

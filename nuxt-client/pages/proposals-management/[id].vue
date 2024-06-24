@@ -121,7 +121,11 @@
 </template>
 
 <script setup>
-import { watchEffect } from 'vue';
+    import { watchEffect } from 'vue';
+
+    definePageMeta({
+        middleware: ['auth']
+    })
 
     const { id } = useRoute().params
 

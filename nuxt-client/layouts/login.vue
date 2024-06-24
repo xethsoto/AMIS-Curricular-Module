@@ -32,14 +32,13 @@
                     <!-- Password -->
                     <div class="flex flex-col">
                         <p class="text-sm">Password</p>
-                        <PrimePassword
-                            toggleMask
-                            v-model="loginForm.password"
-                            :pt="{
-                                input: {class: 'border-2'}
-                            }"
+                        <input 
+                            type="password"
+                            v-model="loginForm.password" 
+                            class="border-2 p-2 rounded-md"
                         />
                     </div>
+
                 </div>
             </template>
             <template #footer>
@@ -54,6 +53,16 @@
             Don't have an account? Register
             <NuxtLink to="/register" class="nav-link underline">here</NuxtLink>
         </p>
+
+        <PrimeProgressSpinner
+            v-if="isPending"
+            style="width: 50px;
+            height: 50px"
+            strokeWidth="8"
+            fill="var(--surface-ground)"
+            animationDuration=".5s"
+            aria-label="Custom ProgressSpinner" 
+        />
     </div>
 </template>
 
@@ -64,6 +73,11 @@
     const toast = useToast()
     const router = useRouter()
     const authToken = useCookie('auth-token')
+    const userTypeCookie = useCookie('user-type')
+    const username = useCookie('username')
+    const isPending = ref(false)
+
+    // if user is already logged in
     if (authToken.value) {
         router.push('/')
     }
@@ -82,27 +96,36 @@
 
     const submitForm = async () => {
         isValidEmail.value = validateEmail(loginForm.email)
-
-        const authToken = useCookie('auth-token')
-
+        
         if (isValidEmail.value) {
             try {
-                const response = await fetch('http://localhost:8000/api/login', {
+                isPending.value = true
+                const { data, error, pending } = await useFetch('http://localhost:8000/api/login', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
                     body: JSON.stringify(loginForm)
                 })
 
-                const data = await response.json()
+                watchEffect(() => {
+                    console.log("isPending.value = ", isPending.value)
+                    isPending.value = pending.value
+                })
 
-                if (!response.ok) {
-                    throw new Error(data.message)
+                if (error.value) {
+                    throw new Error(error.value.data?.message)
                 }
 
-                if (data.token) {
-                    authToken.value = data.token
+                if (data.value) {
+                    authToken.value = data.value.token
+                    userTypeCookie.value = data.value.userType
+                    username.value = data.value.name
+
+                    toast.add({
+                        severity: 'success',
+                        summary: "Successfully Logged In",
+                        detail: "Please wait...",
+                        life: 3000
+                    })
+
                     router.push('/courses-management')
                 } else {
                     throw new Error('Token not received')
@@ -111,7 +134,7 @@
                 console.log("Error: ", error)
                 toast.add({
                     severity: 'error',
-                    summary: error,
+                    summary: "Failed to login",
                     detail: error.message,
                     life: 3000
                 })

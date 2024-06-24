@@ -20,6 +20,10 @@
         server: false,
     })
 
+    definePageMeta({
+        middleware: ['auth']
+    })
+
     /* converting classification array to string
     *  for table displaying
     */

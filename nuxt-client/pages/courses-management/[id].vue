@@ -135,6 +135,10 @@
 <script setup>
     const { id } = useRoute().params
 
+    definePageMeta({
+        middleware: ['auth']
+    })
+
     // fetching course and course requisites
     const { pending, data: courseInfo } = useAsyncData(
         'courseInfo',

@@ -40,9 +40,14 @@
                     <!-- Password -->
                     <div class="flex flex-col">
                         <p class="text-sm">Password</p>
-                        <PrimePassword
+                        <!-- <PrimePassword
                             v-model="registerForm.password"
                             toggleMask
+                        /> -->
+                        <input 
+                            type="password"
+                            v-model="registerForm.password" 
+                            class="border-2 p-2 rounded-md"
                         />
                         <p v-if="!isValidPassword.value" class="text-sm text-red-500">
                             {{ isValidPassword.message }}
@@ -52,9 +57,14 @@
                     <!-- Confirm Password -->
                     <div class="flex flex-col">
                         <p class="text-sm">Confirm Password</p>
-                        <PrimePassword
+                        <!-- <PrimePassword
                             v-model="confirmPassword"
                             toggleMask
+                        /> -->
+                        <input 
+                            type="password"
+                            v-model="confirmPassword" 
+                            class="border-2 p-2 rounded-md"
                         />
                         <p v-if="!passwordMatch" class="text-sm text-red-500">
                             Password and Confirm Password do not match
@@ -76,6 +86,16 @@
             Already have an account? Login
             <NuxtLink to="/login" class="nav-link underline">here</NuxtLink>
         </p>
+
+        <PrimeProgressSpinner
+            v-if="isPending"
+            style="width: 50px;
+            height: 50px"
+            strokeWidth="8"
+            fill="var(--surface-ground)"
+            animationDuration=".5s"
+            aria-label="Custom ProgressSpinner" 
+        />
     </div>
 </template>
 
@@ -83,10 +103,14 @@
     import { useToast } from 'primevue/usetoast'
     import { useRouter } from 'vue-router'
     
-
     const toast = useToast()
     const router = useRouter()
     const authToken = useCookie('auth-token')
+    const userTypeCookie = useCookie('user-type')
+    const username = useCookie('username')
+    const isPending = ref(false)
+
+    // if user is already logged in
     if (authToken.value) {
         router.push('/')
     }
@@ -134,30 +158,33 @@
 
         if (isValidName.value && isValidEmail.value && isValidPassword.value.value && passwordMatch) {
 
-            console.log("registerForm = ", registerForm)
             try {
-                const responseObj = {
+                isPending.value = true
+                const { data, error, pending } = await useFetch('http://localhost:8000/api/register', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(registerForm)
+                })
+
+                watchEffect(() => {
+                    isPending.value = pending.value
+                })
+
+                if (error.value) {
+                    throw new Error (error.value.data?.message)
                 }
 
-                console.log("responseObj = ", responseObj)
-                const response = await fetch('http://localhost:8000/api/register', responseObj)
+                if (data.value) {
+                    authToken.value = data.value.token
+                    userTypeCookie.value = data.value.userType
+                    username.value = registerForm.name
 
+                    toast.add({
+                        severity: 'success',
+                        summary: "Successfully Registered",
+                        detail: "Please wait...",
+                        life: 3000
+                    })
 
-                console.log("response = ", response)
-
-                if (!response.ok) {
-                    throw new Error('Network error')
-                }
-
-                const data = await response.json()
-
-                console.log("data = ", data)
-
-                if (data.token) {
-                    localStorage.setItem('auth_token', data.token)
                     router.push('/courses-management')
                 } else {
                     throw new Error('Token not received')
@@ -166,7 +193,7 @@
                 console.log(error)
                 toast.add({
                     severity: 'error',
-                    summary: error,
+                    summary: "Failed to Register",
                     detail: error.message,
                     life: 3000
                 })
