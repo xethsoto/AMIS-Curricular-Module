@@ -29,19 +29,14 @@
 
     <!-- Drawer -->
     <div v-if="openedDrawer" class="drawer fixed bg-white h-full z-50 w-1/6">
-        <PrimeAccordion>
-            <PrimeAccordionTab class="font-medium" header="Academic Catalog">
-                <NuxtLink to="/courses-management">
-                    <PrimeButton class="font-semibold p-1" label="Courses Management"/>
-                </NuxtLink>
-                <NuxtLink to="/proposals-management">
-                    <PrimeButton class="font-semibold p-1" label="Proposals Management"/>
-                </NuxtLink>
-                <NuxtLink v-if="userType === 'admin'" to="/proposal-encoding">
-                    <PrimeButton class="font-semibold p-1" label="Proposal Encoding"/>
-                </NuxtLink>
-            </PrimeAccordionTab>
-        </PrimeAccordion>
+        <PrimeMenu
+            :model="menuItems"
+            :pt="{
+                icon: { class: 'text-black' },
+                submenuHeader: { class: 'text-black' },
+                label: { class: 'text-black' }
+            }"
+        />
     </div>
 
     <div id="main-part" class="relative overflow-x-hidden items-top justify-center min-h-screen h-full pt-10">
@@ -93,6 +88,7 @@
             items: [
                 {
                     label: 'Logout',
+                    icon: 'pi pi-sign-out',
                     command: logout
                 }
             ]
@@ -102,6 +98,39 @@
     const ellipsisToggle = (event) => {
         ellipsisMenu.value.toggle(event);
     };
+
+    const menuItems = ref([
+        {
+            items: [
+                {
+                    label: 'Home',
+                    icon: 'pi pi-home',
+                    command: () => router.push('/')
+                }
+            ]
+        },
+        {
+            label: 'Academic Catalog',
+            items: [
+                {
+                    label: 'Courses Management',
+                    icon: 'pi pi-book',
+                    command: () => router.push('/courses-management')
+                },
+                {
+                    label: 'Proposals Management',
+                    icon: 'pi pi-file',
+                    command: () => router.push('/proposals-management')
+                },
+                {
+                    label: 'Proposal Encoding',
+                    icon: 'pi pi-pencil',
+                    command: () => router.push('/proposal-encoding'),
+                    visible: userType.value === 'admin'
+                }
+            ]
+        }
+    ])
 
 </script>
 
