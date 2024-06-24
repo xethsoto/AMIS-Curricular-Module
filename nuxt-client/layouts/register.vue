@@ -15,7 +15,7 @@
             </template>
             <template #content>
                 <p class="m-0 text-center text-sm">
-                    Note: This is a demo application to be used for testing a potential feature for AMIS. THIS IS NOT THE ACTUAL AMIS WEB APPLICAITON.
+                    Note: This is a demo application to be used for testing a potential feature for AMIS. THIS IS NOT THE ACTUAL AMIS WEB APPLICATION.
                 </p>
     
                 <!-- Login Form -->
