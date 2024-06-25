@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "start": "vite.config.js"
+        "start": "php artisan serve"
     },
     "devDependencies": {
         "axios": "^1.6.4",
