@@ -4,7 +4,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "start": "php artisan serve"
+        "start": "node app.js",
+        "postinstall": "npm run prod"
     },
     "devDependencies": {
         "axios": "^1.6.4",
