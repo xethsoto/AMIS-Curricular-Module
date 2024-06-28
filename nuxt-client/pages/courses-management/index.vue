@@ -1,5 +1,8 @@
 <template>
-    <div>
+    <div v-if="pending"> 
+        <p class="text-center font-bold">Loading data. Please wait...</p>
+    </div>
+    <div v-else>
         <NuxtLayout name="curricular-table"
             :data="courses"
             :meta="meta"
@@ -21,7 +24,7 @@
         middleware: ['auth']
     })
 
-    const { data: fetchedCourses } = await useFetch(`${apiUrl}/api/get-courses`, {
+    const { data: fetchedCourses, pending } = await useFetch(`${apiUrl}/api/get-courses`, {
         lazy: false,
         server: false
     })

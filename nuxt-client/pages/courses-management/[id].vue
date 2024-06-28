@@ -81,7 +81,7 @@
 
             <p class="font-semibold">Course Outline:</p>
             <div v-if="courseInfo.course">
-                <p>{{ courseInfo.course.outline }}</p>
+                <p v-html="courseInfo.course.outline"></p>
             </div>
             <div v-else>
                 <p class="font-bold italic">No Course Outline</p>
@@ -96,7 +96,6 @@
                     :value="courseInfo.events" 
                     layout="horizontal"
                     class="container w-full flex flex-nowrap"
-                    @wheel="handleScroll"
                     :pt="{
                         root: {
                             class: 'overflow-x-auto h-full pb-4'  
