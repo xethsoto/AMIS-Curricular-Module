@@ -21,18 +21,20 @@
         middleware: ['auth']
     })
 
-    const { data: fetchedCourses } = await useFetch(`${apiUrl}/api/get-courses`, {
+    const { data: courses } = await useFetch(`${apiUrl}/api/get-courses`, {
         lazy: false,
         server: false
     })
 
     watchEffect(() => {
-        if (fetchedCourses.value) {
-            fetchedCourses.value.forEach(course => {
+        if (courses.value) {
+            courses.value.forEach(course => {
                 course.sem_offered = course.sem_offered.join(', ');
             });
         }
     });
+
+    const fetchedCourses = ref([])
 
     const meta = [
         {
