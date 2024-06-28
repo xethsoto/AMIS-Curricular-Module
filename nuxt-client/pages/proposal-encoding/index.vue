@@ -148,7 +148,6 @@
             },
             content: {}
         })
-        console.log("Proposal Subproposals = ", proposalData.subproposals)
     }
 
     const removeProposal = (itemId) => {
@@ -157,9 +156,6 @@
         if (index !== -1) {
             proposalData.subproposals.splice(index, 1)
         }
-
-        console.log("Proposal Data Action = ", proposalData.action)
-        console.log("Proposal Data Content = ", proposalData.content)
     }
 
     const submitProposal = async () => {
@@ -167,8 +163,6 @@
         const config = useRuntimeConfig()
         const apiUrl = config.public.api_url
         const valid = validate()
-
-        console.log("Before validation = ", proposalData)
 
         if (valid){
             proposalData.date = format(proposalData.date, 'yyyy-MM-dd')
@@ -179,8 +173,6 @@
                 "action": proposalData.subproposals.map(subproposal => subproposal.action),
                 "content": proposalData.subproposals.map(subproposal => subproposal.content)
             }
-
-            console.log("Submitting Form = ", dataToSend);
                 
             try {
                 const { data, error } = await useFetch(`${apiUrl}/api/save-proposal`,{
