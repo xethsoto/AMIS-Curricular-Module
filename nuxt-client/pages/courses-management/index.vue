@@ -1,10 +1,7 @@
 <template>
-    <div v-if="courses && courses.length < 1"> 
-        <p class="text-center font-bold">Loading data. Please wait...</p>
-    </div>
-    <div v-else>
+    <div>
         <NuxtLayout name="curricular-table"
-            :data="courses"
+            :data="fetchedCourses"
             :meta="meta"
             :uri="uri"
             searchLabel="Filter By Course Code or Title"
@@ -29,14 +26,10 @@
         server: false
     })
 
-    const courses = ref([]);
-
     watchEffect(() => {
         if (fetchedCourses.value) {
-            courses.value = fetchedCourses.value.map(course => {
+            fetchedCourses.value.forEach(course => {
                 course.sem_offered = course.sem_offered.join(', ');
-
-                return course;
             });
         }
     });
