@@ -1,7 +1,7 @@
 <template>
     <div>
         <NuxtLayout name="curricular-table"
-            :data="fetchedCourses"
+            :data="courses"
             :meta="meta"
             :uri="uri"
             searchLabel="Filter By Course Code or Title"
@@ -33,8 +33,6 @@
             });
         }
     });
-
-    const fetchedCourses = ref([])
 
     const meta = [
         {
