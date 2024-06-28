@@ -119,6 +119,7 @@
         name: '',
         email: '',
         password: '',
+        type: 'user'
     })
     const confirmPassword = ref('')
 
