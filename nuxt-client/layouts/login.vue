@@ -100,7 +100,7 @@
         if (isValidEmail.value) {
             try {
                 isPending.value = true
-                const apiUrl = process.env.VUE_APP_API_URL
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL
                 const { data, error, pending } = await useFetch(`${apiUrl}/api/login`, {
                     method: 'POST',
                     body: JSON.stringify(loginForm)

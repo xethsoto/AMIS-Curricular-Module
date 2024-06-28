@@ -134,7 +134,7 @@
 
 <script setup>
     const { id } = useRoute().params
-    const apiUrl = process.env.VUE_APP_API_URL
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
     definePageMeta({
         middleware: ['auth']

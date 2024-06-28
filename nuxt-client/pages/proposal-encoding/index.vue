@@ -164,7 +164,7 @@
 
     const submitProposal = async () => {
 
-        const apiUrl = process.env.VUE_APP_API_URL
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL
         const valid = validate()
 
         console.log("Before validation = ", proposalData)

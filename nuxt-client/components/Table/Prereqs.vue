@@ -66,7 +66,7 @@
     const props = defineProps(['selectedCourse', 'label'])
     const emit = defineEmits(['inputValue'])
 
-    const apiUrl = process.env.VUE_APP_API_URL
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
     const {data: fetchedCourses} = await useFetch(`${apiUrl}/api/get-courses`)
 
     const selectedCourseRef = toRef(props, 'selectedCourse')

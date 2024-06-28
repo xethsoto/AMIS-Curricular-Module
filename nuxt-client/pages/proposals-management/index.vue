@@ -15,7 +15,7 @@
 
 <script setup>
     const uri = "/proposals-management/"
-    const apiUrl = process.env.VUE_APP_API_URL
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
     const { data: proposals } = await useFetch(`${apiUrl}/api/get-proposals-basic-info`, {
         lazy: false,

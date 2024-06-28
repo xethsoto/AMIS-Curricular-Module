@@ -161,7 +161,7 @@
 
             try {
                 isPending.value = true
-                const apiUrl = process.env.VUE_APP_API_URL
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL
                 const { data, error, pending } = await useFetch(`${apiUrl}/api/register`, {
                     method: 'POST',
                     body: JSON.stringify(registerForm)

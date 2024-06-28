@@ -271,7 +271,7 @@
 
 <script setup>
     const emit = defineEmits(['inputValue'])
-    const apiUrl = process.env.VUE_APP_API_URL
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
     const { data: courses } = await useFetch(`${apiUrl}/api/get-courses`)
 
     const formContent = reactive({
