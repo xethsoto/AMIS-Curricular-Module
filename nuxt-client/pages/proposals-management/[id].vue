@@ -136,10 +136,6 @@
         lazy: false,
         server: false
     })
-
-    watchEffect(() => {
-        console.log("proposal = ", proposal)
-    })
 </script>
 
 <style scoped>

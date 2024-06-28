@@ -29,10 +29,6 @@
 
 <script setup>
     const { proposal_classification, subproposal } = defineProps(['proposal_classification', 'subproposal'])
-
-    watchEffect(() => {
-        console.log("subproposal = ", subproposal)
-    })
 </script>
 
 <style scoped>

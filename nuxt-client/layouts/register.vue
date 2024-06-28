@@ -193,7 +193,6 @@
                     throw new Error('Token not received')
                 }
             } catch (error) {
-                console.log(error)
                 toast.add({
                     severity: 'error',
                     summary: "Failed to Register",

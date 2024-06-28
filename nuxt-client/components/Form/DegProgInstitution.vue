@@ -348,7 +348,6 @@
         if (!courses.includes(slotProps)){
             courses.push(slotProps)
         }
-        console.log(courses)
     }
 
     // button render condition in adding courses to a sem
@@ -358,9 +357,6 @@
 
     watchEffect(() => {
         emit('inputValue', formContent)
-
-        console.log("formContent = ", formContent)
-        console.log("formContent.majors = ", formContent.majors)
     })
 </script>
 

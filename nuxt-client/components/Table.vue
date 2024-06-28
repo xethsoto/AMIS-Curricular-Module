@@ -143,7 +143,6 @@
             }
         }      
     })
-    console.log("proposalTable in Table.vue = ", proposalTable)
 
     const types = [
         "Institution",

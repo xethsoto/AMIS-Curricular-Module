@@ -110,7 +110,6 @@
                 })
 
                 watchEffect(() => {
-                    console.log("isPending.value = ", isPending.value)
                     isPending.value = pending.value
                 })
 
@@ -135,7 +134,6 @@
                     throw new Error('Token not received')
                 }
             } catch (error) {
-                console.log("Error: ", error)
                 toast.add({
                     severity: 'error',
                     summary: "Failed to login",
