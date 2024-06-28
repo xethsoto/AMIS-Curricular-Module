@@ -15,7 +15,9 @@
 
 <script setup>
     const uri = "/proposals-management/"
-    const { data: proposals } = await useFetch('http://localhost:8000/api/get-proposals-basic-info', {
+    const apiUrl = process.env.VUE_APP_API_URL
+
+    const { data: proposals } = await useFetch(`${apiUrl}/api/get-proposals-basic-info`, {
         lazy: false,
         server: false,
     })

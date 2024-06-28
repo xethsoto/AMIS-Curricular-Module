@@ -66,9 +66,11 @@
         'customAction',
         'courses'
     ])
+
+    const apiUrl = process.env.VUE_APP_API_URL
     
     if (!courses) {
-        const {data: courses} = await useFetch("http://localhost:8000/api/get-courses")
+        const {data: courses} = await useFetch(`${apiUrl}/api/get-courses`)
     }   
     
     const viewTable = ref(true)

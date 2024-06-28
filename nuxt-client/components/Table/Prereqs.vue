@@ -66,7 +66,8 @@
     const props = defineProps(['selectedCourse', 'label'])
     const emit = defineEmits(['inputValue'])
 
-    const {data: fetchedCourses} = await useFetch("http://localhost:8000/api/get-courses")
+    const apiUrl = process.env.VUE_APP_API_URL
+    const {data: fetchedCourses} = await useFetch(`${apiUrl}/api/get-courses`)
 
     const selectedCourseRef = toRef(props, 'selectedCourse')
     const label = props.label

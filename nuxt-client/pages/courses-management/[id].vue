@@ -134,6 +134,7 @@
 
 <script setup>
     const { id } = useRoute().params
+    const apiUrl = process.env.VUE_APP_API_URL
 
     definePageMeta({
         middleware: ['auth']
@@ -144,10 +145,10 @@
         'courseInfo',
         async () => {
             const [course, requisites, events, crosslisted] = await Promise.all([
-                $fetch('http://localhost:8000/api/course/' + id),
-                $fetch('http://localhost:8000/api/requisites/' + id),
-                $fetch('http://localhost:8000/api/get-proposals-by-course/' + id),
-                $fetch('http://localhost:8000/api/get-crosslisted/' + id)
+                $fetch(`${apiUrl}/api/course/` + id),
+                $fetch(`${apiUrl}/api/requisites/` + id),
+                $fetch(`${apiUrl}/api/get-proposals-by-course/` + id),
+                $fetch(`${apiUrl}/api/get-crosslisted/` + id)
             ])
 
             return {

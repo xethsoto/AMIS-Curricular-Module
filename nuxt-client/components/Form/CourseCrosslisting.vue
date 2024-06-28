@@ -73,7 +73,9 @@
 </template>
 
 <script setup>
-    const {data: fetchedCourses} = await useFetch("http://localhost:8000/api/get-courses")
+    const apiUrl = process.env.VUE_APP_API_URL
+    const {data: fetchedCourses} = await useFetch(`${apiUrl}/api/get-courses`)
+
     const emit = defineEmits(['inputValue'])
     const formContent = reactive({
         selectedCourse: "",

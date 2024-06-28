@@ -128,9 +128,10 @@
     })
 
     const { id } = useRoute().params
+    const apiUrl = process.env.VUE_APP_API_URL
 
     // fetching proposal data
-    const {data: proposal, pending} = await useFetch(`http://localhost:8000/api/proposal/${id}`, {
+    const {data: proposal, pending} = await useFetch(`${apiUrl}/api/proposal/${id}`, {
         lazy: false,
         server: false
     })

@@ -164,6 +164,7 @@
 
     const submitProposal = async () => {
 
+        const apiUrl = process.env.VUE_APP_API_URL
         const valid = validate()
 
         console.log("Before validation = ", proposalData)
@@ -181,7 +182,7 @@
             console.log("Submitting Form = ", dataToSend);
                 
             try {
-                const { data, error } = await useFetch('http://localhost:8000/api/save-proposal',{
+                const { data, error } = await useFetch(`${apiUrl}/api/save-proposal`,{
                     method: 'POST',
                     body: JSON.stringify(dataToSend)
                 })

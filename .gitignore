@@ -1,1 +1,4 @@
 finalProject.code-workspace
+.env
+vendor
+bootstrap

@@ -14,12 +14,13 @@
 
 <script setup>
     const uri = "/courses-management/"
+    const apiUrl = process.env.VUE_APP_API_URL
 
     definePageMeta({
         middleware: ['auth']
     })
 
-    const { data: fetchedCourses } = await useFetch('http://localhost:8000/api/get-courses', {
+    const { data: fetchedCourses } = await useFetch(`${apiUrl}/api/get-courses`, {
         lazy: false,
         server: false
     })
