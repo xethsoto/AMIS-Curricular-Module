@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-    const uri = "/courses-management"
+    const uri = "/courses-management/"
     const config = useRuntimeConfig()
     const apiUrl = config.public.api_url
 
