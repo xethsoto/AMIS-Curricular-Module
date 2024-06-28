@@ -4,27 +4,11 @@
     </div>
     <!-- There is an issue where transition from this page to other page (say, proposal management causes an error) -->
     <!-- Above code fixes it -->
+    <NuxtLayout v-else name="curricular-viewer" prevLink="/courses-management">
+        <template v-slot:viewer-title>Course Viewer</template>
+        <template v-slot:title>{{ `${courseInfo.course.code} (${courseInfo.course.title})` }}</template>
+        <template v-slot:contents>
 
-    <div v-else class="flex flex-col gap-5 mb-8">
-        <!-- Title -->
-        <div class="flex flex-row gap-4">
-            <NuxtLink to="/courses-management">
-                <PrimeButton label="Close" size="lg" class="btn-maroon"/>
-            </NuxtLink>
-            <h1 class="page-title">Course Viewer</h1>
-        </div>
-
-        <!-- Body -->
-        <div class="flex flex-col bg-white p-7 gap-4">
-            <!-- Title -->
-            <h2 class="font-bold text-xl">
-                {{ `${courseInfo.course.code} (${courseInfo.course.title})` }}
-            </h2>
-            <slot name="date-created"></slot>
-
-            <hr class="h-px border-0 bg-black dark:bg-gray-700">
-
-            <!--------------------- Contents --------------------->
             <!-- General Details -->
             <CurrViewerGenDetails>
                 <template v-slot:title>General Details</template>
@@ -142,9 +126,9 @@
                     </template>
                 </PrimeTimeline>
             </div>
-
-        </div>
-    </div>
+            
+        </template>
+    </NuxtLayout>
 </template>
 
 <script setup>
