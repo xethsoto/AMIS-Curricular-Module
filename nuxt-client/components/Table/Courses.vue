@@ -67,7 +67,8 @@
         'courses'
     ])
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const config = useRuntimeConfig()
+    const apiUrl = config.public.api_url
     
     if (!courses) {
         const {data: courses} = await useFetch(`${apiUrl}/api/get-courses`)

@@ -39,7 +39,8 @@
 <script setup>
     const {searchLabel, selectItem, condition, customAction} = defineProps(['searchLabel', 'selectItem', 'condition', 'customAction'])
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const config = useRuntimeConfig()
+    const apiUrl = config.public.api_url
     const {data: courses} = await useFetch(`${apiUrl}/api/get-courses`)
     
     const viewTable = ref(true)

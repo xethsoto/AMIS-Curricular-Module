@@ -164,7 +164,8 @@
 
     const submitProposal = async () => {
 
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL
+        const config = useRuntimeConfig()
+        const apiUrl = config.public.api_url
         const valid = validate()
 
         console.log("Before validation = ", proposalData)

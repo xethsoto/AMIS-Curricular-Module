@@ -134,7 +134,8 @@
 
 <script setup>
     const { id } = useRoute().params
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const config = useRuntimeConfig()
+    const apiUrl = config.public.api_url
 
     definePageMeta({
         middleware: ['auth']

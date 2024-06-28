@@ -73,7 +73,8 @@
 </template>
 
 <script setup>
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const config = useRuntimeConfig()
+    const apiUrl = config.public.api_url
     const {data: fetchedCourses} = await useFetch(`${apiUrl}/api/get-courses`)
 
     const emit = defineEmits(['inputValue'])

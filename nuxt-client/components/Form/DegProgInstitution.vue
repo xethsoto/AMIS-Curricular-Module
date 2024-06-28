@@ -270,8 +270,8 @@
 </template>
 
 <script setup>
-    const emit = defineEmits(['inputValue'])
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const config = useRuntimeConfig()
+    const apiUrl = config.public.api_url
     const { data: courses } = await useFetch(`${apiUrl}/api/get-courses`)
 
     const formContent = reactive({

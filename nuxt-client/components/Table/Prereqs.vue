@@ -66,7 +66,8 @@
     const props = defineProps(['selectedCourse', 'label'])
     const emit = defineEmits(['inputValue'])
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const config = useRuntimeConfig()
+    const apiUrl = config.public.api_url
     const {data: fetchedCourses} = await useFetch(`${apiUrl}/api/get-courses`)
 
     const selectedCourseRef = toRef(props, 'selectedCourse')

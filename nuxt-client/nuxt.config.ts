@@ -14,4 +14,9 @@ export default defineNuxtConfig({
     'primevue/resources/themes/aura-light-green/theme.css',
     'primeicons/primeicons.css',
   ],
+  runtimeConfig: {
+    public: {
+      api_url: process.env.PUBLIC_API_URL
+    }
+  }
 })

@@ -15,7 +15,8 @@
 
 <script setup>
     const uri = "/proposals-management/"
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const config = useRuntimeConfig()
+    const apiUrl = config.public.api_url
 
     const { data: proposals } = await useFetch(`${apiUrl}/api/get-proposals-basic-info`, {
         lazy: false,

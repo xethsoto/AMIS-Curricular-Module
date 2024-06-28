@@ -128,7 +128,8 @@
     })
 
     const { id } = useRoute().params
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const config = useRuntimeConfig()
+    const apiUrl = config.public.api_url
 
     // fetching proposal data
     const {data: proposal, pending} = await useFetch(`${apiUrl}/api/proposal/${id}`, {
