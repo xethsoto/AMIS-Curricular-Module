@@ -22,7 +22,7 @@
         
                     <div class="flex-1">
                         <label class="text-center font-semibold">Course Outline</label>
-                        <p v-if="currOutline">{{ currOutline }}</p>
+                        <p v-if="currOutline" v-html="currOutline"></p>
                         <p v-else class="italic">No course outline indicated</p>
                     </div>
                 </div>
