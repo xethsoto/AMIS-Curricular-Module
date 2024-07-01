@@ -24,6 +24,17 @@
             />
         </div>
 
+        <div class="bg-white p-4 rounded-md">
+            <p class="text-xl font-bold">Notes:</p>
+            <p>To add a subproposal, click the "Add Subproposal" button below.</p>
+            <p>To delete a subproposal, click the "x" button at the left side of the subproposal to be deleted.</p>
+            <p>Change the type of subproposal by clicking the dropdown box and selecting the desired type.</p>
+            <p>Fill out the form/s and submit to create a proposal.</p>
+            <p class="italic">Creating <span class="font-bold">institutions and/or adoption</span> proposals <span class="font-bold">creates a new course </span> alongside the proposal.</p>
+            <p class="italic">Creating <span class="font-bold">revisions, abolition, and/or crosslisting</span> will <span class="font-bold">only</span> update <span class="font-bold">EXISTING</span> course.</p>
+
+        </div>
+
         <!-- Subproposals -->
         <div v-if="proposalData.subproposals" class="flex flex-col gap-4">
             <!-- Render multiple tabs depending on the number of proposals -->
@@ -32,7 +43,7 @@
                     v-for="(item, index) in proposalData.subproposals" :key="item.id"
                 >
                     <template #header>
-                        <p class="text-gray-500 text-sm font-medium">Proposal #{{ index+1 }}</p>
+                        <p class="text-gray-500 text-sm font-medium">Subproposal #{{ index+1 }}</p>
                         <PrimeButton
                             icon="pi pi-times"
                             class="btn-maroon m-0"
@@ -112,7 +123,7 @@
         </div>
 
         <div class="flex flex-row gap-4 justify-between">
-            <PrimeButton class="btn-maroon w-fit" label="Add Proposal" @click="addProposal"/>
+            <PrimeButton class="btn-maroon w-fit" label="Add Subproposal" @click="addProposal"/>
             <PrimeButton class="bg-green-500 text-white p-2 w-fit" label="Submit" @click="submitProposal"/>
         </div>
     </div>
