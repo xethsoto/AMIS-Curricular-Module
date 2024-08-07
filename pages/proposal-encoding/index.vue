@@ -133,6 +133,7 @@
     import { useToast } from 'primevue/usetoast'
     import { useRouter } from 'vue-router'
     import { format } from 'date-fns'
+    import { onMounted } from 'vue'
 
     definePageMeta({
         middleware: ['auth']
@@ -162,6 +163,7 @@
     }
 
     onMounted(() => {
+        console.log("trigger onMounted")
         addProposal()
     })
 
