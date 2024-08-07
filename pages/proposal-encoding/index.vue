@@ -161,6 +161,10 @@
         })
     }
 
+    onMounted(() => {
+        addProposal()
+    })
+
     const removeProposal = (itemId) => {
         const index = proposalData.subproposals.findIndex(item => item.id === itemId)
 
