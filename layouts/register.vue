@@ -75,7 +75,7 @@
             </template>
             <template #footer>
                 <div class="flex gap-3 mt-1">
-                    <PrimeButton label="Save" class="btn-maroon w-full"
+                    <PrimeButton label="Register" class="btn-maroon w-full"
                         @click="submitForm"
                     />
                 </div>
