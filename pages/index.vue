@@ -7,8 +7,12 @@
             <template #subtitle>Welcome to the Academic Management Information System (AMIS)</template>
             <template #content>
                 <p>
-                    To access the courses and course proposals management feature of this application. Click the hamburger icon at the top-left corner of the app to open the directory.
-                    Click the ellipsis icon at the top-right corner of the website to logout.
+                    To access the courses and course proposals management feature of this application. Click the 
+                    <span class="pi pi-bars"></span>
+                    at the top-left corner of the app to open the directory.
+                    Click the 
+                    <span class="pi pi-ellipsis-v"></span>
+                    at the top-right corner of the website to logout.
                 </p>
                 <p class="italic m-4 text-xs">
                     Note: This is a prototype application to be used for testing and showcasing a potential feature for AMIS. THIS IS NOT THE ACTUAL AMIS WEB APPLICATION.
