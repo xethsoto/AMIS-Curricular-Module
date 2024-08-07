@@ -28,7 +28,8 @@
                 </PrimeColumn>
                 <PrimeColumn key="action" field="action" header="Action">
                     <template #body="slotProps">
-                        <PrimeButton class="btn-maroon" label="Select" @click="selectItem(slotProps)"/>
+                        <PrimeButton v-if="selectLabel" class="btn-maroon" :label=selectLabel @click="selectItem(slotProps)"/>
+                        <PrimeButton v-else class="btn-maroon" label="Select" @click="selectItem(slotProps)"/>
                     </template>
                 </PrimeColumn>
             </template>
@@ -44,13 +45,15 @@
         noStatus,
         searchLabel,
         proposalTable,
+        selectLabel,
     } = defineProps([
         'data',
         'meta',
         'uri',
         'noStatus',
         'searchLabel',
-        'proposalTable'
+        'proposalTable',
+        'selectLabel'
     ])
 
     const selectItem = async (item) => {

@@ -7,6 +7,7 @@
             searchLabel="Filter By Proposal Name"
             :noStatus="true"
             :proposalTable="true"
+            selectLabel="View"
         >
             <template v-slot:title>Proposals Management</template>
         </NuxtLayout>

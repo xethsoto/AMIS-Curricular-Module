@@ -6,6 +6,7 @@
             :uri="uri"
             searchLabel="Filter By Course Code or Title"
             :proposalTable = false
+            selectLabel = "View"
         >
             <template v-slot:title>Courses Management</template>
         </NuxtLayout>
