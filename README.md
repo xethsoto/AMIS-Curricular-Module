@@ -1,0 +1,3 @@
+# Courses Proposal Document Management System
+---
+This system was developed to digitize the university's curricular proposal process, transitioning the Registrar’s Office from a paper-based workflow to a streamlined digital pipeline. Built with Laravel and Nuxt.js, the application serves as a prototype for a new feature within the existing university portal. Beyond simple digitization, the platform provides a historical reference of course changes, enabling the academe to better understand and strengthen the university's curricula through data-driven insights.
