@@ -8,68 +8,68 @@ This system was developed to digitize the university's curricular proposal proce
 - **Styling**: Tailwind CSS
 
 ## Screenshots				
-			
-<figure>
+
+<div align="center">
     <img src="images/LoginPage.png" alt="Login Page">
-  <figcaption align="center"><i>Figure 1:</i> Login Page</figcaption>
-</figure>
+    <p><em>Figure 1:</em> Login Page</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/RegisterPage.png" alt="Register Page">
-  <figcaption align="center"><i>Figure 2:</i> Register Page</figcaption>
-</figure>
+    <p><em>Figure 2:</em> Register Page</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/HomePage.png" alt="Home Page">
-  <figcaption align="center"><i>Figure 3:</i> Home Page</figcaption>
-</figure>
+    <p><em>Figure 3:</em> Home Page</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/NavigationDrawer.png" alt="Navigation Drawer">
-  <figcaption align="center"><i>Figure 4:</i> Navigation Drawer</figcaption>
-</figure>
+    <p><em>Figure 4:</em> Navigation Drawer</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/CoursesManagementPage.png" alt="Courses Management Page">
-  <figcaption align="center"><i>Figure 5:</i> Courses Management Page</figcaption>
-</figure>
+    <p><em>Figure 5:</em> Courses Management Page</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/CourseViewer.png" alt="Course Viewer (General Details section)">
-  <figcaption align="center"><i>Figure 6:</i> Course Viewer (General Details section)</figcaption>
-</figure>
+    <p><em>Figure 6:</em> Course Viewer (General Details section)</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/CourseViewer2.png" alt="Course Viewer (Course History section)">
-  <figcaption align="center"><i>Figure 7:</i> Course Viewer (Course History section)</figcaption>
-</figure>
+    <p><em>Figure 7:</em> Course Viewer (Course History section)</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/ProposalViewer.png" alt="Proposal Viewer (Course Institution proposal)">
-  <figcaption align="center"><i>Figure 8:</i> Proposal Viewer (Course Institution proposal)</figcaption>
-</figure>
+    <p><em>Figure 8:</em> Proposal Viewer (Course Institution proposal)</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/ProposalViewerRev.png" alt="Proposal Viewer (Course Revision proposal)">
-  <figcaption align="center"><i>Figure 9:</i> Proposal Viewer (Course Revision proposal)</figcaption>
-</figure>
+    <p><em>Figure 9:</em> Proposal Viewer (Course Revision proposal)</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/ProposalEncodingPage.png" alt="Proposal Encoding Page">
-  <figcaption align="center"><i>Figure 10:</i> Proposal Encoding Page</figcaption>
-</figure>
+    <p><em>Figure 10:</em> Proposal Encoding Page</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/CourseInstitutionForm.png" alt="Proposal Encoding Page (Course Institution form)">
-  <figcaption align="center"><i>Figure 11:</i> Proposal Encoding Page (Course Institution form)</figcaption>
-</figure>
+    <p><em>Figure 11:</em> Proposal Encoding Page (Course Institution form)</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/CourseRevTitleCode.png" alt="Proposal Encoding Page (Course Title and Code Revision form)">
-  <figcaption align="center"><i>Figure 12:</i> Proposal Encoding Page (Course Title and Code Revision form)</figcaption>
-</figure>
+    <p><em>Figure 12:</em> Proposal Encoding Page (Course Title and Code Revision form)</p>
+</div>
 
-<figure>
+<div align="center">
     <img src="images/CourseAbolitionForm.png" alt="Proposal Encoding Page (Course Abolition form)">
-  <figcaption align="center"><i>Figure 13:</i> Proposal Encoding Page (Course Abolition form)</figcaption>
-</figure>
+    <p><em>Figure 13:</em> Proposal Encoding Page (Course Abolition form)</p>
+</div>
