@@ -7,9 +7,9 @@ This system was developed to digitize the university's curricular proposal proce
 - **Database**: MySQL
 - **Styling**: Tailwind CSS
 
-## Pages				
+## Screenshots				
 			
- <figure>
+<figure>
     <img src="images/LoginPage.png" alt="Login Page">
   <figcaption align="center"><i>Figure 1:</i> Login Page</figcaption>
 </figure>
